@@ -65,7 +65,7 @@ namespace SPHMMaker.Items
         public EQType Slot { get => slot; } //TODO: Find better name
         EQType slot;
 
-        public EquipmentData(int id, string gfxName, string name, string description, EQType slot, ItemType itemType, int armor, int[] baseStats, Item.Quality quality, int cost, GearType material) : base(id, gfxName, name, description, 1, itemType, quality, cost)
+        public EquipmentData(int id, string gfxName, string name, string description, EQType slot, ItemType itemType, int armor, int[] baseStats, ItemQuality quality, int cost, GearType material) : base(id, gfxName, name, description, 1, itemType, quality, cost)
         {
             this.slot = slot;
             //this.baseStats = new EquipmentStats(baseStats);
@@ -76,6 +76,6 @@ namespace SPHMMaker.Items
         }
 
         [JsonConstructor]
-        public EquipmentData(int id, string gfxName, string name, string description, EQType slot, int armor, int[] baseStats, Item.Quality quality, int cost, GearType material) : this(id, gfxName, name, description, slot, ItemType.Equipment, armor, baseStats, quality, cost, material) { }
+        public EquipmentData(int id, string gfxName, string name, string description, EQType slot, int armor, int[] baseStats, ItemQuality quality, int cost, GearType material) : this(id, gfxName, name, description, slot, ItemType.Equipment, armor, baseStats, quality, cost, material) { }
     }
 }

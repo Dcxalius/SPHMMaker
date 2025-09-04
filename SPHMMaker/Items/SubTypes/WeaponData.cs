@@ -51,7 +51,7 @@ namespace SPHMMaker.Items
         Weapon weaponType;
 
 
-        public WeaponData(int id, string gfxName, string name, string description, EQType slot, int armor, int[] baseStats, int minAttackDamage, int maxAttackDamage, float attackSpeed, Item.Quality quality, Weapon weaponType, int cost) : base(id, gfxName, name, description, slot, ItemType.Weapon, armor, baseStats, quality, cost, GearType.None)
+        public WeaponData(int id, string gfxName, string name, string description, EQType slot, int armor, int[] baseStats, int minAttackDamage, int maxAttackDamage, float attackSpeed, ItemQuality quality, Weapon weaponType, int cost) : base(id, gfxName, name, description, slot, ItemType.Weapon, armor, baseStats, quality, cost, GearType.None)
         {
             attack = new Attack(minAttackDamage, maxAttackDamage, attackSpeed);
             this.weaponType = weaponType;

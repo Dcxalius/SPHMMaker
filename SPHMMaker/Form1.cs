@@ -14,9 +14,11 @@ namespace SPHMMaker
         {
             InitializeComponent();
 
+            ItemType.SetItemChecked(0, true);
+
             AllocConsole();
 
-            items.DataSource = ItemManager.Items;
+            items.DataSource = ItemManager.ItemNames;
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -48,6 +50,39 @@ namespace SPHMMaker
         {
             if (itemMaxCountSetter.Value > 0) return;
             itemMaxCountSetter.Value = 1;
+        }
+
+        private void ItemType_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            CheckedListBox.CheckedIndexCollection n = ItemType.CheckedIndices;
+            if (n.Count == 1 && e.NewValue == CheckState.Unchecked)
+            {
+                e.NewValue = CheckState.Checked;
+                return;
+            }
+
+
+            int[] indexes = new int[n.Count];
+
+            for (int i = 0; i < n.Count; i++)
+            {
+                indexes[i] = n[i];
+            }
+
+            //ItemType.SetItemChecked()
+            foreach (int i in indexes)
+            {
+                if (i == e.Index) continue;
+
+                ItemType.ItemCheck -= ItemType_ItemCheck;
+                ItemType.SetItemCheckState(i, CheckState.Unchecked);
+                ItemType.ItemCheck += ItemType_ItemCheck;
+            }
+        }
+
+        private void OverrideItemButton_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.SetToolTip(OverrideItemButton, "This removes and replaces the select item with the created item.");
         }
     }
 }

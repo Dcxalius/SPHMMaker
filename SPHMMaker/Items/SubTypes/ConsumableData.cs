@@ -29,7 +29,7 @@ namespace SPHMMaker.Items
 
 
         [JsonConstructor]
-        public ConsumableData(int id, string gfxName, string name, string description, int maxStack, ConsumableType type, Item.Quality quality, int cost, float value = -1) : base(id, gfxName, name, description, maxStack, ItemType.Consumable, quality, cost)
+        public ConsumableData(int id, string gfxName, string name, string description, int maxStack, ConsumableType type, ItemQuality quality, int cost, float value = -1) : base(id, gfxName, name, description, maxStack, ItemType.Consumable, quality, cost)
         {
 
             this.type = type;

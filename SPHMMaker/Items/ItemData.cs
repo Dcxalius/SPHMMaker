@@ -11,6 +11,15 @@ namespace SPHMMaker.Items
 {
     internal class ItemData : IComparable<ItemData>
     {
+        public enum ItemQuality
+        {
+            Trash,
+            Common,
+            Uncommon,
+            Rare,
+            Epic,
+            Legendary
+        }
         public enum ItemType
         {
             NotSet,
@@ -35,8 +44,8 @@ namespace SPHMMaker.Items
         public GfxPath GfxPath => gfx;
         GfxPath gfx;
 
-        public Item.Quality Quality => quality;
-        Item.Quality quality;
+        public ItemQuality Quality => quality;
+        ItemQuality quality;
 
         public ItemType Type => itemType;
         ItemType itemType;
@@ -45,7 +54,7 @@ namespace SPHMMaker.Items
         int cost;
 
         [JsonConstructor]
-        public ItemData(int id, string gfxName, string name, string description, int maxStack, ItemType itemType, Item.Quality quality, int cost)
+        public ItemData(int id, string gfxName, string name, string description, int maxStack, ItemType itemType, ItemQuality quality, int cost)
         {
             this.id = id;
             gfx = new GfxPath(GfxType.Item, gfxName);

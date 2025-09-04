@@ -28,32 +28,45 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             itemNameInput = new TextBox();
             items = new ListBox();
             itemNameLabel = new Label();
             itemSelectBoxLabel = new Label();
-            tabControl1 = new TabControl();
-            tabPage1 = new TabPage();
+            MainTab = new TabControl();
+            ItemPageTab = new TabPage();
+            EditItemButton = new Button();
             itemCreatorModifier = new TabControl();
             createItemPage = new TabPage();
+            numericUpDown1 = new NumericUpDown();
+            GoldCostLabel = new Label();
+            tabControl2 = new TabControl();
+            itemTypeTab = new TabPage();
+            ItemType = new CheckedListBox();
+            descriptionTab = new TabPage();
+            descriptionInput = new RichTextBox();
             itemMaxCountSetter = new NumericUpDown();
             itemCountLabel = new Label();
             createItemButton = new Button();
             modItemPage = new TabPage();
             tabPage2 = new TabPage();
-            tabControl2 = new TabControl();
-            itemTypeTab = new TabPage();
-            descriptionTab = new TabPage();
-            descriptionInput = new RichTextBox();
-            checkedListBox1 = new CheckedListBox();
-            tabControl1.SuspendLayout();
-            tabPage1.SuspendLayout();
+            menuStrip1 = new MenuStrip();
+            fileToolStripMenuItem = new ToolStripMenuItem();
+            saveDatapackToolStripMenuItem = new ToolStripMenuItem();
+            loadDatapackToolStripMenuItem = new ToolStripMenuItem();
+            exitToolStripMenuItem = new ToolStripMenuItem();
+            OverrideItemButton = new Button();
+            toolTip1 = new ToolTip(components);
+            MainTab.SuspendLayout();
+            ItemPageTab.SuspendLayout();
             itemCreatorModifier.SuspendLayout();
             createItemPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)itemMaxCountSetter).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             tabControl2.SuspendLayout();
             itemTypeTab.SuspendLayout();
             descriptionTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)itemMaxCountSetter).BeginInit();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // itemNameInput
@@ -93,28 +106,39 @@
             itemSelectBoxLabel.TabIndex = 3;
             itemSelectBoxLabel.Text = "Items:";
             // 
-            // tabControl1
+            // MainTab
             // 
-            tabControl1.Controls.Add(tabPage1);
-            tabControl1.Controls.Add(tabPage2);
-            tabControl1.Location = new Point(0, 0);
-            tabControl1.Name = "tabControl1";
-            tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(800, 450);
-            tabControl1.TabIndex = 4;
+            MainTab.Controls.Add(ItemPageTab);
+            MainTab.Controls.Add(tabPage2);
+            MainTab.Location = new Point(0, 27);
+            MainTab.Name = "MainTab";
+            MainTab.SelectedIndex = 0;
+            MainTab.Size = new Size(800, 450);
+            MainTab.TabIndex = 4;
             // 
-            // tabPage1
+            // ItemPageTab
             // 
-            tabPage1.Controls.Add(itemCreatorModifier);
-            tabPage1.Controls.Add(itemSelectBoxLabel);
-            tabPage1.Controls.Add(items);
-            tabPage1.Location = new Point(4, 24);
-            tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(792, 422);
-            tabPage1.TabIndex = 0;
-            tabPage1.Text = "tabPage1";
-            tabPage1.UseVisualStyleBackColor = true;
+            ItemPageTab.Controls.Add(OverrideItemButton);
+            ItemPageTab.Controls.Add(EditItemButton);
+            ItemPageTab.Controls.Add(itemCreatorModifier);
+            ItemPageTab.Controls.Add(itemSelectBoxLabel);
+            ItemPageTab.Controls.Add(items);
+            ItemPageTab.Location = new Point(4, 24);
+            ItemPageTab.Name = "ItemPageTab";
+            ItemPageTab.Padding = new Padding(3);
+            ItemPageTab.Size = new Size(792, 422);
+            ItemPageTab.TabIndex = 0;
+            ItemPageTab.Text = "Items";
+            ItemPageTab.UseVisualStyleBackColor = true;
+            // 
+            // EditItemButton
+            // 
+            EditItemButton.Location = new Point(582, 395);
+            EditItemButton.Name = "EditItemButton";
+            EditItemButton.Size = new Size(100, 24);
+            EditItemButton.TabIndex = 9;
+            EditItemButton.Text = "Edit Item";
+            EditItemButton.UseVisualStyleBackColor = true;
             // 
             // itemCreatorModifier
             // 
@@ -123,11 +147,13 @@
             itemCreatorModifier.Location = new Point(6, 6);
             itemCreatorModifier.Name = "itemCreatorModifier";
             itemCreatorModifier.SelectedIndex = 0;
-            itemCreatorModifier.Size = new Size(483, 388);
+            itemCreatorModifier.Size = new Size(570, 416);
             itemCreatorModifier.TabIndex = 4;
             // 
             // createItemPage
             // 
+            createItemPage.Controls.Add(numericUpDown1);
+            createItemPage.Controls.Add(GoldCostLabel);
             createItemPage.Controls.Add(tabControl2);
             createItemPage.Controls.Add(itemMaxCountSetter);
             createItemPage.Controls.Add(itemCountLabel);
@@ -137,14 +163,84 @@
             createItemPage.Location = new Point(4, 24);
             createItemPage.Name = "createItemPage";
             createItemPage.Padding = new Padding(3);
-            createItemPage.Size = new Size(475, 360);
+            createItemPage.Size = new Size(562, 388);
             createItemPage.TabIndex = 0;
             createItemPage.Text = "Create Item";
             createItemPage.UseVisualStyleBackColor = true;
             // 
+            // numericUpDown1
+            // 
+            numericUpDown1.Location = new Point(434, 62);
+            numericUpDown1.Name = "numericUpDown1";
+            numericUpDown1.Size = new Size(41, 23);
+            numericUpDown1.TabIndex = 8;
+            numericUpDown1.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // GoldCostLabel
+            // 
+            GoldCostLabel.AutoSize = true;
+            GoldCostLabel.Location = new Point(376, 64);
+            GoldCostLabel.Name = "GoldCostLabel";
+            GoldCostLabel.Size = new Size(60, 15);
+            GoldCostLabel.TabIndex = 7;
+            GoldCostLabel.Text = "Gold cost:";
+            // 
+            // tabControl2
+            // 
+            tabControl2.Controls.Add(itemTypeTab);
+            tabControl2.Controls.Add(descriptionTab);
+            tabControl2.Location = new Point(6, 40);
+            tabControl2.Name = "tabControl2";
+            tabControl2.SelectedIndex = 0;
+            tabControl2.Size = new Size(364, 314);
+            tabControl2.TabIndex = 6;
+            // 
+            // itemTypeTab
+            // 
+            itemTypeTab.Controls.Add(ItemType);
+            itemTypeTab.Location = new Point(4, 24);
+            itemTypeTab.Name = "itemTypeTab";
+            itemTypeTab.Padding = new Padding(3);
+            itemTypeTab.Size = new Size(356, 286);
+            itemTypeTab.TabIndex = 0;
+            itemTypeTab.Text = "Item Type";
+            itemTypeTab.UseVisualStyleBackColor = true;
+            // 
+            // ItemType
+            // 
+            ItemType.CheckOnClick = true;
+            ItemType.FormattingEnabled = true;
+            ItemType.ImeMode = ImeMode.Off;
+            ItemType.Items.AddRange(new object[] { "None", "Bag", "Consumable", "Equipment", "Weapon" });
+            ItemType.Location = new Point(0, 0);
+            ItemType.Name = "ItemType";
+            ItemType.Size = new Size(91, 94);
+            ItemType.TabIndex = 0;
+            ItemType.UseTabStops = false;
+            ItemType.ItemCheck += ItemType_ItemCheck;
+            // 
+            // descriptionTab
+            // 
+            descriptionTab.Controls.Add(descriptionInput);
+            descriptionTab.Location = new Point(4, 24);
+            descriptionTab.Name = "descriptionTab";
+            descriptionTab.Padding = new Padding(3);
+            descriptionTab.Size = new Size(356, 286);
+            descriptionTab.TabIndex = 1;
+            descriptionTab.Text = "Description";
+            descriptionTab.UseVisualStyleBackColor = true;
+            // 
+            // descriptionInput
+            // 
+            descriptionInput.Location = new Point(7, 6);
+            descriptionInput.Name = "descriptionInput";
+            descriptionInput.Size = new Size(348, 272);
+            descriptionInput.TabIndex = 0;
+            descriptionInput.Text = "";
+            // 
             // itemMaxCountSetter
             // 
-            itemMaxCountSetter.Location = new Point(352, 8);
+            itemMaxCountSetter.Location = new Point(434, 33);
             itemMaxCountSetter.Name = "itemMaxCountSetter";
             itemMaxCountSetter.Size = new Size(41, 23);
             itemMaxCountSetter.TabIndex = 5;
@@ -154,7 +250,7 @@
             // itemCountLabel
             // 
             itemCountLabel.AutoSize = true;
-            itemCountLabel.Location = new Point(279, 11);
+            itemCountLabel.Location = new Point(369, 35);
             itemCountLabel.Name = "itemCountLabel";
             itemCountLabel.Size = new Size(67, 15);
             itemCountLabel.TabIndex = 4;
@@ -175,7 +271,7 @@
             modItemPage.Location = new Point(4, 24);
             modItemPage.Name = "modItemPage";
             modItemPage.Padding = new Padding(3);
-            modItemPage.Size = new Size(475, 360);
+            modItemPage.Size = new Size(562, 388);
             modItemPage.TabIndex = 1;
             modItemPage.Text = "Modify Item";
             modItemPage.UseVisualStyleBackColor = true;
@@ -190,74 +286,75 @@
             tabPage2.Text = "tabPage2";
             tabPage2.UseVisualStyleBackColor = true;
             // 
-            // tabControl2
+            // menuStrip1
             // 
-            tabControl2.Controls.Add(itemTypeTab);
-            tabControl2.Controls.Add(descriptionTab);
-            tabControl2.Location = new Point(6, 40);
-            tabControl2.Name = "tabControl2";
-            tabControl2.SelectedIndex = 0;
-            tabControl2.Size = new Size(368, 314);
-            tabControl2.TabIndex = 6;
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(968, 24);
+            menuStrip1.TabIndex = 7;
+            menuStrip1.Text = "menuStrip1";
             // 
-            // itemTypeTab
+            // fileToolStripMenuItem
             // 
-            itemTypeTab.Controls.Add(checkedListBox1);
-            itemTypeTab.Location = new Point(4, 24);
-            itemTypeTab.Name = "itemTypeTab";
-            itemTypeTab.Padding = new Padding(3);
-            itemTypeTab.Size = new Size(360, 286);
-            itemTypeTab.TabIndex = 0;
-            itemTypeTab.Text = "Item Type";
-            itemTypeTab.UseVisualStyleBackColor = true;
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { saveDatapackToolStripMenuItem, loadDatapackToolStripMenuItem, exitToolStripMenuItem });
+            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            fileToolStripMenuItem.Size = new Size(37, 20);
+            fileToolStripMenuItem.Text = "File";
             // 
-            // descriptionTab
+            // saveDatapackToolStripMenuItem
             // 
-            descriptionTab.Controls.Add(descriptionInput);
-            descriptionTab.Location = new Point(4, 24);
-            descriptionTab.Name = "descriptionTab";
-            descriptionTab.Padding = new Padding(3);
-            descriptionTab.Size = new Size(360, 286);
-            descriptionTab.TabIndex = 1;
-            descriptionTab.Text = "Description";
-            descriptionTab.UseVisualStyleBackColor = true;
+            saveDatapackToolStripMenuItem.Name = "saveDatapackToolStripMenuItem";
+            saveDatapackToolStripMenuItem.Size = new Size(152, 22);
+            saveDatapackToolStripMenuItem.Text = "Save Datapack";
             // 
-            // descriptionInput
+            // loadDatapackToolStripMenuItem
             // 
-            descriptionInput.Location = new Point(7, 6);
-            descriptionInput.Name = "descriptionInput";
-            descriptionInput.Size = new Size(348, 272);
-            descriptionInput.TabIndex = 0;
-            descriptionInput.Text = "";
+            loadDatapackToolStripMenuItem.Name = "loadDatapackToolStripMenuItem";
+            loadDatapackToolStripMenuItem.Size = new Size(152, 22);
+            loadDatapackToolStripMenuItem.Text = "Load Datapack";
             // 
-            // checkedListBox1
+            // exitToolStripMenuItem
             // 
-            checkedListBox1.FormattingEnabled = true;
-            checkedListBox1.Items.AddRange(new object[] { "None", "Bag", "Consumable", "Equipment", "Weapon" });
-            checkedListBox1.Location = new Point(7, 9);
-            checkedListBox1.Name = "checkedListBox1";
-            checkedListBox1.Size = new Size(91, 94);
-            checkedListBox1.TabIndex = 0;
+            exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            exitToolStripMenuItem.Size = new Size(152, 22);
+            exitToolStripMenuItem.Text = "Exit";
+            // 
+            // OverrideItemButton
+            // 
+            OverrideItemButton.Location = new Point(684, 395);
+            OverrideItemButton.Name = "OverrideItemButton";
+            OverrideItemButton.Size = new Size(100, 24);
+            OverrideItemButton.TabIndex = 10;
+            OverrideItemButton.Text = "Override Item";
+            OverrideItemButton.UseVisualStyleBackColor = true;
+            OverrideItemButton.MouseHover += OverrideItemButton_MouseHover;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(tabControl1);
+            ClientSize = new Size(968, 539);
+            Controls.Add(MainTab);
+            Controls.Add(menuStrip1);
+            MainMenuStrip = menuStrip1;
             Name = "Form1";
             Text = "Form1";
-            tabControl1.ResumeLayout(false);
-            tabPage1.ResumeLayout(false);
-            tabPage1.PerformLayout();
+            MainTab.ResumeLayout(false);
+            ItemPageTab.ResumeLayout(false);
+            ItemPageTab.PerformLayout();
             itemCreatorModifier.ResumeLayout(false);
             createItemPage.ResumeLayout(false);
             createItemPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)itemMaxCountSetter).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             tabControl2.ResumeLayout(false);
             itemTypeTab.ResumeLayout(false);
             descriptionTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)itemMaxCountSetter).EndInit();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -266,8 +363,8 @@
         private ListBox items;
         private Label itemNameLabel;
         private Label itemSelectBoxLabel;
-        private TabControl tabControl1;
-        private TabPage tabPage1;
+        private TabControl MainTab;
+        private TabPage ItemPageTab;
         private TabPage tabPage2;
         private TabControl itemCreatorModifier;
         private TabPage createItemPage;
@@ -279,6 +376,16 @@
         private TabPage itemTypeTab;
         private TabPage descriptionTab;
         private RichTextBox descriptionInput;
-        private CheckedListBox checkedListBox1;
+        private CheckedListBox ItemType;
+        private NumericUpDown numericUpDown1;
+        private Label GoldCostLabel;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem saveDatapackToolStripMenuItem;
+        private ToolStripMenuItem loadDatapackToolStripMenuItem;
+        private ToolStripMenuItem exitToolStripMenuItem;
+        private Button EditItemButton;
+        private Button OverrideItemButton;
+        private ToolTip toolTip1;
     }
 }
