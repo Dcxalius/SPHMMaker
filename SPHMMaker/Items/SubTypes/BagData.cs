@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace SPHMMaker.Items
 {
-    internal class ContainerData : ItemData
+    internal class BagData : ItemData
     {
         public int SlotCount { get => slotCount; }
         int slotCount;
         [JsonConstructor]
-        public ContainerData(int id, string gfxName, string name, string description, int slotCount, int cost, ItemQuality quality) : base(id, gfxName, name, description, 1, ItemType.Container, quality, cost)
+        public BagData(int id, string gfxName, string name, string description, int slotCount, int cost, ItemQuality quality) : base(id, gfxName, name, description, 1, ItemType.Bag, quality, cost)
         {
             this.slotCount = slotCount;
             Assert();

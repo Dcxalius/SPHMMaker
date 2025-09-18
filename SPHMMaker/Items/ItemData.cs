@@ -23,8 +23,8 @@ namespace SPHMMaker.Items
         public enum ItemType
         {
             NotSet,
-            Container,
-            Trash,
+            None,
+            Bag,
             Consumable,
             Equipment,
             Weapon
@@ -79,5 +79,7 @@ namespace SPHMMaker.Items
             if (other.id < id) return 1;
             return 0;
         }
+
+        public override string ToString() => name;
     }
 }
