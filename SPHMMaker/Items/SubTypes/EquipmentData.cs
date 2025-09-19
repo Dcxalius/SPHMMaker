@@ -56,8 +56,17 @@ namespace SPHMMaker.Items
         //    }
         //}
 
-        //public EquipmentStats BaseStats => baseStats;
-        //EquipmentStats baseStats;
+        public int Agility => baseStats[0];
+        public int Strength => baseStats[1];
+        public int Stamina => baseStats[2];
+        public int Intelligence => baseStats[3];
+        public int Spirit => baseStats[4];
+
+        public int[] BaseStats => baseStats;
+        int[] baseStats;
+
+        public int Armor => armor;
+        int armor;
 
         public GearType Material => material;
         GearType material;
@@ -70,7 +79,7 @@ namespace SPHMMaker.Items
             this.slot = slot;
             //this.baseStats = new EquipmentStats(baseStats);
             //DEBUG
-            //this.baseStats = new EquipmentStats(baseStats, armor);
+            this.baseStats = baseStats;
             this.material = material;
 
         }

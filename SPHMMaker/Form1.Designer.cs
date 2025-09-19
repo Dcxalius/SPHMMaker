@@ -45,9 +45,29 @@ namespace SPHMMaker
             goldCostLabel = new Label();
             itemToCreate = new TabControl();
             itemTypeTab = new TabPage();
-            itemTypeChangingTab = new TabControl();
+            itemTypeTabControl = new TabControl();
             itemTypeNoneTab = new TabPage();
+            nonePageLabel = new Label();
             itemTypeBagTab = new TabPage();
+            bagSizeLabel = new Label();
+            bagSizeSetter = new NumericUpDown();
+            itemTypeConsumableTab = new TabPage();
+            itemTypeEquipmentTab = new TabPage();
+            itemTypeEquipmentTypeSetter = new ComboBox();
+            itemStats = new Panel();
+            itemStatsArmorSetter = new NumericUpDown();
+            itemStatsArmorLabel = new Label();
+            itemStatsSpiritLabel = new Label();
+            itemStatsIntelligenceLabel = new Label();
+            itemStatsStaminaLabel = new Label();
+            itemStatsStrengthLabel = new Label();
+            itemStatsAgilityLabel = new Label();
+            itemStatsSpiritSetter = new NumericUpDown();
+            itemStatsIntelligenceSetter = new NumericUpDown();
+            itemStatsStaminaSetter = new NumericUpDown();
+            itemStatsStrengthSetter = new NumericUpDown();
+            itemStatsAgilitySetter = new NumericUpDown();
+            itemTypeWeaponTab = new TabPage();
             itemQualitySelector = new ExtendedForm.ExtendedCheckedListBox();
             itemTypeSelector = new ExtendedForm.ExtendedCheckedListBox();
             descriptionTab = new TabPage();
@@ -70,7 +90,18 @@ namespace SPHMMaker
             ((System.ComponentModel.ISupportInitialize)goldCostCounter).BeginInit();
             itemToCreate.SuspendLayout();
             itemTypeTab.SuspendLayout();
-            itemTypeChangingTab.SuspendLayout();
+            itemTypeTabControl.SuspendLayout();
+            itemTypeNoneTab.SuspendLayout();
+            itemTypeBagTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)bagSizeSetter).BeginInit();
+            itemTypeEquipmentTab.SuspendLayout();
+            itemStats.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)itemStatsArmorSetter).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)itemStatsSpiritSetter).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)itemStatsIntelligenceSetter).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)itemStatsStaminaSetter).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)itemStatsStrengthSetter).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)itemStatsAgilitySetter).BeginInit();
             descriptionTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)itemMaxCountSetter).BeginInit();
             menuStrip1.SuspendLayout();
@@ -82,7 +113,6 @@ namespace SPHMMaker
             itemNameInput.Name = "itemNameInput";
             itemNameInput.Size = new Size(192, 23);
             itemNameInput.TabIndex = 0;
-            itemNameInput.TextChanged += textBox1_TextChanged;
             // 
             // items
             // 
@@ -145,6 +175,7 @@ namespace SPHMMaker
             OverrideItemButton.TabIndex = 10;
             OverrideItemButton.Text = "Override Item";
             OverrideItemButton.UseVisualStyleBackColor = true;
+            OverrideItemButton.Click += OverrideItemButton_Click;
             OverrideItemButton.MouseHover += OverrideItemButton_MouseHover;
             // 
             // EditItemButton
@@ -155,6 +186,7 @@ namespace SPHMMaker
             EditItemButton.TabIndex = 9;
             EditItemButton.Text = "Edit Item";
             EditItemButton.UseVisualStyleBackColor = true;
+            EditItemButton.Click += EditItemButton_Click;
             // 
             // itemCreatorModifier
             // 
@@ -213,7 +245,7 @@ namespace SPHMMaker
             // 
             // itemTypeTab
             // 
-            itemTypeTab.Controls.Add(itemTypeChangingTab);
+            itemTypeTab.Controls.Add(itemTypeTabControl);
             itemTypeTab.Controls.Add(itemQualitySelector);
             itemTypeTab.Controls.Add(itemTypeSelector);
             itemTypeTab.Location = new Point(4, 24);
@@ -224,45 +256,231 @@ namespace SPHMMaker
             itemTypeTab.Text = "Item Type";
             itemTypeTab.UseVisualStyleBackColor = true;
             // 
-            // itemTypeChangingTab
+            // itemTypeTabControl
             // 
-            itemTypeChangingTab.Appearance = TabAppearance.FlatButtons;
-            itemTypeChangingTab.Controls.Add(itemTypeNoneTab);
-            itemTypeChangingTab.Controls.Add(itemTypeBagTab);
-            itemTypeChangingTab.ItemSize = new Size(0, 1);
-            itemTypeChangingTab.Location = new Point(99, 6);
-            itemTypeChangingTab.Name = "itemTypeChangingTab";
-            itemTypeChangingTab.SelectedIndex = 0;
-            itemTypeChangingTab.Size = new Size(248, 271);
-            itemTypeChangingTab.SizeMode = TabSizeMode.Fixed;
-            itemTypeChangingTab.TabIndex = 2;
-            itemTypeChangingTab.TabStop = false;
+            itemTypeTabControl.Appearance = TabAppearance.FlatButtons;
+            itemTypeTabControl.Controls.Add(itemTypeNoneTab);
+            itemTypeTabControl.Controls.Add(itemTypeBagTab);
+            itemTypeTabControl.Controls.Add(itemTypeConsumableTab);
+            itemTypeTabControl.Controls.Add(itemTypeEquipmentTab);
+            itemTypeTabControl.Controls.Add(itemTypeWeaponTab);
+            itemTypeTabControl.ItemSize = new Size(30, 20);
+            itemTypeTabControl.Location = new Point(99, 6);
+            itemTypeTabControl.Name = "itemTypeTabControl";
+            itemTypeTabControl.SelectedIndex = 0;
+            itemTypeTabControl.Size = new Size(345, 305);
+            itemTypeTabControl.SizeMode = TabSizeMode.Fixed;
+            itemTypeTabControl.TabIndex = 2;
+            itemTypeTabControl.TabStop = false;
             // 
             // itemTypeNoneTab
             // 
-            itemTypeNoneTab.Location = new Point(4, 5);
+            itemTypeNoneTab.BackColor = Color.Transparent;
+            itemTypeNoneTab.Controls.Add(nonePageLabel);
+            itemTypeNoneTab.Location = new Point(4, 24);
             itemTypeNoneTab.Name = "itemTypeNoneTab";
             itemTypeNoneTab.Padding = new Padding(3);
-            itemTypeNoneTab.Size = new Size(240, 262);
+            itemTypeNoneTab.Size = new Size(337, 277);
             itemTypeNoneTab.TabIndex = 0;
             itemTypeNoneTab.Text = "tabPage1";
-            itemTypeNoneTab.UseVisualStyleBackColor = true;
+            // 
+            // nonePageLabel
+            // 
+            nonePageLabel.AutoSize = true;
+            nonePageLabel.Location = new Point(20, 20);
+            nonePageLabel.Name = "nonePageLabel";
+            nonePageLabel.Size = new Size(87, 15);
+            nonePageLabel.TabIndex = 0;
+            nonePageLabel.Text = "Nothing here :)";
             // 
             // itemTypeBagTab
             // 
-            itemTypeBagTab.Location = new Point(4, 5);
+            itemTypeBagTab.BackColor = Color.Transparent;
+            itemTypeBagTab.Controls.Add(bagSizeLabel);
+            itemTypeBagTab.Controls.Add(bagSizeSetter);
+            itemTypeBagTab.Location = new Point(4, 24);
             itemTypeBagTab.Name = "itemTypeBagTab";
             itemTypeBagTab.Padding = new Padding(3);
-            itemTypeBagTab.Size = new Size(240, 262);
+            itemTypeBagTab.Size = new Size(337, 277);
             itemTypeBagTab.TabIndex = 1;
             itemTypeBagTab.Text = "tabPage3";
-            itemTypeBagTab.UseVisualStyleBackColor = true;
+            // 
+            // bagSizeLabel
+            // 
+            bagSizeLabel.AutoSize = true;
+            bagSizeLabel.Location = new Point(19, 62);
+            bagSizeLabel.Name = "bagSizeLabel";
+            bagSizeLabel.Size = new Size(55, 15);
+            bagSizeLabel.TabIndex = 1;
+            bagSizeLabel.Text = "Bag size: ";
+            // 
+            // bagSizeSetter
+            // 
+            bagSizeSetter.Location = new Point(80, 60);
+            bagSizeSetter.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            bagSizeSetter.Name = "bagSizeSetter";
+            bagSizeSetter.Size = new Size(80, 23);
+            bagSizeSetter.TabIndex = 0;
+            bagSizeSetter.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // itemTypeConsumableTab
+            // 
+            itemTypeConsumableTab.BackColor = Color.Transparent;
+            itemTypeConsumableTab.Location = new Point(4, 24);
+            itemTypeConsumableTab.Name = "itemTypeConsumableTab";
+            itemTypeConsumableTab.Size = new Size(337, 277);
+            itemTypeConsumableTab.TabIndex = 2;
+            // 
+            // itemTypeEquipmentTab
+            // 
+            itemTypeEquipmentTab.BackColor = Color.Transparent;
+            itemTypeEquipmentTab.Controls.Add(itemTypeEquipmentTypeSetter);
+            itemTypeEquipmentTab.Controls.Add(itemStats);
+            itemTypeEquipmentTab.Location = new Point(4, 24);
+            itemTypeEquipmentTab.Name = "itemTypeEquipmentTab";
+            itemTypeEquipmentTab.Size = new Size(337, 277);
+            itemTypeEquipmentTab.TabIndex = 3;
+            itemTypeEquipmentTab.Text = "tabPage1";
+            // 
+            // itemTypeEquipmentTypeSetter
+            // 
+            itemTypeEquipmentTypeSetter.DropDownStyle = ComboBoxStyle.DropDownList;
+            itemTypeEquipmentTypeSetter.FormattingEnabled = true;
+            itemTypeEquipmentTypeSetter.Items.AddRange(new object[] { "Head", "Neck", "Shoulders", "Back", "Chest", "Wrist", "Hands", "Belt", "Legs", "Feet", "Finger", "Trinket" });
+            itemTypeEquipmentTypeSetter.Location = new Point(13, 186);
+            itemTypeEquipmentTypeSetter.Name = "itemTypeEquipmentTypeSetter";
+            itemTypeEquipmentTypeSetter.Size = new Size(118, 23);
+            itemTypeEquipmentTypeSetter.TabIndex = 3;
+            // 
+            // itemStats
+            // 
+            itemStats.Controls.Add(itemStatsArmorSetter);
+            itemStats.Controls.Add(itemStatsArmorLabel);
+            itemStats.Controls.Add(itemStatsSpiritLabel);
+            itemStats.Controls.Add(itemStatsIntelligenceLabel);
+            itemStats.Controls.Add(itemStatsStaminaLabel);
+            itemStats.Controls.Add(itemStatsStrengthLabel);
+            itemStats.Controls.Add(itemStatsAgilityLabel);
+            itemStats.Controls.Add(itemStatsSpiritSetter);
+            itemStats.Controls.Add(itemStatsIntelligenceSetter);
+            itemStats.Controls.Add(itemStatsStaminaSetter);
+            itemStats.Controls.Add(itemStatsStrengthSetter);
+            itemStats.Controls.Add(itemStatsAgilitySetter);
+            itemStats.Location = new Point(0, 0);
+            itemStats.Name = "itemStats";
+            itemStats.Size = new Size(161, 180);
+            itemStats.TabIndex = 2;
+            // 
+            // itemStatsArmorSetter
+            // 
+            itemStatsArmorSetter.Location = new Point(75, 153);
+            itemStatsArmorSetter.Name = "itemStatsArmorSetter";
+            itemStatsArmorSetter.Size = new Size(72, 23);
+            itemStatsArmorSetter.TabIndex = 5;
+            // 
+            // itemStatsArmorLabel
+            // 
+            itemStatsArmorLabel.AutoSize = true;
+            itemStatsArmorLabel.Location = new Point(0, 155);
+            itemStatsArmorLabel.Name = "itemStatsArmorLabel";
+            itemStatsArmorLabel.Size = new Size(44, 15);
+            itemStatsArmorLabel.TabIndex = 4;
+            itemStatsArmorLabel.Text = "Armor:";
+            // 
+            // itemStatsSpiritLabel
+            // 
+            itemStatsSpiritLabel.AutoSize = true;
+            itemStatsSpiritLabel.Location = new Point(0, 126);
+            itemStatsSpiritLabel.Name = "itemStatsSpiritLabel";
+            itemStatsSpiritLabel.Size = new Size(37, 15);
+            itemStatsSpiritLabel.TabIndex = 3;
+            itemStatsSpiritLabel.Text = "Spirit:";
+            // 
+            // itemStatsIntelligenceLabel
+            // 
+            itemStatsIntelligenceLabel.AutoSize = true;
+            itemStatsIntelligenceLabel.Location = new Point(0, 97);
+            itemStatsIntelligenceLabel.Name = "itemStatsIntelligenceLabel";
+            itemStatsIntelligenceLabel.Size = new Size(71, 15);
+            itemStatsIntelligenceLabel.TabIndex = 3;
+            itemStatsIntelligenceLabel.Text = "Intelligence:";
+            // 
+            // itemStatsStaminaLabel
+            // 
+            itemStatsStaminaLabel.AutoSize = true;
+            itemStatsStaminaLabel.Location = new Point(0, 68);
+            itemStatsStaminaLabel.Name = "itemStatsStaminaLabel";
+            itemStatsStaminaLabel.Size = new Size(53, 15);
+            itemStatsStaminaLabel.TabIndex = 3;
+            itemStatsStaminaLabel.Text = "Stamina:";
+            // 
+            // itemStatsStrengthLabel
+            // 
+            itemStatsStrengthLabel.AutoSize = true;
+            itemStatsStrengthLabel.Location = new Point(0, 39);
+            itemStatsStrengthLabel.Name = "itemStatsStrengthLabel";
+            itemStatsStrengthLabel.Size = new Size(52, 15);
+            itemStatsStrengthLabel.TabIndex = 3;
+            itemStatsStrengthLabel.Text = "Strength";
+            // 
+            // itemStatsAgilityLabel
+            // 
+            itemStatsAgilityLabel.AutoSize = true;
+            itemStatsAgilityLabel.Location = new Point(0, 10);
+            itemStatsAgilityLabel.Name = "itemStatsAgilityLabel";
+            itemStatsAgilityLabel.Size = new Size(44, 15);
+            itemStatsAgilityLabel.TabIndex = 3;
+            itemStatsAgilityLabel.Text = "Agility:";
+            // 
+            // itemStatsSpiritSetter
+            // 
+            itemStatsSpiritSetter.Location = new Point(75, 124);
+            itemStatsSpiritSetter.Name = "itemStatsSpiritSetter";
+            itemStatsSpiritSetter.Size = new Size(72, 23);
+            itemStatsSpiritSetter.TabIndex = 2;
+            // 
+            // itemStatsIntelligenceSetter
+            // 
+            itemStatsIntelligenceSetter.Location = new Point(75, 95);
+            itemStatsIntelligenceSetter.Name = "itemStatsIntelligenceSetter";
+            itemStatsIntelligenceSetter.Size = new Size(72, 23);
+            itemStatsIntelligenceSetter.TabIndex = 2;
+            // 
+            // itemStatsStaminaSetter
+            // 
+            itemStatsStaminaSetter.Location = new Point(75, 66);
+            itemStatsStaminaSetter.Name = "itemStatsStaminaSetter";
+            itemStatsStaminaSetter.Size = new Size(72, 23);
+            itemStatsStaminaSetter.TabIndex = 2;
+            // 
+            // itemStatsStrengthSetter
+            // 
+            itemStatsStrengthSetter.Location = new Point(75, 37);
+            itemStatsStrengthSetter.Name = "itemStatsStrengthSetter";
+            itemStatsStrengthSetter.Size = new Size(72, 23);
+            itemStatsStrengthSetter.TabIndex = 1;
+            // 
+            // itemStatsAgilitySetter
+            // 
+            itemStatsAgilitySetter.Location = new Point(75, 8);
+            itemStatsAgilitySetter.Name = "itemStatsAgilitySetter";
+            itemStatsAgilitySetter.Size = new Size(72, 23);
+            itemStatsAgilitySetter.TabIndex = 0;
+            // 
+            // itemTypeWeaponTab
+            // 
+            itemTypeWeaponTab.BackColor = Color.Transparent;
+            itemTypeWeaponTab.Location = new Point(4, 24);
+            itemTypeWeaponTab.Name = "itemTypeWeaponTab";
+            itemTypeWeaponTab.Size = new Size(337, 277);
+            itemTypeWeaponTab.TabIndex = 4;
+            itemTypeWeaponTab.Text = "tabPage1";
             // 
             // itemQualitySelector
             // 
             itemQualitySelector.CheckOnClick = true;
             itemQualitySelector.FormattingEnabled = true;
-            itemQualitySelector.Items.AddRange(new object[] { "Trash", "Common", "Uncommon", "Rare", "Epic", "Legendary" });
+            itemQualitySelector.Items.AddRange(new object[] { "Poor", "Common", "Uncommon", "Rare", "Epic", "Legendary" });
             itemQualitySelector.Location = new Point(0, 91);
             itemQualitySelector.Name = "itemQualitySelector";
             itemQualitySelector.Size = new Size(91, 112);
@@ -273,13 +491,13 @@ namespace SPHMMaker
             itemTypeSelector.CheckOnClick = true;
             itemTypeSelector.FormattingEnabled = true;
             itemTypeSelector.ImeMode = ImeMode.Off;
-            itemTypeSelector.Items.AddRange(new object[] { "NotSet", "None", "Bag", "Consumable", "Equipment", "Weapon" });
+            itemTypeSelector.Items.AddRange(new object[] { "None", "Bag", "Consumable", "Equipment", "Weapon" });
             itemTypeSelector.Location = new Point(0, 0);
             itemTypeSelector.Name = "itemTypeSelector";
             itemTypeSelector.Size = new Size(91, 94);
             itemTypeSelector.TabIndex = 0;
             itemTypeSelector.UseTabStops = false;
-            itemTypeSelector.ItemCheck += itemTypeSelector_ItemChecked;
+            itemTypeSelector.ItemCheck += itemTypeSelector_ItemCheck;
             // 
             // descriptionTab
             // 
@@ -287,7 +505,7 @@ namespace SPHMMaker
             descriptionTab.Location = new Point(4, 24);
             descriptionTab.Name = "descriptionTab";
             descriptionTab.Padding = new Padding(3);
-            descriptionTab.Size = new Size(356, 286);
+            descriptionTab.Size = new Size(450, 314);
             descriptionTab.TabIndex = 1;
             descriptionTab.Text = "Description";
             descriptionTab.UseVisualStyleBackColor = true;
@@ -303,11 +521,11 @@ namespace SPHMMaker
             // itemMaxCountSetter
             // 
             itemMaxCountSetter.Location = new Point(513, 9);
+            itemMaxCountSetter.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             itemMaxCountSetter.Name = "itemMaxCountSetter";
             itemMaxCountSetter.Size = new Size(41, 23);
             itemMaxCountSetter.TabIndex = 5;
             itemMaxCountSetter.Value = new decimal(new int[] { 1, 0, 0, 0 });
-            itemMaxCountSetter.ValueChanged += itemMaxCountSetter_ValueChanged;
             // 
             // itemCountLabel
             // 
@@ -367,19 +585,22 @@ namespace SPHMMaker
             // saveDatapackToolStripMenuItem
             // 
             saveDatapackToolStripMenuItem.Name = "saveDatapackToolStripMenuItem";
-            saveDatapackToolStripMenuItem.Size = new Size(152, 22);
+            saveDatapackToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.S;
+            saveDatapackToolStripMenuItem.Size = new Size(190, 22);
             saveDatapackToolStripMenuItem.Text = "Save Datapack";
+            saveDatapackToolStripMenuItem.Click += saveDatapackToolStripMenuItem_Click;
             // 
             // loadDatapackToolStripMenuItem
             // 
             loadDatapackToolStripMenuItem.Name = "loadDatapackToolStripMenuItem";
-            loadDatapackToolStripMenuItem.Size = new Size(152, 22);
+            loadDatapackToolStripMenuItem.Size = new Size(190, 22);
             loadDatapackToolStripMenuItem.Text = "Load Datapack";
+            loadDatapackToolStripMenuItem.Click += loadDatapackToolStripMenuItem_Click;
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(152, 22);
+            exitToolStripMenuItem.Size = new Size(190, 22);
             exitToolStripMenuItem.Text = "Exit";
             // 
             // Form1
@@ -401,7 +622,21 @@ namespace SPHMMaker
             ((System.ComponentModel.ISupportInitialize)goldCostCounter).EndInit();
             itemToCreate.ResumeLayout(false);
             itemTypeTab.ResumeLayout(false);
-            itemTypeChangingTab.ResumeLayout(false);
+            itemTypeTabControl.ResumeLayout(false);
+            itemTypeNoneTab.ResumeLayout(false);
+            itemTypeNoneTab.PerformLayout();
+            itemTypeBagTab.ResumeLayout(false);
+            itemTypeBagTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)bagSizeSetter).EndInit();
+            itemTypeEquipmentTab.ResumeLayout(false);
+            itemStats.ResumeLayout(false);
+            itemStats.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)itemStatsArmorSetter).EndInit();
+            ((System.ComponentModel.ISupportInitialize)itemStatsSpiritSetter).EndInit();
+            ((System.ComponentModel.ISupportInitialize)itemStatsIntelligenceSetter).EndInit();
+            ((System.ComponentModel.ISupportInitialize)itemStatsStaminaSetter).EndInit();
+            ((System.ComponentModel.ISupportInitialize)itemStatsStrengthSetter).EndInit();
+            ((System.ComponentModel.ISupportInitialize)itemStatsAgilitySetter).EndInit();
             descriptionTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)itemMaxCountSetter).EndInit();
             menuStrip1.ResumeLayout(false);
@@ -441,8 +676,28 @@ namespace SPHMMaker
         private Button OverrideItemButton;
         private ToolTip toolTip1;
         private ExtendedForm.ExtendedCheckedListBox itemQualitySelector;
-        private TabControl itemTypeChangingTab;
+        private TabControl itemTypeTabControl;
         private TabPage itemTypeBagTab;
         public TabPage itemTypeNoneTab;
+        private Label nonePageLabel;
+        private NumericUpDown bagSizeSetter;
+        private Label bagSizeLabel;
+        private TabPage itemTypeConsumableTab;
+        private TabPage itemTypeEquipmentTab;
+        private TabPage itemTypeWeaponTab;
+        private NumericUpDown itemStatsAgilitySetter;
+        private Panel itemStats;
+        private NumericUpDown itemStatsStrengthSetter;
+        private Label itemStatsSpiritLabel;
+        private Label itemStatsIntelligenceLabel;
+        private Label itemStatsStaminaLabel;
+        private Label itemStatsStrengthLabel;
+        private Label itemStatsAgilityLabel;
+        private NumericUpDown itemStatsSpiritSetter;
+        private NumericUpDown itemStatsIntelligenceSetter;
+        private NumericUpDown itemStatsStaminaSetter;
+        private ComboBox itemTypeEquipmentTypeSetter;
+        private NumericUpDown itemStatsArmorSetter;
+        private Label itemStatsArmorLabel;
     }
 }

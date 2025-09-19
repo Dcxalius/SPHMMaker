@@ -13,14 +13,14 @@ namespace SPHMMaker.ExtendedForm
 {
     public partial class ExtendedCheckedListBox : CheckedListBox
     {
-        public int GetSingleCheckedIndex
+        public int? GetSingleCheckedIndex
         {
             get
             {
-                if (CheckedIndices.Count == 0 || CheckedIndices.Count >= 2)
-                {
-                    throw new Exception();
-                }
+                if (CheckedIndices.Count == 0) return null;
+                    
+                if (CheckedIndices.Count >= 2) throw new Exception();
+
                 return CheckedIndices[0];
             }
         }
@@ -39,6 +39,7 @@ namespace SPHMMaker.ExtendedForm
         {
             if (Items.Count == 0) return;
             SetItemChecked(0, true);
+
         }
 
         void ExlusiveItemCheck(object sender, ItemCheckEventArgs e)

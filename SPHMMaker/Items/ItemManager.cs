@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Data;
 using Newtonsoft.Json;
+using System.Diagnostics.Eventing.Reader;
 
 namespace SPHMMaker.Items
 {
@@ -15,7 +16,9 @@ namespace SPHMMaker.Items
     {
         static JsonSerializerSettings serializerSettings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto, ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor };
         public static ItemData GetItem(string aName) => items.First(x => x.Name == aName);
+        public static bool FreeIdCheck(int aId) => items.Where(x => x.ID == aId).Count() == 0;
         public static ItemData GetItemById(int id) => items[id]; //TODO: Make sure that items can only be changed in the list and in the Listbox at the same time.
+        //TODO: Also make up ur mind, is id always going to be index?
         public static ReadOnlyCollection<ItemData> Items => items.AsReadOnly();
         static List<ItemData> items;
         static ListBox itemListBox;
@@ -23,6 +26,15 @@ namespace SPHMMaker.Items
         public static void CreateItem(ItemData aItem)
         {
             items.Add(aItem);
+            itemListBox.DataSource = null;
+            itemListBox.DataSource = items;
+        }
+
+        public static void OverrideItem(int aIdToOverride, ItemData aItem)
+        {
+            items[aIdToOverride] = aItem;
+            //itemListBox.DataSource = null;
+            //itemListBox.DataSource = items;
         }
 
         public static void SetListBox(ListBox aItemListBox)
@@ -34,34 +46,39 @@ namespace SPHMMaker.Items
         static ItemManager()
         {
             CreateDir();
-            CreateList();
+            //CreateList();
             //listBox = Form1.Instance.Controls.Find("items", true).First() as ListBox;
         }
 
         [MemberNotNull("items")]
-        static void CreateList()
+        static void CreateList(string aPath)
         {
             items = new List<ItemData>();
-            string[] paths = Directory.GetDirectories("Items");
+            string[] subTypes = Directory.GetDirectories(aPath);
+            //Directory.GetDirectoryRoot(aPath);
 
-            if (paths.Length == 0) return;
+            if (subTypes.Length == 0) throw new DirectoryNotFoundException();
 
-            foreach (string path in paths)
+            foreach (string path in subTypes)
             {
-                string[] subtypes = Directory.GetFiles(path);
-                foreach (string subtype in subtypes)
+                string[] items = Directory.GetFiles(path);
+                if (items.Length == 0) throw new FileNotFoundException();
+
+                foreach (string item in items)
                 {
-                    ConvertToItemDataAndAddToList(subtype);
+                    ConvertToItemDataAndAddToList(item);
                 }
             }
+
+            items.Sort((x, y) => x.ID - y.ID);
         }
 
         static void ConvertToItemDataAndAddToList(string filePath)
         {
             ItemData? i;
             string rawData = File.ReadAllText(filePath);
-
-            switch (filePath.Split("\\")[1])
+            string[] split = filePath.Split("\\");
+            switch (split[split.Length - 2])
             {
                 case "Consumable":
                     i = JsonConvert.DeserializeObject<ConsumableData>(rawData, serializerSettings);
@@ -79,9 +96,9 @@ namespace SPHMMaker.Items
                     i = JsonConvert.DeserializeObject<ItemData>(rawData, serializerSettings);
                     break;
                 default:
-                    throw new NotImplementedException();
+                    throw new WrongDirectoryException();
             }
-            if (i == null) return;
+            if (i == null) throw new FileLoadException();
             items.Add(i);
         }
 
@@ -92,5 +109,38 @@ namespace SPHMMaker.Items
             Directory.CreateDirectory("Items");
 
         }
+
+        public static bool Save(string aFilePath)
+        {
+            return false;
+        }
+
+        public static bool Load(string aFilePath)
+        {
+            try
+            {
+                CreateList(aFilePath);
+            }
+            catch (Exception e)
+            {
+                if (e is DirectoryNotFoundException) MessageBox.Show("No subtypes folders found");
+                else if (e is FileNotFoundException) MessageBox.Show("Empty folder found");
+                else if (e is WrongDirectoryException) MessageBox.Show("Weird Directory Found");
+                else throw;
+            }
+
+            itemListBox.DataSource = items;
+            return true;
+        }
+    }
+
+
+    [Serializable]
+    public class WrongDirectoryException : Exception
+    {
+        public WrongDirectoryException() { }
+        public WrongDirectoryException(string message) : base(message) { }
+        public WrongDirectoryException(string message, Exception inner) : base(message, inner) { }
+        protected WrongDirectoryException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
 }

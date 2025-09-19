@@ -13,7 +13,7 @@ namespace SPHMMaker.Items
     {
         public enum ItemQuality
         {
-            Trash,
+            Poor,
             Common,
             Uncommon,
             Rare,
@@ -22,7 +22,6 @@ namespace SPHMMaker.Items
         }
         public enum ItemType
         {
-            NotSet,
             None,
             Bag,
             Consumable,
@@ -31,7 +30,12 @@ namespace SPHMMaker.Items
         }
 
 
-        public int ID => id;
+        public int ID
+        {
+            get => id;
+            set => id = value;
+        }
+
         int id;
         public string Name => name;
         string name;
@@ -64,12 +68,6 @@ namespace SPHMMaker.Items
             this.itemType = itemType;
             this.quality = quality;
             this.cost = cost;
-            Assert();
-        }
-
-        void Assert()
-        {
-            Debug.Assert(name != null && description != null && maxStack > 0 && itemType != ItemType.NotSet, "Itemdata not properly set.");
         }
 
         public int CompareTo(ItemData? other)
