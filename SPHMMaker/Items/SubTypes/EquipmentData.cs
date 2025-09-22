@@ -24,15 +24,15 @@ namespace SPHMMaker.Items
             Feet,
             Finger,
             Trinket,
-            OneHander,
-            MainHander,
-            OffHander,
-            TwoHander,
+            OneHanded,
+            MainHanded,
+            OffHanded,
+            TwoHanded,
             Ranged,
             Count
         }
 
-        public enum GearType
+        public enum MaterialType
         {
             Cloth,
             Leather,
@@ -56,10 +56,15 @@ namespace SPHMMaker.Items
         //    }
         //}
 
+        [JsonIgnore]
         public int Agility => baseStats[0];
+        [JsonIgnore]
         public int Strength => baseStats[1];
+        [JsonIgnore]
         public int Stamina => baseStats[2];
+        [JsonIgnore]
         public int Intelligence => baseStats[3];
+        [JsonIgnore]
         public int Spirit => baseStats[4];
 
         public int[] BaseStats => baseStats;
@@ -68,13 +73,13 @@ namespace SPHMMaker.Items
         public int Armor => armor;
         int armor;
 
-        public GearType Material => material;
-        GearType material;
+        public MaterialType Material => material;
+        MaterialType material;
 
         public EQType Slot { get => slot; } //TODO: Find better name
         EQType slot;
 
-        public EquipmentData(int id, string gfxName, string name, string description, EQType slot, ItemType itemType, int armor, int[] baseStats, ItemQuality quality, int cost, GearType material) : base(id, gfxName, name, description, 1, itemType, quality, cost)
+        public EquipmentData(int id, string gfxName, string name, string description, EQType slot, ItemType itemType, int armor, int[] baseStats, ItemQuality quality, int cost, MaterialType material) : base(id, gfxName, name, description, 1, itemType, quality, cost)
         {
             this.slot = slot;
             //this.baseStats = new EquipmentStats(baseStats);
@@ -85,6 +90,6 @@ namespace SPHMMaker.Items
         }
 
         [JsonConstructor]
-        public EquipmentData(int id, string gfxName, string name, string description, EQType slot, int armor, int[] baseStats, ItemQuality quality, int cost, GearType material) : this(id, gfxName, name, description, slot, ItemType.Equipment, armor, baseStats, quality, cost, material) { }
+        public EquipmentData(int id, string gfxName, string name, string description, EQType slot, int armor, int[] baseStats, ItemQuality quality, int cost, MaterialType material) : this(id, gfxName, name, description, slot, ItemType.Equipment, armor, baseStats, quality, cost, material) { }
     }
 }

@@ -12,10 +12,10 @@ namespace SPHMMaker.Items
     {
         public enum HandRequirement
         {
-            OneHand,
-            TwoHand,
-            MainHand,
-            OffHand,
+            OneHanded,
+            MainHanded,
+            OffHanded,
+            TwoHanded,
             Ranged
         }
 
@@ -43,15 +43,13 @@ namespace SPHMMaker.Items
         public Attack GetAttack => attack;
         Attack attack;
 
-        int minAttackDamage;
-        int maxAttackDamage;
-        float attackSpeed;
-
         public Weapon WeaponType => weaponType;
         Weapon weaponType;
 
+        public HandRequirement Hand => (HandRequirement)(Slot - EQType.OneHanded);
 
-        public WeaponData(int id, string gfxName, string name, string description, EQType slot, int armor, int[] baseStats, int minAttackDamage, int maxAttackDamage, float attackSpeed, ItemQuality quality, Weapon weaponType, int cost) : base(id, gfxName, name, description, slot, ItemType.Weapon, armor, baseStats, quality, cost, GearType.None)
+
+        public WeaponData(int id, string gfxName, string name, string description, EQType slot, int armor, int[] baseStats, int minAttackDamage, int maxAttackDamage, float attackSpeed, ItemQuality quality, Weapon weaponType, int cost) : base(id, gfxName, name, description, slot, ItemType.Weapon, armor, baseStats, quality, cost, MaterialType.None)
         {
             attack = new Attack(minAttackDamage, maxAttackDamage, attackSpeed);
             this.weaponType = weaponType;
@@ -60,15 +58,15 @@ namespace SPHMMaker.Items
         
         public struct Attack
         {
-            int minAttackDamage;
-            int maxAttackDamage;
-            float attackspeed;
+            public int MinAttackDamage;
+            public int MaxAttackDamage;
+            public float Attackspeed;
 
             public Attack(int aMin, int aMax, float aAttackSpeed)
             {
-                minAttackDamage = aMin;
-                maxAttackDamage = aMax;
-                attackspeed = aAttackSpeed;
+                MinAttackDamage = aMin;
+                MaxAttackDamage = aMax;
+                Attackspeed = aAttackSpeed;
             }
         }
     }

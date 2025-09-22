@@ -39,7 +39,7 @@ namespace SPHMMaker
             ItemPageTab = new TabPage();
             OverrideItemButton = new Button();
             EditItemButton = new Button();
-            itemCreatorModifier = new TabControl();
+            itemWindowTabControl = new TabControl();
             createItemPage = new TabPage();
             goldCostCounter = new NumericUpDown();
             goldCostLabel = new Label();
@@ -52,7 +52,24 @@ namespace SPHMMaker
             bagSizeLabel = new Label();
             bagSizeSetter = new NumericUpDown();
             itemTypeConsumableTab = new TabPage();
+            itemConsumableTabController = new TabControl();
+            itemConsumablePotionPage = new TabPage();
+            itemPotionValueFlowLayout = new FlowLayoutPanel();
+            itemPotionHealthPanel = new Panel();
+            itemPotionHealthLabel = new Label();
+            itemPotionHealthSetter = new NumericUpDown();
+            itemPotionManaPanel = new Panel();
+            label4 = new Label();
+            numericUpDown2 = new NumericUpDown();
+            itemPotionEnergyPanel = new Panel();
+            label3 = new Label();
+            numericUpDown1 = new NumericUpDown();
+            itemPotionTypeSetter = new CheckedListBox();
+            itemConsumableFoodPage = new TabPage();
             itemTypeEquipmentTab = new TabPage();
+            itemEquipmentMaterialSetter = new ComboBox();
+            itemEquipmentMaterialLabel = new Label();
+            itemEquipmentTypeLabel = new Label();
             itemTypeEquipmentTypeSetter = new ComboBox();
             itemStats = new Panel();
             itemStatsArmorSetter = new NumericUpDown();
@@ -68,6 +85,18 @@ namespace SPHMMaker
             itemStatsStrengthSetter = new NumericUpDown();
             itemStatsAgilitySetter = new NumericUpDown();
             itemTypeWeaponTab = new TabPage();
+            itemDummyDpsChangingLabel = new Label();
+            itemDummyDpsLabel = new Label();
+            itemAttackSpeedLabel = new Label();
+            itemMaximumDamageLabel = new Label();
+            itemMinimumDamageLabel = new Label();
+            itemAttackSpeedSetter = new NumericUpDown();
+            itemMaximumDamageSetter = new NumericUpDown();
+            itemMinimumDamageSetter = new NumericUpDown();
+            itemWeaponEQTypeLabel = new Label();
+            itemWeaponEQTypeSetter = new ComboBox();
+            itemWeaponTypeSetter = new ComboBox();
+            itemWeaponTypeLabel = new Label();
             itemQualitySelector = new ExtendedForm.ExtendedCheckedListBox();
             itemTypeSelector = new ExtendedForm.ExtendedCheckedListBox();
             descriptionTab = new TabPage();
@@ -75,7 +104,11 @@ namespace SPHMMaker
             itemMaxCountSetter = new NumericUpDown();
             itemCountLabel = new Label();
             createItemButton = new Button();
-            modItemPage = new TabPage();
+            itemEffectTab = new TabPage();
+            label2 = new Label();
+            label1 = new Label();
+            listBox2 = new ListBox();
+            listBox1 = new ListBox();
             otherPage = new TabPage();
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
@@ -85,7 +118,7 @@ namespace SPHMMaker
             toolTip1 = new ToolTip(components);
             MainTab.SuspendLayout();
             ItemPageTab.SuspendLayout();
-            itemCreatorModifier.SuspendLayout();
+            itemWindowTabControl.SuspendLayout();
             createItemPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)goldCostCounter).BeginInit();
             itemToCreate.SuspendLayout();
@@ -94,6 +127,16 @@ namespace SPHMMaker
             itemTypeNoneTab.SuspendLayout();
             itemTypeBagTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)bagSizeSetter).BeginInit();
+            itemTypeConsumableTab.SuspendLayout();
+            itemConsumableTabController.SuspendLayout();
+            itemConsumablePotionPage.SuspendLayout();
+            itemPotionValueFlowLayout.SuspendLayout();
+            itemPotionHealthPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)itemPotionHealthSetter).BeginInit();
+            itemPotionManaPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
+            itemPotionEnergyPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             itemTypeEquipmentTab.SuspendLayout();
             itemStats.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)itemStatsArmorSetter).BeginInit();
@@ -102,8 +145,13 @@ namespace SPHMMaker
             ((System.ComponentModel.ISupportInitialize)itemStatsStaminaSetter).BeginInit();
             ((System.ComponentModel.ISupportInitialize)itemStatsStrengthSetter).BeginInit();
             ((System.ComponentModel.ISupportInitialize)itemStatsAgilitySetter).BeginInit();
+            itemTypeWeaponTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)itemAttackSpeedSetter).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)itemMaximumDamageSetter).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)itemMinimumDamageSetter).BeginInit();
             descriptionTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)itemMaxCountSetter).BeginInit();
+            itemEffectTab.SuspendLayout();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -156,7 +204,7 @@ namespace SPHMMaker
             // 
             ItemPageTab.Controls.Add(OverrideItemButton);
             ItemPageTab.Controls.Add(EditItemButton);
-            ItemPageTab.Controls.Add(itemCreatorModifier);
+            ItemPageTab.Controls.Add(itemWindowTabControl);
             ItemPageTab.Controls.Add(itemSelectBoxLabel);
             ItemPageTab.Controls.Add(items);
             ItemPageTab.Location = new Point(4, 24);
@@ -188,15 +236,15 @@ namespace SPHMMaker
             EditItemButton.UseVisualStyleBackColor = true;
             EditItemButton.Click += EditItemButton_Click;
             // 
-            // itemCreatorModifier
+            // itemWindowTabControl
             // 
-            itemCreatorModifier.Controls.Add(createItemPage);
-            itemCreatorModifier.Controls.Add(modItemPage);
-            itemCreatorModifier.Location = new Point(6, 6);
-            itemCreatorModifier.Name = "itemCreatorModifier";
-            itemCreatorModifier.SelectedIndex = 0;
-            itemCreatorModifier.Size = new Size(570, 416);
-            itemCreatorModifier.TabIndex = 4;
+            itemWindowTabControl.Controls.Add(createItemPage);
+            itemWindowTabControl.Controls.Add(itemEffectTab);
+            itemWindowTabControl.Location = new Point(6, 6);
+            itemWindowTabControl.Name = "itemWindowTabControl";
+            itemWindowTabControl.SelectedIndex = 0;
+            itemWindowTabControl.Size = new Size(570, 416);
+            itemWindowTabControl.TabIndex = 4;
             // 
             // createItemPage
             // 
@@ -218,16 +266,16 @@ namespace SPHMMaker
             // 
             // goldCostCounter
             // 
-            goldCostCounter.Location = new Point(513, 38);
+            goldCostCounter.Location = new Point(458, 9);
             goldCostCounter.Name = "goldCostCounter";
-            goldCostCounter.Size = new Size(41, 23);
+            goldCostCounter.Size = new Size(65, 23);
             goldCostCounter.TabIndex = 8;
             goldCostCounter.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // goldCostLabel
             // 
             goldCostLabel.AutoSize = true;
-            goldCostLabel.Location = new Point(455, 40);
+            goldCostLabel.Location = new Point(400, 11);
             goldCostLabel.Name = "goldCostLabel";
             goldCostLabel.Size = new Size(60, 15);
             goldCostLabel.TabIndex = 7;
@@ -326,14 +374,165 @@ namespace SPHMMaker
             // itemTypeConsumableTab
             // 
             itemTypeConsumableTab.BackColor = Color.Transparent;
+            itemTypeConsumableTab.Controls.Add(itemConsumableTabController);
             itemTypeConsumableTab.Location = new Point(4, 24);
             itemTypeConsumableTab.Name = "itemTypeConsumableTab";
             itemTypeConsumableTab.Size = new Size(337, 277);
             itemTypeConsumableTab.TabIndex = 2;
             // 
+            // itemConsumableTabController
+            // 
+            itemConsumableTabController.Controls.Add(itemConsumablePotionPage);
+            itemConsumableTabController.Controls.Add(itemConsumableFoodPage);
+            itemConsumableTabController.Dock = DockStyle.Fill;
+            itemConsumableTabController.Location = new Point(0, 0);
+            itemConsumableTabController.Name = "itemConsumableTabController";
+            itemConsumableTabController.SelectedIndex = 0;
+            itemConsumableTabController.Size = new Size(337, 277);
+            itemConsumableTabController.TabIndex = 2;
+            // 
+            // itemConsumablePotionPage
+            // 
+            itemConsumablePotionPage.Controls.Add(itemPotionValueFlowLayout);
+            itemConsumablePotionPage.Controls.Add(itemPotionTypeSetter);
+            itemConsumablePotionPage.Location = new Point(4, 24);
+            itemConsumablePotionPage.Name = "itemConsumablePotionPage";
+            itemConsumablePotionPage.Padding = new Padding(3);
+            itemConsumablePotionPage.Size = new Size(329, 249);
+            itemConsumablePotionPage.TabIndex = 0;
+            itemConsumablePotionPage.Text = "Potion";
+            itemConsumablePotionPage.UseVisualStyleBackColor = true;
+            // 
+            // itemPotionValueFlowLayout
+            // 
+            itemPotionValueFlowLayout.Controls.Add(itemPotionHealthPanel);
+            itemPotionValueFlowLayout.Controls.Add(itemPotionManaPanel);
+            itemPotionValueFlowLayout.Controls.Add(itemPotionEnergyPanel);
+            itemPotionValueFlowLayout.Location = new Point(86, 6);
+            itemPotionValueFlowLayout.Name = "itemPotionValueFlowLayout";
+            itemPotionValueFlowLayout.Size = new Size(125, 156);
+            itemPotionValueFlowLayout.TabIndex = 2;
+            // 
+            // itemPotionHealthPanel
+            // 
+            itemPotionHealthPanel.AutoSize = true;
+            itemPotionHealthPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            itemPotionHealthPanel.Controls.Add(itemPotionHealthLabel);
+            itemPotionHealthPanel.Controls.Add(itemPotionHealthSetter);
+            itemPotionHealthPanel.Location = new Point(3, 3);
+            itemPotionHealthPanel.Name = "itemPotionHealthPanel";
+            itemPotionHealthPanel.Size = new Size(122, 29);
+            itemPotionHealthPanel.TabIndex = 1;
+            itemPotionHealthPanel.Visible = false;
+            // 
+            // itemPotionHealthLabel
+            // 
+            itemPotionHealthLabel.AutoSize = true;
+            itemPotionHealthLabel.Location = new Point(3, 5);
+            itemPotionHealthLabel.Name = "itemPotionHealthLabel";
+            itemPotionHealthLabel.Size = new Size(45, 15);
+            itemPotionHealthLabel.TabIndex = 1;
+            itemPotionHealthLabel.Text = "Health:";
+            // 
+            // itemPotionHealthSetter
+            // 
+            itemPotionHealthSetter.Location = new Point(53, 3);
+            itemPotionHealthSetter.Maximum = new decimal(new int[] { 1410065407, 2, 0, 0 });
+            itemPotionHealthSetter.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            itemPotionHealthSetter.Name = "itemPotionHealthSetter";
+            itemPotionHealthSetter.Size = new Size(66, 23);
+            itemPotionHealthSetter.TabIndex = 0;
+            itemPotionHealthSetter.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // itemPotionManaPanel
+            // 
+            itemPotionManaPanel.AutoSize = true;
+            itemPotionManaPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            itemPotionManaPanel.Controls.Add(label4);
+            itemPotionManaPanel.Controls.Add(numericUpDown2);
+            itemPotionManaPanel.Location = new Point(3, 38);
+            itemPotionManaPanel.Name = "itemPotionManaPanel";
+            itemPotionManaPanel.Size = new Size(122, 29);
+            itemPotionManaPanel.TabIndex = 2;
+            itemPotionManaPanel.Visible = false;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(3, 5);
+            label4.Name = "label4";
+            label4.Size = new Size(40, 15);
+            label4.TabIndex = 1;
+            label4.Text = "Mana:";
+            // 
+            // numericUpDown2
+            // 
+            numericUpDown2.Location = new Point(53, 3);
+            numericUpDown2.Maximum = new decimal(new int[] { 1410065407, 2, 0, 0 });
+            numericUpDown2.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown2.Name = "numericUpDown2";
+            numericUpDown2.Size = new Size(66, 23);
+            numericUpDown2.TabIndex = 0;
+            numericUpDown2.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // itemPotionEnergyPanel
+            // 
+            itemPotionEnergyPanel.AutoSize = true;
+            itemPotionEnergyPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            itemPotionEnergyPanel.Controls.Add(label3);
+            itemPotionEnergyPanel.Controls.Add(numericUpDown1);
+            itemPotionEnergyPanel.Location = new Point(3, 73);
+            itemPotionEnergyPanel.Name = "itemPotionEnergyPanel";
+            itemPotionEnergyPanel.Size = new Size(122, 29);
+            itemPotionEnergyPanel.TabIndex = 2;
+            itemPotionEnergyPanel.Visible = false;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(3, 5);
+            label3.Name = "label3";
+            label3.Size = new Size(46, 15);
+            label3.TabIndex = 1;
+            label3.Text = "Energy:";
+            // 
+            // numericUpDown1
+            // 
+            numericUpDown1.Location = new Point(53, 3);
+            numericUpDown1.Maximum = new decimal(new int[] { 1410065407, 2, 0, 0 });
+            numericUpDown1.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown1.Name = "numericUpDown1";
+            numericUpDown1.Size = new Size(66, 23);
+            numericUpDown1.TabIndex = 0;
+            numericUpDown1.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // itemPotionTypeSetter
+            // 
+            itemPotionTypeSetter.CheckOnClick = true;
+            itemPotionTypeSetter.FormattingEnabled = true;
+            itemPotionTypeSetter.Items.AddRange(new object[] { "Health", "Mana", "Energy" });
+            itemPotionTypeSetter.Location = new Point(3, 3);
+            itemPotionTypeSetter.Name = "itemPotionTypeSetter";
+            itemPotionTypeSetter.Size = new Size(77, 94);
+            itemPotionTypeSetter.TabIndex = 0;
+            itemPotionTypeSetter.SelectedIndexChanged += itemPotionTypeSetter_SelectedIndexChanged;
+            // 
+            // itemConsumableFoodPage
+            // 
+            itemConsumableFoodPage.Location = new Point(4, 24);
+            itemConsumableFoodPage.Name = "itemConsumableFoodPage";
+            itemConsumableFoodPage.Padding = new Padding(3);
+            itemConsumableFoodPage.Size = new Size(329, 249);
+            itemConsumableFoodPage.TabIndex = 1;
+            itemConsumableFoodPage.Text = "Food";
+            itemConsumableFoodPage.UseVisualStyleBackColor = true;
+            // 
             // itemTypeEquipmentTab
             // 
             itemTypeEquipmentTab.BackColor = Color.Transparent;
+            itemTypeEquipmentTab.Controls.Add(itemEquipmentMaterialSetter);
+            itemTypeEquipmentTab.Controls.Add(itemEquipmentMaterialLabel);
+            itemTypeEquipmentTab.Controls.Add(itemEquipmentTypeLabel);
             itemTypeEquipmentTab.Controls.Add(itemTypeEquipmentTypeSetter);
             itemTypeEquipmentTab.Controls.Add(itemStats);
             itemTypeEquipmentTab.Location = new Point(4, 24);
@@ -342,12 +541,40 @@ namespace SPHMMaker
             itemTypeEquipmentTab.TabIndex = 3;
             itemTypeEquipmentTab.Text = "tabPage1";
             // 
+            // itemEquipmentMaterialSetter
+            // 
+            itemEquipmentMaterialSetter.DropDownStyle = ComboBoxStyle.DropDownList;
+            itemEquipmentMaterialSetter.FormattingEnabled = true;
+            itemEquipmentMaterialSetter.Items.AddRange(new object[] { "None", "Cloth", "Leather", "Mail", "Plate" });
+            itemEquipmentMaterialSetter.Location = new Point(89, 218);
+            itemEquipmentMaterialSetter.Name = "itemEquipmentMaterialSetter";
+            itemEquipmentMaterialSetter.Size = new Size(118, 23);
+            itemEquipmentMaterialSetter.TabIndex = 8;
+            // 
+            // itemEquipmentMaterialLabel
+            // 
+            itemEquipmentMaterialLabel.AutoSize = true;
+            itemEquipmentMaterialLabel.Location = new Point(3, 221);
+            itemEquipmentMaterialLabel.Name = "itemEquipmentMaterialLabel";
+            itemEquipmentMaterialLabel.Size = new Size(53, 15);
+            itemEquipmentMaterialLabel.TabIndex = 7;
+            itemEquipmentMaterialLabel.Text = "Material:";
+            // 
+            // itemEquipmentTypeLabel
+            // 
+            itemEquipmentTypeLabel.AutoSize = true;
+            itemEquipmentTypeLabel.Location = new Point(3, 250);
+            itemEquipmentTypeLabel.Name = "itemEquipmentTypeLabel";
+            itemEquipmentTypeLabel.Size = new Size(34, 15);
+            itemEquipmentTypeLabel.TabIndex = 6;
+            itemEquipmentTypeLabel.Text = "Type:";
+            // 
             // itemTypeEquipmentTypeSetter
             // 
             itemTypeEquipmentTypeSetter.DropDownStyle = ComboBoxStyle.DropDownList;
             itemTypeEquipmentTypeSetter.FormattingEnabled = true;
             itemTypeEquipmentTypeSetter.Items.AddRange(new object[] { "Head", "Neck", "Shoulders", "Back", "Chest", "Wrist", "Hands", "Belt", "Legs", "Feet", "Finger", "Trinket" });
-            itemTypeEquipmentTypeSetter.Location = new Point(13, 186);
+            itemTypeEquipmentTypeSetter.Location = new Point(89, 247);
             itemTypeEquipmentTypeSetter.Name = "itemTypeEquipmentTypeSetter";
             itemTypeEquipmentTypeSetter.Size = new Size(118, 23);
             itemTypeEquipmentTypeSetter.TabIndex = 3;
@@ -368,7 +595,7 @@ namespace SPHMMaker
             itemStats.Controls.Add(itemStatsAgilitySetter);
             itemStats.Location = new Point(0, 0);
             itemStats.Name = "itemStats";
-            itemStats.Size = new Size(161, 180);
+            itemStats.Size = new Size(149, 180);
             itemStats.TabIndex = 2;
             // 
             // itemStatsArmorSetter
@@ -470,11 +697,142 @@ namespace SPHMMaker
             // itemTypeWeaponTab
             // 
             itemTypeWeaponTab.BackColor = Color.Transparent;
+            itemTypeWeaponTab.Controls.Add(itemDummyDpsChangingLabel);
+            itemTypeWeaponTab.Controls.Add(itemDummyDpsLabel);
+            itemTypeWeaponTab.Controls.Add(itemAttackSpeedLabel);
+            itemTypeWeaponTab.Controls.Add(itemMaximumDamageLabel);
+            itemTypeWeaponTab.Controls.Add(itemMinimumDamageLabel);
+            itemTypeWeaponTab.Controls.Add(itemAttackSpeedSetter);
+            itemTypeWeaponTab.Controls.Add(itemMaximumDamageSetter);
+            itemTypeWeaponTab.Controls.Add(itemMinimumDamageSetter);
+            itemTypeWeaponTab.Controls.Add(itemWeaponEQTypeLabel);
+            itemTypeWeaponTab.Controls.Add(itemWeaponEQTypeSetter);
+            itemTypeWeaponTab.Controls.Add(itemWeaponTypeSetter);
+            itemTypeWeaponTab.Controls.Add(itemWeaponTypeLabel);
             itemTypeWeaponTab.Location = new Point(4, 24);
             itemTypeWeaponTab.Name = "itemTypeWeaponTab";
             itemTypeWeaponTab.Size = new Size(337, 277);
             itemTypeWeaponTab.TabIndex = 4;
             itemTypeWeaponTab.Text = "tabPage1";
+            // 
+            // itemDummyDpsChangingLabel
+            // 
+            itemDummyDpsChangingLabel.AutoSize = true;
+            itemDummyDpsChangingLabel.Location = new Point(305, 224);
+            itemDummyDpsChangingLabel.Name = "itemDummyDpsChangingLabel";
+            itemDummyDpsChangingLabel.Size = new Size(13, 15);
+            itemDummyDpsChangingLabel.TabIndex = 13;
+            itemDummyDpsChangingLabel.Text = "1";
+            // 
+            // itemDummyDpsLabel
+            // 
+            itemDummyDpsLabel.AutoSize = true;
+            itemDummyDpsLabel.Location = new Point(231, 224);
+            itemDummyDpsLabel.Name = "itemDummyDpsLabel";
+            itemDummyDpsLabel.Size = new Size(78, 15);
+            itemDummyDpsLabel.TabIndex = 12;
+            itemDummyDpsLabel.Text = "Dummy dps: ";
+            // 
+            // itemAttackSpeedLabel
+            // 
+            itemAttackSpeedLabel.AutoSize = true;
+            itemAttackSpeedLabel.Location = new Point(247, 194);
+            itemAttackSpeedLabel.Name = "itemAttackSpeedLabel";
+            itemAttackSpeedLabel.Size = new Size(24, 15);
+            itemAttackSpeedLabel.TabIndex = 11;
+            itemAttackSpeedLabel.Text = "AS:";
+            // 
+            // itemMaximumDamageLabel
+            // 
+            itemMaximumDamageLabel.AutoSize = true;
+            itemMaximumDamageLabel.Location = new Point(124, 194);
+            itemMaximumDamageLabel.Name = "itemMaximumDamageLabel";
+            itemMaximumDamageLabel.Size = new Size(33, 15);
+            itemMaximumDamageLabel.TabIndex = 10;
+            itemMaximumDamageLabel.Text = "Max:";
+            // 
+            // itemMinimumDamageLabel
+            // 
+            itemMinimumDamageLabel.AutoSize = true;
+            itemMinimumDamageLabel.Location = new Point(3, 194);
+            itemMinimumDamageLabel.Name = "itemMinimumDamageLabel";
+            itemMinimumDamageLabel.Size = new Size(31, 15);
+            itemMinimumDamageLabel.TabIndex = 9;
+            itemMinimumDamageLabel.Text = "Min:";
+            // 
+            // itemAttackSpeedSetter
+            // 
+            itemAttackSpeedSetter.DecimalPlaces = 1;
+            itemAttackSpeedSetter.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
+            itemAttackSpeedSetter.Location = new Point(277, 192);
+            itemAttackSpeedSetter.Maximum = new decimal(new int[] { 4, 0, 0, 0 });
+            itemAttackSpeedSetter.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            itemAttackSpeedSetter.Name = "itemAttackSpeedSetter";
+            itemAttackSpeedSetter.Size = new Size(37, 23);
+            itemAttackSpeedSetter.TabIndex = 8;
+            itemAttackSpeedSetter.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            itemAttackSpeedSetter.ValueChanged += itemAttackSpeedSetter_ValueChanged;
+            // 
+            // itemMaximumDamageSetter
+            // 
+            itemMaximumDamageSetter.Location = new Point(163, 192);
+            itemMaximumDamageSetter.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
+            itemMaximumDamageSetter.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            itemMaximumDamageSetter.Name = "itemMaximumDamageSetter";
+            itemMaximumDamageSetter.Size = new Size(78, 23);
+            itemMaximumDamageSetter.TabIndex = 7;
+            itemMaximumDamageSetter.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            itemMaximumDamageSetter.ValueChanged += itemMaxDamageSetter_ValueChanged;
+            // 
+            // itemMinimumDamageSetter
+            // 
+            itemMinimumDamageSetter.Location = new Point(40, 192);
+            itemMinimumDamageSetter.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
+            itemMinimumDamageSetter.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            itemMinimumDamageSetter.Name = "itemMinimumDamageSetter";
+            itemMinimumDamageSetter.Size = new Size(78, 23);
+            itemMinimumDamageSetter.TabIndex = 6;
+            itemMinimumDamageSetter.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            itemMinimumDamageSetter.ValueChanged += itemMinimumDamageSetter_ValueChanged;
+            // 
+            // itemWeaponEQTypeLabel
+            // 
+            itemWeaponEQTypeLabel.AutoSize = true;
+            itemWeaponEQTypeLabel.Location = new Point(3, 250);
+            itemWeaponEQTypeLabel.Name = "itemWeaponEQTypeLabel";
+            itemWeaponEQTypeLabel.Size = new Size(34, 15);
+            itemWeaponEQTypeLabel.TabIndex = 5;
+            itemWeaponEQTypeLabel.Text = "Type:";
+            // 
+            // itemWeaponEQTypeSetter
+            // 
+            itemWeaponEQTypeSetter.DropDownStyle = ComboBoxStyle.DropDownList;
+            itemWeaponEQTypeSetter.FormattingEnabled = true;
+            itemWeaponEQTypeSetter.Items.AddRange(new object[] { "One Handed", "Main Handed", "Off Handed", "Two Handed", "Ranged" });
+            itemWeaponEQTypeSetter.Location = new Point(89, 247);
+            itemWeaponEQTypeSetter.Name = "itemWeaponEQTypeSetter";
+            itemWeaponEQTypeSetter.Size = new Size(129, 23);
+            itemWeaponEQTypeSetter.TabIndex = 4;
+            // 
+            // itemWeaponTypeSetter
+            // 
+            itemWeaponTypeSetter.DropDownStyle = ComboBoxStyle.DropDownList;
+            itemWeaponTypeSetter.FormattingEnabled = true;
+            itemWeaponTypeSetter.Items.AddRange(new object[] { "Dagger", "Sword", "Two Handed Sword", "Axe", "Two Handed Axe", "Mace", "Two Handed Mace", "Fist", "Staff", "Bow", "Gun", "Thrown", "Wand", "Shield", "Holdable" });
+            itemWeaponTypeSetter.Location = new Point(89, 221);
+            itemWeaponTypeSetter.Name = "itemWeaponTypeSetter";
+            itemWeaponTypeSetter.Size = new Size(129, 23);
+            itemWeaponTypeSetter.TabIndex = 1;
+            itemWeaponTypeSetter.SelectedIndexChanged += itemWeaponTypeSetter_SelectedIndexChanged;
+            // 
+            // itemWeaponTypeLabel
+            // 
+            itemWeaponTypeLabel.AutoSize = true;
+            itemWeaponTypeLabel.Location = new Point(3, 224);
+            itemWeaponTypeLabel.Name = "itemWeaponTypeLabel";
+            itemWeaponTypeLabel.Size = new Size(80, 15);
+            itemWeaponTypeLabel.TabIndex = 0;
+            itemWeaponTypeLabel.Text = "Weapon type:";
             // 
             // itemQualitySelector
             // 
@@ -512,15 +870,16 @@ namespace SPHMMaker
             // 
             // descriptionInput
             // 
-            descriptionInput.Location = new Point(7, 6);
+            descriptionInput.Dock = DockStyle.Fill;
+            descriptionInput.Location = new Point(3, 3);
             descriptionInput.Name = "descriptionInput";
-            descriptionInput.Size = new Size(348, 272);
+            descriptionInput.Size = new Size(444, 308);
             descriptionInput.TabIndex = 0;
             descriptionInput.Text = "";
             // 
             // itemMaxCountSetter
             // 
-            itemMaxCountSetter.Location = new Point(513, 9);
+            itemMaxCountSetter.Location = new Point(344, 9);
             itemMaxCountSetter.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             itemMaxCountSetter.Name = "itemMaxCountSetter";
             itemMaxCountSetter.Size = new Size(41, 23);
@@ -530,7 +889,7 @@ namespace SPHMMaker
             // itemCountLabel
             // 
             itemCountLabel.AutoSize = true;
-            itemCountLabel.Location = new Point(448, 11);
+            itemCountLabel.Location = new Point(279, 11);
             itemCountLabel.Name = "itemCountLabel";
             itemCountLabel.Size = new Size(67, 15);
             itemCountLabel.TabIndex = 4;
@@ -546,15 +905,55 @@ namespace SPHMMaker
             createItemButton.UseVisualStyleBackColor = true;
             createItemButton.Click += createItemButton_Click;
             // 
-            // modItemPage
+            // itemEffectTab
             // 
-            modItemPage.Location = new Point(4, 24);
-            modItemPage.Name = "modItemPage";
-            modItemPage.Padding = new Padding(3);
-            modItemPage.Size = new Size(562, 388);
-            modItemPage.TabIndex = 1;
-            modItemPage.Text = "Modify Item";
-            modItemPage.UseVisualStyleBackColor = true;
+            itemEffectTab.Controls.Add(label2);
+            itemEffectTab.Controls.Add(label1);
+            itemEffectTab.Controls.Add(listBox2);
+            itemEffectTab.Controls.Add(listBox1);
+            itemEffectTab.Location = new Point(4, 24);
+            itemEffectTab.Name = "itemEffectTab";
+            itemEffectTab.Padding = new Padding(3);
+            itemEffectTab.Size = new Size(562, 388);
+            itemEffectTab.TabIndex = 1;
+            itemEffectTab.Text = "Item Effects";
+            itemEffectTab.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(306, 7);
+            label2.Name = "label2";
+            label2.Size = new Size(119, 15);
+            label2.TabIndex = 3;
+            label2.Text = "Selected Item Effects:";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(18, 5);
+            label1.Name = "label1";
+            label1.Size = new Size(62, 15);
+            label1.TabIndex = 2;
+            label1.Text = "All effects:";
+            // 
+            // listBox2
+            // 
+            listBox2.FormattingEnabled = true;
+            listBox2.ItemHeight = 15;
+            listBox2.Location = new Point(305, 30);
+            listBox2.Name = "listBox2";
+            listBox2.Size = new Size(231, 334);
+            listBox2.TabIndex = 1;
+            // 
+            // listBox1
+            // 
+            listBox1.FormattingEnabled = true;
+            listBox1.ItemHeight = 15;
+            listBox1.Location = new Point(25, 30);
+            listBox1.Name = "listBox1";
+            listBox1.Size = new Size(231, 334);
+            listBox1.TabIndex = 0;
             // 
             // otherPage
             // 
@@ -616,7 +1015,7 @@ namespace SPHMMaker
             MainTab.ResumeLayout(false);
             ItemPageTab.ResumeLayout(false);
             ItemPageTab.PerformLayout();
-            itemCreatorModifier.ResumeLayout(false);
+            itemWindowTabControl.ResumeLayout(false);
             createItemPage.ResumeLayout(false);
             createItemPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)goldCostCounter).EndInit();
@@ -628,7 +1027,22 @@ namespace SPHMMaker
             itemTypeBagTab.ResumeLayout(false);
             itemTypeBagTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)bagSizeSetter).EndInit();
+            itemTypeConsumableTab.ResumeLayout(false);
+            itemConsumableTabController.ResumeLayout(false);
+            itemConsumablePotionPage.ResumeLayout(false);
+            itemPotionValueFlowLayout.ResumeLayout(false);
+            itemPotionValueFlowLayout.PerformLayout();
+            itemPotionHealthPanel.ResumeLayout(false);
+            itemPotionHealthPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)itemPotionHealthSetter).EndInit();
+            itemPotionManaPanel.ResumeLayout(false);
+            itemPotionManaPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
+            itemPotionEnergyPanel.ResumeLayout(false);
+            itemPotionEnergyPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             itemTypeEquipmentTab.ResumeLayout(false);
+            itemTypeEquipmentTab.PerformLayout();
             itemStats.ResumeLayout(false);
             itemStats.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)itemStatsArmorSetter).EndInit();
@@ -637,8 +1051,15 @@ namespace SPHMMaker
             ((System.ComponentModel.ISupportInitialize)itemStatsStaminaSetter).EndInit();
             ((System.ComponentModel.ISupportInitialize)itemStatsStrengthSetter).EndInit();
             ((System.ComponentModel.ISupportInitialize)itemStatsAgilitySetter).EndInit();
+            itemTypeWeaponTab.ResumeLayout(false);
+            itemTypeWeaponTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)itemAttackSpeedSetter).EndInit();
+            ((System.ComponentModel.ISupportInitialize)itemMaximumDamageSetter).EndInit();
+            ((System.ComponentModel.ISupportInitialize)itemMinimumDamageSetter).EndInit();
             descriptionTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)itemMaxCountSetter).EndInit();
+            itemEffectTab.ResumeLayout(false);
+            itemEffectTab.PerformLayout();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
@@ -654,9 +1075,9 @@ namespace SPHMMaker
         private TabControl MainTab;
         private TabPage ItemPageTab;
         private TabPage otherPage;
-        private TabControl itemCreatorModifier;
+        private TabControl itemWindowTabControl;
         private TabPage createItemPage;
-        private TabPage modItemPage;
+        private TabPage itemEffectTab;
         private Button createItemButton;
         private NumericUpDown itemMaxCountSetter;
         private Label itemCountLabel;
@@ -699,5 +1120,38 @@ namespace SPHMMaker
         private ComboBox itemTypeEquipmentTypeSetter;
         private NumericUpDown itemStatsArmorSetter;
         private Label itemStatsArmorLabel;
+        private Label itemWeaponTypeLabel;
+        private ComboBox itemWeaponTypeSetter;
+        private ComboBox itemWeaponEQTypeSetter;
+        private Label label2;
+        private Label label1;
+        private ListBox listBox2;
+        private ListBox listBox1;
+        private Label itemEquipmentTypeLabel;
+        private Label itemWeaponEQTypeLabel;
+        private Label itemMaximumDamageLabel;
+        private Label itemMinimumDamageLabel;
+        private NumericUpDown itemAttackSpeedSetter;
+        private NumericUpDown itemMaximumDamageSetter;
+        private NumericUpDown itemMinimumDamageSetter;
+        private Label itemAttackSpeedLabel;
+        private Label itemDummyDpsChangingLabel;
+        private Label itemDummyDpsLabel;
+        private CheckedListBox itemPotionTypeSetter;
+        private Panel itemPotionHealthPanel;
+        private TabControl itemConsumableTabController;
+        private TabPage itemConsumablePotionPage;
+        private NumericUpDown itemPotionHealthSetter;
+        private TabPage itemConsumableFoodPage;
+        private Label itemPotionHealthLabel;
+        private FlowLayoutPanel itemPotionValueFlowLayout;
+        private Panel itemPotionManaPanel;
+        private Label label4;
+        private NumericUpDown numericUpDown2;
+        private Panel itemPotionEnergyPanel;
+        private Label label3;
+        private NumericUpDown numericUpDown1;
+        private ComboBox itemEquipmentMaterialSetter;
+        private Label itemEquipmentMaterialLabel;
     }
 }
