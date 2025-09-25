@@ -30,6 +30,9 @@ namespace SPHMMaker.Items
         }
 
 
+        [JsonIgnore]
+        public virtual string TypeName => GetType().Name.Substring(0, GetType().Name.Length - "Data".Length);
+
         public int ID
         {
             get => id;
@@ -51,21 +54,17 @@ namespace SPHMMaker.Items
         public ItemQuality Quality => quality;
         ItemQuality quality;
 
-        public ItemType Type => itemType;
-        ItemType itemType;
-
         public int Cost => cost;
         int cost;
 
         [JsonConstructor]
-        public ItemData(int id, string gfxName, string name, string description, int maxStack, ItemType itemType, ItemQuality quality, int cost)
+        public ItemData(int id, string gfxName, string name, string description, int maxStack, ItemQuality quality, int cost)
         {
             this.id = id;
             gfx = new GfxPath(GfxType.Item, gfxName);
             this.name = name;
             this.description = description;
             this.maxStack = maxStack;
-            this.itemType = itemType;
             this.quality = quality;
             this.cost = cost;
         }

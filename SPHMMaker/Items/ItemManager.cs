@@ -9,6 +9,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Data;
 using Newtonsoft.Json;
 using System.Diagnostics.Eventing.Reader;
+using System.Diagnostics;
+using SPHMMaker.Items.SubTypes;
 
 namespace SPHMMaker.Items
 {
@@ -59,10 +61,18 @@ namespace SPHMMaker.Items
 
             if (subTypes.Length == 0) throw new DirectoryNotFoundException();
 
+            for (int i = 0; i < subTypes.Length; i++)
+            {
+
+                var x = subTypes.ToList();
+                x.AddRange(Directory.GetDirectories(subTypes[i]));
+                subTypes = x.ToArray();
+            }
+
             foreach (string path in subTypes)
             {
                 string[] items = Directory.GetFiles(path);
-                if (items.Length == 0) throw new FileNotFoundException();
+                if (items.Length == 0 && Directory.GetDirectories(path).Count() == 0) throw new FileNotFoundException();
 
                 foreach (string item in items)
                 {
@@ -70,7 +80,10 @@ namespace SPHMMaker.Items
                 }
             }
 
+
             items.Sort((x, y) => x.ID - y.ID);
+
+            
         }
 
         static void ConvertToItemDataAndAddToList(string filePath)
@@ -82,6 +95,9 @@ namespace SPHMMaker.Items
             {
                 case "Consumable":
                     i = JsonConvert.DeserializeObject<ConsumableData>(rawData, serializerSettings);
+                    break;
+                case "Potion":
+                    i = JsonConvert.DeserializeObject<PotionData>(rawData, serializerSettings);
                     break;
                 case "Equipment":
                     i = JsonConvert.DeserializeObject<EquipmentData>(rawData, serializerSettings);
@@ -99,6 +115,8 @@ namespace SPHMMaker.Items
                     throw new WrongDirectoryException();
             }
             if (i == null) throw new FileLoadException();
+
+            Debug.Assert(items.Where(x => x.ID == i.ID).Count() == 0, "Duplicate ID's found");
             items.Add(i);
         }
 

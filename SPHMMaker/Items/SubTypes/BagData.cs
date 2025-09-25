@@ -13,7 +13,7 @@ namespace SPHMMaker.Items
         public int SlotCount { get => slotCount; }
         int slotCount;
         [JsonConstructor]
-        public BagData(int id, string gfxName, string name, string description, int slotCount, int cost, ItemQuality quality) : base(id, gfxName, name, description, 1, ItemType.Bag, quality, cost)
+        public BagData(int id, string gfxName, string name, string description, int slotCount, int cost, ItemQuality quality) : base(id, gfxName, name, description, 1, quality, cost)
         {
             this.slotCount = slotCount;
             Assert();

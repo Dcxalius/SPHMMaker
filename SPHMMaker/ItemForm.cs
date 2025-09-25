@@ -1,10 +1,13 @@
 ﻿using SPHMMaker.Items;
+using SPHMMaker.Items.SubTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static SPHMMaker.Items.SubTypes.PotionData;
 
 namespace SPHMMaker
 {
@@ -23,7 +26,7 @@ namespace SPHMMaker
                 int id = items.Items.Count;
                 string name = itemNameInput.Text;
                 string gfxName = itemNameInput.Text;
-                string description = descriptionInput.Text;
+                string description = itemDescriptionInput.Text;
                 int maxStack = (int)itemMaxCountSetter.Value;
                 ItemData.ItemQuality itemQuality = Enum.Parse<ItemData.ItemQuality>(itemQualitySelector.Items[itemQualitySelector.GetSingleCheckedIndex.Value].ToString());
                 int[] stats = [(int)itemStatsAgilitySetter.Value, (int)itemStatsStrengthSetter.Value, (int)itemStatsStaminaSetter.Value, (int)itemStatsIntelligenceSetter.Value, (int)itemStatsSpiritSetter.Value];
@@ -48,19 +51,26 @@ namespace SPHMMaker
                 switch (itemTypeSelector.Items[itemTypeSelector.GetSingleCheckedIndex.Value].ToString())
                 {
                     case nameof(ItemData.ItemType.None):
-                        item = new ItemData(id, name, gfxName, description, maxStack, ItemData.ItemType.None, itemQuality, cost);
+                        item = new ItemData(id, name, gfxName, description, maxStack, itemQuality, cost);
                         break;
                     case nameof(ItemData.ItemType.Bag):
-                        item = new BagData(id, gfxName, name, description, (int)bagSizeSetter.Value, cost, itemQuality);
+                        item = new BagData(id, gfxName, name, description, (int)itemBagSizeSetter.Value, cost, itemQuality);
                         break;
                     case nameof(ItemData.ItemType.Consumable): //TODO
-                        item = new ConsumableData(id, gfxName, name, description, maxStack, [ConsumableData.ConsumableType.NONE], itemQuality, cost, [0]);
+                        PotionData.PotionType[] potionTypes = itemPotionTypeSetter.CheckedIndices.Cast<PotionData.PotionType>().ToArray();
+                        float[] minVal = GetPotionData(potionTypes.Length, "Minimum");
+                        float[] maxVal = GetPotionData(potionTypes.Length, "Maximum");
+
+                        item = new PotionData(id, gfxName, name, description, maxStack, potionTypes, itemQuality, cost, minVal, maxVal);
                         break;
                     case nameof(ItemData.ItemType.Equipment):
                         item = new EquipmentData(id, gfxName, name, description, Enum.Parse<EquipmentData.EQType>(itemTypeEquipmentTypeSetter.Text), (int)itemStatsArmorSetter.Value, stats, itemQuality, cost, Enum.Parse<EquipmentData.MaterialType>(itemEquipmentMaterialSetter.Text));
                         break;
                     case nameof(ItemData.ItemType.Weapon):
-                        item = new WeaponData(id, gfxName, name, description, Enum.Parse<EquipmentData.EQType>(ReplaceWhitespace(itemWeaponEQTypeSetter.Text, "")), (int)itemStatsArmorSetter.Value, stats, (int)itemMinimumDamageSetter.Value, (int)itemMaximumDamageSetter.Value, (float)itemAttackSpeedSetter.Value, itemQuality, Enum.Parse<WeaponData.Weapon>(ReplaceWhitespace(itemWeaponTypeSetter.Text, "")), cost);
+                        if (itemWeaponTypeSetter.SelectedIndex < Math.Log2((double)WeaponData.Weapon.Shield) )
+                            item = new WeaponData(id, gfxName, name, description, Enum.Parse<EquipmentData.EQType>(ReplaceWhitespace(itemWeaponEQTypeSetter.Text, "")), (int)itemStatsArmorSetter.Value, stats, (int)itemMinimumDamageSetter.Value, (int)itemMaximumDamageSetter.Value, (float)itemAttackSpeedSetter.Value, itemQuality, Enum.Parse<WeaponData.Weapon>(ReplaceWhitespace(itemWeaponTypeSetter.Text, "")), cost);
+                        else
+                            item = new WeaponData(id, gfxName, name, description, Enum.Parse<EquipmentData.EQType>(ReplaceWhitespace(itemWeaponEQTypeSetter.Text, "")), (int)itemStatsArmorSetter.Value, stats, 0, 0, 0, itemQuality, Enum.Parse<WeaponData.Weapon>(ReplaceWhitespace(itemWeaponTypeSetter.Text, "")), cost);
                         break;
 
                     default:
@@ -82,19 +92,74 @@ namespace SPHMMaker
             itemEquipmentMaterialSetter.SelectedIndex = 0;
         }
 
-        private void itemPotionTypeSetter_SelectedIndexChanged(object sender, EventArgs e)
+
+        float[] GetPotionData(int aLength, string aSearch)
         {
-            for (int i = 0; i < itemPotionValueFlowLayout.Controls.Count; i++)
+            float[] values = new float[aLength];
+
+            for (int i = 0; i < values.Length; i++)
             {
-                if (itemPotionTypeSetter.GetItemChecked(i) == true)
+                Control.ControlCollection c = itemPotionValueFlowLayout.Controls[i].Controls;
+                for (int j = 0; j < c.Count; j++)
                 {
-                    itemPotionValueFlowLayout.Controls[i].Visible = true;
-                }
-                else
-                {
-                    itemPotionValueFlowLayout.Controls[i].Visible = false;
+                    if (c[j].Name.Contains(aSearch))
+                    {
+                        values[i] = (float)((NumericUpDown)c[j]).Value;
+                        continue;
+                    }
                 }
             }
+
+            return values;
+        }
+
+        void SetPotionData(PotionData.PotionType[] aPotionTypes, float[] aMinValues, float[] aMaxValues)
+        {
+            for (int i = 0; i < aPotionTypes.Length; i++)
+            {
+                Control.ControlCollection c = itemPotionValueFlowLayout.Controls[(int)aPotionTypes[i]].Controls;
+                for (int j = 0; j < c.Count; j++)
+                {
+                    if (c[j].Name.Contains("Minimum"))
+                    {
+                        ((NumericUpDown)c[j]).Value = (decimal)aMinValues[i];
+                        continue;
+                    }
+                    if (c[j].Name.Contains("Maximum"))
+                    {
+                        ((NumericUpDown)c[j]).Value = (decimal)aMaxValues[i];
+                        continue;
+                    }
+                }
+            }
+        }
+
+
+
+        private void itemPotionHealthMinimumSetter_ValueChanged(object sender, EventArgs e) => itemPotionHealthMaximumSetter.Minimum = ((NumericUpDown)sender).Value;
+        private void itemPotionHealthMaximumSetter_ValueChanged(object sender, EventArgs e) => itemPotionHealthMinimumSetter.Maximum = ((NumericUpDown)sender).Value;
+        private void itemPotionManaMinimumSetter_ValueChanged(object sender, EventArgs e) => itemPotionManaMaximumSetter.Minimum = ((NumericUpDown)sender).Value;
+        private void itemPotionManaMaximumSetter_ValueChanged(object sender, EventArgs e) => itemPotionManaMinimumSetter.Maximum = ((NumericUpDown)sender).Value;
+        private void itemPotionEnergyMinimumSetter_ValueChanged(object sender, EventArgs e) => itemPotionEnergyMaximumSetter.Minimum = ((NumericUpDown)sender).Value;
+        private void itemPotionEnergyMaximumSetter_ValueChanged(object sender, EventArgs e) => itemPotionEnergyMinimumSetter.Maximum = ((NumericUpDown)sender).Value;
+
+
+        private void itemPotionTypeSetter_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            //for (int i = 0; i < itemPotionValueFlowLayout.Controls.Count; i++)
+            //{
+            //    if (itemPotionTypeSetter.GetItemChecked(i) == true)
+            //    {
+            //        itemPotionValueFlowLayout.Controls[i].Visible = true;
+            //    }
+            //    else
+            //    {
+            //        itemPotionValueFlowLayout.Controls[i].Visible = false;
+            //    }
+            //}
+
+            if (e.NewValue == CheckState.Unchecked) itemPotionValueFlowLayout.Controls[e.Index].Visible = false;
+            else itemPotionValueFlowLayout.Controls[e.Index].Visible = true;
 
 
         }
@@ -157,62 +222,9 @@ namespace SPHMMaker
             }
         }
 
-        private void saveDatapackToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string? s = GetDirectory();
+        
 
-            if (s is null)
-            {
-                MessageBox.Show("Save aborted.");
-                return;
-            }
-
-            //ItemManager.Save(s);
-        }
-
-        private void loadDatapackToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string? path = GetDirectory();
-
-            if (path is null)
-            {
-                return;
-            }
-
-            //TODO: Check access?
-            //DirectoryInfo di = new DirectoryInfo(path);
-            //di.GetAccessControl().GetAccessRules();
-
-            string[] foldersThatShouldBeHere = ["Items"];
-
-            string[] folders = Directory.GetDirectories(path);
-
-
-            foreach (string folder in foldersThatShouldBeHere)
-            {
-                if (!folders.Contains(path + "\\" + folder))
-                {
-                    MessageBox.Show($"Error, {folder} is not found");
-                    return;
-                }
-            }
-
-            ItemManager.Load(path + "\\Items");
-        }
-
-        string? GetDirectory()
-        {
-            var fbg = new FolderBrowserDialog()
-            {
-                InitialDirectory = AppDomain.CurrentDomain.BaseDirectory
-            };
-
-            if (fbg.ShowDialog() != DialogResult.OK)
-                return null;
-
-            return fbg.SelectedPath;
-        }
-
+        
         private void items_MouseDoubleClick(object sender, MouseEventArgs e) => SetItemTo(items.IndexFromPoint(e.Location));
         private void EditItemButton_Click(object sender, EventArgs e) => SetItemTo(items.SelectedIndex);
         private void SetItemTo(int aIndex)
@@ -227,15 +239,21 @@ namespace SPHMMaker
                 itemMaxCountSetter.Value = item.MaxStack;
                 itemNameInput.Text = item.Name;
 
-                int itemTypeIndex = itemTypeSelector.FindString(item.Type.ToString());
+                int itemTypeIndex = itemTypeSelector.FindString(item.TypeName);
                 if (itemTypeIndex == -1) itemTypeSelector.SetItemChecked(0, true);
                 else itemTypeSelector.SetItemChecked(itemTypeIndex, true);
 
                 int itemQualityIndex = itemQualitySelector.FindString(item.Quality.ToString());
                 if (itemQualityIndex == -1) throw new Exception();
-                else itemQualitySelector.SetItemChecked(itemTypeIndex, true);
+                else itemQualitySelector.SetItemChecked(itemQualityIndex, true);
 
-                descriptionInput.Text = item.Description;
+                itemDescriptionInput.Text = item.Description;
+
+                if (item is BagData bagData)
+                {
+                    itemBagSizeSetter.Value = bagData.SlotCount;
+                    return;
+                }
 
                 if (item is EquipmentData equipmentData)
                 {
@@ -286,29 +304,38 @@ namespace SPHMMaker
 
                             itemMinimumDamageSetter.Value = attack.MinAttackDamage;
                             itemMaximumDamageSetter.Value = attack.MaxAttackDamage;
-                            itemAttackSpeedSetter.Value = (decimal)attack.Attackspeed;
+                            itemAttackSpeedSetter.Value = (decimal)attack.AttackSpeed;
                         }
+                        return;
                     }
                 }
 
                 if (item is ConsumableData consumableData)
                 {
-                    IEnumerable<int> checkedI = itemPotionTypeSetter.CheckedIndices.Cast<int>();
-
-                    checkedI = checkedI.Where(x => !consumableData.Consumable.Contains((ConsumableData.ConsumableType)x));
-
-                    for (int i = checkedI.Count() - 1; i >= 0; i--)
+                    if (consumableData is PotionData potionData)
                     {
-                        itemPotionTypeSetter.SetItemChecked(checkedI.ElementAt(i), false);
+                        IEnumerable<int> checkedI = itemPotionTypeSetter.CheckedIndices.Cast<int>();
+
+                        checkedI = checkedI.Where(x => !potionData.Type.Contains((PotionData.PotionType)x));
+
+                        for (int i = checkedI.Count() - 1; i >= 0; i--)
+                        {
+                            itemPotionTypeSetter.SetItemChecked(checkedI.ElementAt(i), false);
+                        }
+
+                        IEnumerable<PotionData.PotionType> iToSet = potionData.Type.Where(x => itemPotionTypeSetter.CheckedIndices.Contains((int)x) == false);
+
+                        for (int i = 0; i < potionData.Type.Length; i++)
+                        {
+                            itemPotionTypeSetter.SetItemChecked((int)potionData.Type[i], true);
+                            
+                        }
+
+                        SetPotionData(potionData.Type, potionData.Value, potionData.MaxValue);
                     }
+                    
 
-                    //IEnumerable<int> iToSet = 
-
-
-                    for (int i = 0; i < consumableData.Consumable.Length; i++)
-                    {
-                        itemPotionTypeSetter.SetItemChecked((int)consumableData.Consumable[i], true);
-                    }
+                    return;
                 }
 
                 //MessageBox.Show(index.ToString());

@@ -31,7 +31,6 @@ namespace SPHMMaker.Items
             Ranged,
             Count
         }
-
         public enum MaterialType
         {
             Cloth,
@@ -42,19 +41,27 @@ namespace SPHMMaker.Items
             None
         }
 
-        //[JsonIgnore]
-        //public PairReport StatReport
-        //{
-        //    get
-        //    {
-        //        PairReport report = new PairReport();
+        [JsonIgnore]
+        public virtual ItemPairReport StatReport
+        {
+            get
+            {
+                if (statReport != null) return statReport;
+                ItemPairReport report = new ItemPairReport();
+                for (int i = 0; i < baseStats.Length; i++)
+                {
+                    if (baseStats[i] != 0)
+                    {
+                        report.AddLine(((PrimaryStats)i).ToString(), baseStats[i]);
+                    }
+                }
+                if (armor != 0) report.AddLine("Armor", armor);
 
-        //        if (baseStats.TotalArmor != 0) report.AddLine("Armor", baseStats.TotalArmor);
-        //        baseStats.AppendToExistingReport(ref report);
-
-        //        return report;
-        //    }
-        //}
+                statReport = report;
+                return report;
+            }
+        }
+        protected ItemPairReport statReport;
 
         [JsonIgnore]
         public int Agility => baseStats[0];
@@ -79,17 +86,16 @@ namespace SPHMMaker.Items
         public EQType Slot { get => slot; } //TODO: Find better name
         EQType slot;
 
-        public EquipmentData(int id, string gfxName, string name, string description, EQType slot, ItemType itemType, int armor, int[] baseStats, ItemQuality quality, int cost, MaterialType material) : base(id, gfxName, name, description, 1, itemType, quality, cost)
+        [JsonConstructor]
+        public EquipmentData(int id, string gfxName, string name, string description, EQType slot, int armor, int[] baseStats, ItemQuality quality, int cost, MaterialType material) : base(id, gfxName, name, description, 1, quality, cost)
         {
             this.slot = slot;
             //this.baseStats = new EquipmentStats(baseStats);
             //DEBUG
             this.baseStats = baseStats;
             this.material = material;
+            this.armor = armor;
 
         }
-
-        [JsonConstructor]
-        public EquipmentData(int id, string gfxName, string name, string description, EQType slot, int armor, int[] baseStats, ItemQuality quality, int cost, MaterialType material) : this(id, gfxName, name, description, slot, ItemType.Equipment, armor, baseStats, quality, cost, material) { }
     }
 }

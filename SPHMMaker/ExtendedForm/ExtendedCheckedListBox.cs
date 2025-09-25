@@ -13,6 +13,8 @@ namespace SPHMMaker.ExtendedForm
 {
     public partial class ExtendedCheckedListBox : CheckedListBox
     {
+        public string GetSingleCheckedIndexName => Items[GetSingleCheckedIndex.Value].ToString();
+
         public int? GetSingleCheckedIndex
         {
             get

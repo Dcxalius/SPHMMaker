@@ -40,6 +40,19 @@ namespace SPHMMaker.Items
             Holdable = 16384 //TODO: I dunnu what to call this xdd
         }
 
+        //public override ItemPairReport StatReport
+        //{
+        //    get
+        //    {
+        //        if (statReport != null) return statReport;
+        //        ItemPairReport report = base.StatReport;
+        //        report.AddLine("Attack", attack.ToString());
+
+
+        //        return base.StatReport;
+        //    }
+        //}
+
         public Attack GetAttack => attack;
         Attack attack;
 
@@ -49,9 +62,12 @@ namespace SPHMMaker.Items
         public HandRequirement Hand => (HandRequirement)(Slot - EQType.OneHanded);
 
 
-        public WeaponData(int id, string gfxName, string name, string description, EQType slot, int armor, int[] baseStats, int minAttackDamage, int maxAttackDamage, float attackSpeed, ItemQuality quality, Weapon weaponType, int cost) : base(id, gfxName, name, description, slot, ItemType.Weapon, armor, baseStats, quality, cost, MaterialType.None)
+        public WeaponData(int id, string gfxName, string name, string description, EQType slot, int armor, int[] baseStats, int minAttackDamage, int maxAttackDamage, float attackSpeed, ItemQuality quality, Weapon weaponType, int cost) : base(id, gfxName, name, description, slot, armor, baseStats, quality, cost, MaterialType.None)
         {
-            attack = new Attack(minAttackDamage, maxAttackDamage, attackSpeed);
+            if (minAttackDamage != 0 || maxAttackDamage != 0)
+            {
+                attack = new Attack(minAttackDamage, maxAttackDamage, attackSpeed);
+            }
             this.weaponType = weaponType;
             Debug.Assert(weaponType != Weapon.None);
         }
@@ -60,13 +76,21 @@ namespace SPHMMaker.Items
         {
             public int MinAttackDamage;
             public int MaxAttackDamage;
-            public float Attackspeed;
+            public float AttackSpeed;
 
             public Attack(int aMin, int aMax, float aAttackSpeed)
             {
                 MinAttackDamage = aMin;
                 MaxAttackDamage = aMax;
-                Attackspeed = aAttackSpeed;
+                AttackSpeed = aAttackSpeed;
+            }
+
+            public override string ToString()
+            {
+                if (MinAttackDamage == 0 || MaxAttackDamage == 0) return "";
+
+                return $"{MinAttackDamage} to {MaxAttackDamage} damage every {AttackSpeed} seconds \n" +
+                    $"for {((float)(MinAttackDamage + MaxAttackDamage) / 2) / AttackSpeed} dps";
             }
         }
     }
