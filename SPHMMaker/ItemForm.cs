@@ -2,11 +2,13 @@
 using SPHMMaker.Items.SubTypes;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using static SPHMMaker.Items.SubTypes.PotionData;
 
 namespace SPHMMaker
@@ -19,73 +21,83 @@ namespace SPHMMaker
             return sWhitespace.Replace(input, replacement);
         }
 
-        private ItemData FoldDataIntoItem
+        private ItemData? FoldDataIntoItem()
         {
-            get
+            int id = items.Items.Count;
+            string name = itemNameInput.Text;
+            string gfxName = itemNameInput.Text;
+            string description = itemDescriptionInput.Text;
+            int maxStack = (int)itemMaxCountSetter.Value;
+            ItemData.ItemQuality itemQuality = Enum.Parse<ItemData.ItemQuality>(itemQualitySelector.Items[itemQualitySelector.GetSingleCheckedIndex.Value].ToString());
+            int[] stats =
             {
-                int id = items.Items.Count;
-                string name = itemNameInput.Text;
-                string gfxName = itemNameInput.Text;
-                string description = itemDescriptionInput.Text;
-                int maxStack = (int)itemMaxCountSetter.Value;
-                ItemData.ItemQuality itemQuality = Enum.Parse<ItemData.ItemQuality>(itemQualitySelector.Items[itemQualitySelector.GetSingleCheckedIndex.Value].ToString());
-                int[] stats = new int[]
-                {
-                    (int)itemStatsAgilitySetter.Value,
-                    (int)itemStatsStrengthSetter.Value,
-                    (int)itemStatsStaminaSetter.Value,
-                    (int)itemStatsIntelligenceSetter.Value,
-                    (int)itemStatsSpiritSetter.Value
-                };
-                int cost = (int)goldCostCounter.Value;
+                (int)itemStatsAgilitySetter.Value,
+                (int)itemStatsStrengthSetter.Value,
+                (int)itemStatsStaminaSetter.Value,
+                (int)itemStatsIntelligenceSetter.Value,
+                (int)itemStatsSpiritSetter.Value
+            };
+            int cost = (int)goldCostCounter.Value;
 
-                {
-                    string s = string.Empty;
-                    if (!ItemManager.FreeIdCheck(id)) s += "Duplicated Id found, you've fucked something up majorly and item creation won't work until you fixed this. \n";
-                    //Check for existing ID to be safe?
-                    if (!(name.Length > 0)) s += "Name cannot be empty. \n";
-                    //if (!(gfxName.Length > 0)) MessageBox.Show("GfxName cannot be empty");
-                    if (!(description.Length > 0)) s += "Description cannot be empty.\n";
-                    if (s != string.Empty)
-                    {
-                        MessageBox.Show("Error in created item found, exiting without creating.");
-                        return null;
-                    }
-                }
-
-                ItemData item;
-
-                switch (itemTypeSelector.Items[itemTypeSelector.GetSingleCheckedIndex.Value].ToString())
-                {
-                    case nameof(ItemData.ItemType.None):
-                        item = new ItemData(id, name, gfxName, description, maxStack, itemQuality, cost);
-                        break;
-                    case nameof(ItemData.ItemType.Bag):
-                        item = new BagData(id, gfxName, name, description, (int)itemBagSizeSetter.Value, cost, itemQuality);
-                        break;
-                    case nameof(ItemData.ItemType.Consumable): //TODO
-                        PotionData.PotionType[] potionTypes = itemPotionTypeSetter.CheckedIndices.Cast<PotionData.PotionType>().ToArray();
-                        float[] minVal = GetPotionData(potionTypes.Length, "Minimum");
-                        float[] maxVal = GetPotionData(potionTypes.Length, "Maximum");
-
-                        item = new PotionData(id, gfxName, name, description, maxStack, potionTypes, itemQuality, cost, minVal, maxVal);
-                        break;
-                    case nameof(ItemData.ItemType.Equipment):
-                        item = new EquipmentData(id, gfxName, name, description, Enum.Parse<EquipmentData.EQType>(itemTypeEquipmentTypeSetter.Text), (int)itemStatsArmorSetter.Value, stats, itemQuality, cost, Enum.Parse<EquipmentData.MaterialType>(itemEquipmentMaterialSetter.Text));
-                        break;
-                    case nameof(ItemData.ItemType.Weapon):
-                        if (itemWeaponTypeSetter.SelectedIndex < Math.Log2((double)WeaponData.Weapon.Shield) )
-                            item = new WeaponData(id, gfxName, name, description, Enum.Parse<EquipmentData.EQType>(ReplaceWhitespace(itemWeaponEQTypeSetter.Text, "")), (int)itemStatsArmorSetter.Value, stats, (int)itemMinimumDamageSetter.Value, (int)itemMaximumDamageSetter.Value, (float)itemAttackSpeedSetter.Value, itemQuality, Enum.Parse<WeaponData.Weapon>(ReplaceWhitespace(itemWeaponTypeSetter.Text, "")), cost);
-                        else
-                            item = new WeaponData(id, gfxName, name, description, Enum.Parse<EquipmentData.EQType>(ReplaceWhitespace(itemWeaponEQTypeSetter.Text, "")), (int)itemStatsArmorSetter.Value, stats, 0, 0, 0, itemQuality, Enum.Parse<WeaponData.Weapon>(ReplaceWhitespace(itemWeaponTypeSetter.Text, "")), cost);
-                        break;
-
-                    default:
-                        throw new NotImplementedException();
-                }
-
-                return item;
+            string validationErrors = string.Empty;
+            if (!ItemManager.FreeIdCheck(id))
+            {
+                validationErrors += "Duplicated Id found, you've fucked something up majorly and item creation won't work until you fixed this. \n";
             }
+
+            if (name.Length == 0)
+            {
+                validationErrors += "Name cannot be empty. \n";
+            }
+
+            if (description.Length == 0)
+            {
+                validationErrors += "Description cannot be empty.\n";
+            }
+
+            if (validationErrors != string.Empty)
+            {
+                MessageBox.Show("Error in created item found, exiting without creating.");
+                return null;
+            }
+
+            ItemData item;
+
+            switch (itemTypeSelector.Items[itemTypeSelector.GetSingleCheckedIndex.Value].ToString())
+            {
+                case nameof(ItemData.ItemType.None):
+                    item = new ItemData(id, name, gfxName, description, maxStack, itemQuality, cost);
+                    break;
+                case nameof(ItemData.ItemType.Bag):
+                    item = new BagData(id, gfxName, name, description, (int)itemBagSizeSetter.Value, cost, itemQuality);
+                    break;
+                case nameof(ItemData.ItemType.Consumable): //TODO
+                    PotionData.PotionType[] potionTypes = itemPotionTypeSetter.CheckedIndices.Cast<PotionData.PotionType>().ToArray();
+                    float[] minVal = GetPotionData(potionTypes.Length, "Minimum");
+                    float[] maxVal = GetPotionData(potionTypes.Length, "Maximum");
+
+                    item = new PotionData(id, gfxName, name, description, maxStack, potionTypes, itemQuality, cost, minVal, maxVal);
+                    break;
+                case nameof(ItemData.ItemType.Equipment):
+                    item = new EquipmentData(id, gfxName, name, description, Enum.Parse<EquipmentData.EQType>(itemTypeEquipmentTypeSetter.Text), (int)itemStatsArmorSetter.Value, stats, itemQuality, cost, Enum.Parse<EquipmentData.MaterialType>(itemEquipmentMaterialSetter.Text));
+                    break;
+                case nameof(ItemData.ItemType.Weapon):
+                    if (itemWeaponTypeSetter.SelectedIndex < Math.Log2((double)WeaponData.Weapon.Shield))
+                    {
+                        item = new WeaponData(id, gfxName, name, description, Enum.Parse<EquipmentData.EQType>(ReplaceWhitespace(itemWeaponEQTypeSetter.Text, "")), (int)itemStatsArmorSetter.Value, stats, (int)itemMinimumDamageSetter.Value, (int)itemMaximumDamageSetter.Value, (float)itemAttackSpeedSetter.Value, itemQuality, Enum.Parse<WeaponData.Weapon>(ReplaceWhitespace(itemWeaponTypeSetter.Text, "")), cost);
+                    }
+                    else
+                    {
+                        item = new WeaponData(id, gfxName, name, description, Enum.Parse<EquipmentData.EQType>(ReplaceWhitespace(itemWeaponEQTypeSetter.Text, "")), (int)itemStatsArmorSetter.Value, stats, 0, 0, 0, itemQuality, Enum.Parse<WeaponData.Weapon>(ReplaceWhitespace(itemWeaponTypeSetter.Text, "")), cost);
+                    }
+
+                    break;
+
+                default:
+                    throw new NotImplementedException();
+            }
+
+            return item;
         }
 
 
@@ -182,18 +194,26 @@ namespace SPHMMaker
 
         private void createItemButton_Click(object sender, EventArgs e)
         {
-            ItemData item = FoldDataIntoItem;
+            ItemData? item = FoldDataIntoItem();
 
-            if (item != null) ItemManager.CreateItem(item);
+            if (item != null)
+            {
+                ItemManager.CreateItem(item);
+            }
         }
 
 
         private void OverrideItemButton_Click(object sender, EventArgs e)
         {
-            ItemData item = FoldDataIntoItem;
+            ItemData? item = FoldDataIntoItem();
+            if (item == null)
+            {
+                return;
+            }
+
             item.ID = items.SelectedIndex;
 
-            if (item != null) ItemManager.OverrideItem(items.SelectedIndex, item);
+            ItemManager.OverrideItem(items.SelectedIndex, item);
         }
 
         private void OverrideItemButton_MouseHover(object sender, EventArgs e)
