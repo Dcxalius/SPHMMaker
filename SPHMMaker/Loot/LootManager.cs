@@ -1,31 +1,32 @@
+namespace SPHMMaker.Loot;
+
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
-namespace SPHMMaker.Loot
+public static class LootManager
 {
-    internal static class LootManager
+    public static BindingList<LootTable> LootTables { get; } = new();
+
+    public static LootTable Create(string id)
     {
-        static readonly BindingList<LootTable> lootTables = new();
-
-        public static BindingList<LootTable> LootTables => lootTables;
-
-        public static LootTable CreateLootTable(int id, string name)
+        LootTable table = new()
         {
-            if (ContainsId(id))
-            {
-                throw new InvalidOperationException($"Loot table with id {id} already exists.");
-            }
+            Id = id
+        };
 
-            string resolvedName = string.IsNullOrWhiteSpace(name) ? $"Loot Table {id}" : name.Trim();
-            LootTable lootTable = new(id, resolvedName);
-            lootTables.Add(lootTable);
-            return lootTable;
-        }
-
-        public static bool ContainsId(int id) => lootTables.Any(t => t.Id == id);
-
-        public static void Remove(LootTable lootTable)
-        {
-            lootTables.Remove(lootTable);
-        }
+        LootTables.Add(table);
+        return table;
     }
+
+    public static void Remove(LootTable table)
+    {
+        LootTables.Remove(table);
+    }
+
+    public static bool ContainsId(string id) =>
+        LootTables.Any(table => table.Id.Equals(id, StringComparison.OrdinalIgnoreCase));
+
+    public static IEnumerable<string> GetIds() => LootTables.Select(table => table.Id);
 }

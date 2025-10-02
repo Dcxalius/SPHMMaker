@@ -1,4 +1,5 @@
-﻿using SPHMMaker.Items;
+using System.Windows.Forms.DataVisualization.Charting;
+using SPHMMaker.Items;
 
 namespace SPHMMaker
 {
@@ -31,14 +32,31 @@ namespace SPHMMaker
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            ChartArea chartArea1 = new ChartArea();
+            Legend legend1 = new Legend();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+
             itemNameInput = new TextBox();
             items = new ListBox();
             itemNameLabel = new Label();
             itemSelectBoxLabel = new Label();
             MainTab = new TabControl();
+            lootTabPage = new TabPage();
+            lootDistributionChart = new Chart();
+            lootChartHintLabel = new Label();
+            lootKillsCounter = new NumericUpDown();
+            lootKillsLabel = new Label();
+            lootRemoveEntryButton = new Button();
+            lootAddEntryButton = new Button();
+            lootEntriesGrid = new DataGridView();
+            lootDeleteTableButton = new Button();
+            lootSaveTableButton = new Button();
+            lootAddTableButton = new Button();
+            lootTableIdTextBox = new TextBox();
+            lootTableIdLabel = new Label();
+            lootTablesListBox = new ListBox();
             ItemPageTab = new TabPage();
             TilesPageTab = new TabPage();
             tileDetailsGroup = new GroupBox();
@@ -160,7 +178,11 @@ namespace SPHMMaker
             helpToolStripMenuItem = new ToolStripMenuItem();
             fileDownloadInstructionsToolStripMenuItem = new ToolStripMenuItem();
             toolTip1 = new ToolTip(components);
+            ((System.ComponentModel.ISupportInitialize)lootDistributionChart).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)lootKillsCounter).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)lootEntriesGrid).BeginInit();
             MainTab.SuspendLayout();
+            lootTabPage.SuspendLayout();
             ItemPageTab.SuspendLayout();
             TilesPageTab.SuspendLayout();
             tileDetailsGroup.SuspendLayout();
@@ -258,9 +280,158 @@ namespace SPHMMaker
             MainTab.SelectedIndex = 0;
             MainTab.Size = new Size(800, 511);
             MainTab.TabIndex = 4;
-            // 
+            //
+            // lootTabPage
+            //
+            lootTabPage.Controls.Add(lootDistributionChart);
+            lootTabPage.Controls.Add(lootChartHintLabel);
+            lootTabPage.Controls.Add(lootKillsCounter);
+            lootTabPage.Controls.Add(lootKillsLabel);
+            lootTabPage.Controls.Add(lootRemoveEntryButton);
+            lootTabPage.Controls.Add(lootAddEntryButton);
+            lootTabPage.Controls.Add(lootEntriesGrid);
+            lootTabPage.Controls.Add(lootDeleteTableButton);
+            lootTabPage.Controls.Add(lootSaveTableButton);
+            lootTabPage.Controls.Add(lootAddTableButton);
+            lootTabPage.Controls.Add(lootTableIdTextBox);
+            lootTabPage.Controls.Add(lootTableIdLabel);
+            lootTabPage.Controls.Add(lootTablesListBox);
+            lootTabPage.Location = new Point(4, 24);
+            lootTabPage.Name = "lootTabPage";
+            lootTabPage.Padding = new Padding(3);
+            lootTabPage.Size = new Size(792, 483);
+            lootTabPage.TabIndex = 1;
+            lootTabPage.Text = "Loot";
+            lootTabPage.UseVisualStyleBackColor = true;
+            //
+            // lootTablesListBox
+            //
+            lootTablesListBox.FormattingEnabled = true;
+            lootTablesListBox.ItemHeight = 15;
+            lootTablesListBox.Location = new Point(6, 122);
+            lootTablesListBox.Name = "lootTablesListBox";
+            lootTablesListBox.Size = new Size(188, 319);
+            lootTablesListBox.TabIndex = 5;
+            //
+            // lootTableIdLabel
+            //
+            lootTableIdLabel.AutoSize = true;
+            lootTableIdLabel.Location = new Point(6, 8);
+            lootTableIdLabel.Name = "lootTableIdLabel";
+            lootTableIdLabel.Size = new Size(85, 15);
+            lootTableIdLabel.TabIndex = 0;
+            lootTableIdLabel.Text = "Loot Table ID:";
+            //
+            // lootTableIdTextBox
+            //
+            lootTableIdTextBox.Location = new Point(6, 26);
+            lootTableIdTextBox.Name = "lootTableIdTextBox";
+            lootTableIdTextBox.Size = new Size(188, 23);
+            lootTableIdTextBox.TabIndex = 1;
+            //
+            // lootAddTableButton
+            //
+            lootAddTableButton.Location = new Point(6, 55);
+            lootAddTableButton.Name = "lootAddTableButton";
+            lootAddTableButton.Size = new Size(92, 27);
+            lootAddTableButton.TabIndex = 2;
+            lootAddTableButton.Text = "New Table";
+            lootAddTableButton.UseVisualStyleBackColor = true;
+            //
+            // lootSaveTableButton
+            //
+            lootSaveTableButton.Location = new Point(102, 55);
+            lootSaveTableButton.Name = "lootSaveTableButton";
+            lootSaveTableButton.Size = new Size(92, 27);
+            lootSaveTableButton.TabIndex = 3;
+            lootSaveTableButton.Text = "Save ID";
+            lootSaveTableButton.UseVisualStyleBackColor = true;
+            //
+            // lootDeleteTableButton
+            //
+            lootDeleteTableButton.Location = new Point(6, 88);
+            lootDeleteTableButton.Name = "lootDeleteTableButton";
+            lootDeleteTableButton.Size = new Size(188, 27);
+            lootDeleteTableButton.TabIndex = 4;
+            lootDeleteTableButton.Text = "Delete Table";
+            lootDeleteTableButton.UseVisualStyleBackColor = true;
+            //
+            // lootEntriesGrid
+            //
+            lootEntriesGrid.AllowUserToAddRows = false;
+            lootEntriesGrid.AllowUserToDeleteRows = false;
+            lootEntriesGrid.AllowUserToResizeRows = false;
+            lootEntriesGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            lootEntriesGrid.Location = new Point(208, 26);
+            lootEntriesGrid.MultiSelect = false;
+            lootEntriesGrid.Name = "lootEntriesGrid";
+            lootEntriesGrid.RowHeadersVisible = false;
+            lootEntriesGrid.RowTemplate.Height = 25;
+            lootEntriesGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            lootEntriesGrid.Size = new Size(280, 250);
+            lootEntriesGrid.TabIndex = 6;
+            //
+            // lootAddEntryButton
+            //
+            lootAddEntryButton.Location = new Point(208, 282);
+            lootAddEntryButton.Name = "lootAddEntryButton";
+            lootAddEntryButton.Size = new Size(130, 27);
+            lootAddEntryButton.TabIndex = 7;
+            lootAddEntryButton.Text = "Add Entry";
+            lootAddEntryButton.UseVisualStyleBackColor = true;
+            //
+            // lootRemoveEntryButton
+            //
+            lootRemoveEntryButton.Location = new Point(358, 282);
+            lootRemoveEntryButton.Name = "lootRemoveEntryButton";
+            lootRemoveEntryButton.Size = new Size(130, 27);
+            lootRemoveEntryButton.TabIndex = 8;
+            lootRemoveEntryButton.Text = "Remove Entry";
+            lootRemoveEntryButton.UseVisualStyleBackColor = true;
+            //
+            // lootKillsLabel
+            //
+            lootKillsLabel.AutoSize = true;
+            lootKillsLabel.Location = new Point(208, 318);
+            lootKillsLabel.Name = "lootKillsLabel";
+            lootKillsLabel.Size = new Size(118, 15);
+            lootKillsLabel.TabIndex = 9;
+            lootKillsLabel.Text = "Kills for distribution:";
+            //
+            // lootKillsCounter
+            //
+            lootKillsCounter.Location = new Point(332, 316);
+            lootKillsCounter.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
+            lootKillsCounter.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            lootKillsCounter.Name = "lootKillsCounter";
+            lootKillsCounter.Size = new Size(80, 23);
+            lootKillsCounter.TabIndex = 10;
+            lootKillsCounter.Value = new decimal(new int[] { 10, 0, 0, 0 });
+            //
+            // lootChartHintLabel
+            //
+            lootChartHintLabel.AutoSize = true;
+            lootChartHintLabel.Location = new Point(506, 26);
+            lootChartHintLabel.Name = "lootChartHintLabel";
+            lootChartHintLabel.Size = new Size(238, 15);
+            lootChartHintLabel.TabIndex = 11;
+            lootChartHintLabel.Text = "Select an entry to see drop distribution.";
+            //
+            // lootDistributionChart
+            //
+            chartArea1.Name = "ChartArea1";
+            lootDistributionChart.ChartAreas.Add(chartArea1);
+            legend1.Enabled = false;
+            legend1.Name = "Legend1";
+            lootDistributionChart.Legends.Add(legend1);
+            lootDistributionChart.Location = new Point(506, 56);
+            lootDistributionChart.Name = "lootDistributionChart";
+            lootDistributionChart.Size = new Size(280, 345);
+            lootDistributionChart.TabIndex = 12;
+            lootDistributionChart.Text = "lootDistributionChart";
+            //
             // ItemPageTab
-            // 
+            //
             ItemPageTab.Controls.Add(OverrideItemButton);
             ItemPageTab.Controls.Add(EditItemButton);
             ItemPageTab.Controls.Add(itemWindowTabControl);
@@ -1494,7 +1665,12 @@ namespace SPHMMaker
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "MainForm";
-            Text = "Main Form";
+            Text = "SPHM Maker";
+            ((System.ComponentModel.ISupportInitialize)lootDistributionChart).EndInit();
+            ((System.ComponentModel.ISupportInitialize)lootKillsCounter).EndInit();
+            ((System.ComponentModel.ISupportInitialize)lootEntriesGrid).EndInit();
+            lootTabPage.ResumeLayout(false);
+            lootTabPage.PerformLayout();
             MainTab.ResumeLayout(false);
             ItemPageTab.ResumeLayout(false);
             ItemPageTab.PerformLayout();
@@ -1573,6 +1749,7 @@ namespace SPHMMaker
         private Label itemSelectBoxLabel;
         private TabControl MainTab;
         private TabPage ItemPageTab;
+        private TabPage lootTabPage;
         private TabPage TilesPageTab;
         private TabPage otherPage;
         private GroupBox tileDetailsGroup;
@@ -1614,6 +1791,19 @@ namespace SPHMMaker
         private ToolStripMenuItem fileDownloadInstructionsToolStripMenuItem;
         private Button EditItemButton;
         private Button OverrideItemButton;
+        private ListBox lootTablesListBox;
+        private Label lootTableIdLabel;
+        private TextBox lootTableIdTextBox;
+        private Button lootAddTableButton;
+        private Button lootSaveTableButton;
+        private Button lootDeleteTableButton;
+        private DataGridView lootEntriesGrid;
+        private Button lootAddEntryButton;
+        private Button lootRemoveEntryButton;
+        private Label lootKillsLabel;
+        private NumericUpDown lootKillsCounter;
+        private Chart lootDistributionChart;
+        private Label lootChartHintLabel;
         private ToolTip toolTip1;
         private ExtendedForm.ExtendedCheckedListBox itemQualitySelector;
         private TabControl itemTypeTabControl;
