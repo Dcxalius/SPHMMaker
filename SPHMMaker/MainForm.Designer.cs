@@ -1106,7 +1106,7 @@ namespace SPHMMaker
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "MainForm";
-            Text = "SPHM Maker";
+            Text = "Main Form";
             MainTab.ResumeLayout(false);
             ItemPageTab.ResumeLayout(false);
             ItemPageTab.PerformLayout();
