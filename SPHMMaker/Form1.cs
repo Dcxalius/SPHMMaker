@@ -117,5 +117,17 @@ namespace SPHMMaker
 
             MessageBox.Show(tooltip);
         }
+
+        private void fileDownloadInstructionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string instructions = "To download files that are shared in the chat:" + Environment.NewLine +
+                Environment.NewLine +
+                "1. Hover the message that contains the attachment and select the download icon." + Environment.NewLine +
+                "2. Pick a destination on your computer when the save dialog appears." + Environment.NewLine +
+                "3. After the download finishes, open the saved file from the chosen folder." + Environment.NewLine +
+                "4. If the download is a compressed archive (.zip), extract it before importing it into the game.";
+
+            MessageBox.Show(instructions, "File Download Instructions", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
     }
 }

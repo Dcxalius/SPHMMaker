@@ -121,6 +121,8 @@ namespace SPHMMaker
             saveDatapackToolStripMenuItem = new ToolStripMenuItem();
             loadDatapackToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
+            helpToolStripMenuItem = new ToolStripMenuItem();
+            fileDownloadInstructionsToolStripMenuItem = new ToolStripMenuItem();
             toolTip1 = new ToolTip(components);
             MainTab.SuspendLayout();
             ItemPageTab.SuspendLayout();
@@ -1046,7 +1048,7 @@ namespace SPHMMaker
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, helpToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(968, 24);
@@ -1074,15 +1076,29 @@ namespace SPHMMaker
             loadDatapackToolStripMenuItem.Size = new Size(190, 22);
             loadDatapackToolStripMenuItem.Text = "Load Datapack";
             loadDatapackToolStripMenuItem.Click += loadDatapackToolStripMenuItem_Click;
-            // 
+            //
             // exitToolStripMenuItem
-            // 
+            //
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             exitToolStripMenuItem.Size = new Size(190, 22);
             exitToolStripMenuItem.Text = "Exit";
-            // 
+            //
+            // helpToolStripMenuItem
+            //
+            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { fileDownloadInstructionsToolStripMenuItem });
+            helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            helpToolStripMenuItem.Size = new Size(44, 20);
+            helpToolStripMenuItem.Text = "Help";
+            //
+            // fileDownloadInstructionsToolStripMenuItem
+            //
+            fileDownloadInstructionsToolStripMenuItem.Name = "fileDownloadInstructionsToolStripMenuItem";
+            fileDownloadInstructionsToolStripMenuItem.Size = new Size(208, 22);
+            fileDownloadInstructionsToolStripMenuItem.Text = "File Download Instructions";
+            fileDownloadInstructionsToolStripMenuItem.Click += fileDownloadInstructionsToolStripMenuItem_Click;
+            //
             // Form1
-            // 
+            //
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(968, 539);
@@ -1176,6 +1192,8 @@ namespace SPHMMaker
         private ToolStripMenuItem saveDatapackToolStripMenuItem;
         private ToolStripMenuItem loadDatapackToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
+        private ToolStripMenuItem helpToolStripMenuItem;
+        private ToolStripMenuItem fileDownloadInstructionsToolStripMenuItem;
         private Button EditItemButton;
         private Button OverrideItemButton;
         private ToolTip toolTip1;
