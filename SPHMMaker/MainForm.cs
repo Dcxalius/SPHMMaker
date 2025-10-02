@@ -35,7 +35,7 @@ namespace SPHMMaker
             //DirectoryInfo di = new DirectoryInfo(path);
             //di.GetAccessControl().GetAccessRules();
 
-            string[] foldersThatShouldBeHere = ["Items"];
+            string[] foldersThatShouldBeHere = new[] { "Items" };
 
             string[] folders = Directory.GetDirectories(path);
 
@@ -128,6 +128,12 @@ namespace SPHMMaker
                 "4. If the download is a compressed archive (.zip), extract it before importing it into the game.";
 
             MessageBox.Show(instructions, "File Download Instructions", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void spriteEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var editor = new SpriteEditorForm();
+            editor.Show(this);
         }
     }
 }

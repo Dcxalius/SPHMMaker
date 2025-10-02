@@ -29,7 +29,14 @@ namespace SPHMMaker
                 string description = itemDescriptionInput.Text;
                 int maxStack = (int)itemMaxCountSetter.Value;
                 ItemData.ItemQuality itemQuality = Enum.Parse<ItemData.ItemQuality>(itemQualitySelector.Items[itemQualitySelector.GetSingleCheckedIndex.Value].ToString());
-                int[] stats = [(int)itemStatsAgilitySetter.Value, (int)itemStatsStrengthSetter.Value, (int)itemStatsStaminaSetter.Value, (int)itemStatsIntelligenceSetter.Value, (int)itemStatsSpiritSetter.Value];
+                int[] stats = new int[]
+                {
+                    (int)itemStatsAgilitySetter.Value,
+                    (int)itemStatsStrengthSetter.Value,
+                    (int)itemStatsStaminaSetter.Value,
+                    (int)itemStatsIntelligenceSetter.Value,
+                    (int)itemStatsSpiritSetter.Value
+                };
                 int cost = (int)goldCostCounter.Value;
 
                 {
