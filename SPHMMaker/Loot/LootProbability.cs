@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace SPHMMaker.Loot
 {
     public static class LootProbability
@@ -14,7 +17,7 @@ namespace SPHMMaker.Loot
                 throw new ArgumentOutOfRangeException(nameof(killCount));
             }
 
-            double p = Math.Clamp(entry.DropChance, 0d, 1d);
+            double p = Math.Clamp(entry.DropRate, 0d, 1d);
             List<LootProbabilityPoint> result = new(killCount + 1);
 
             for (int i = 0; i <= killCount; i++)
