@@ -116,6 +116,38 @@ namespace SPHMMaker
             listBox2 = new ListBox();
             listBox1 = new ListBox();
             otherPage = new TabPage();
+            unitOverrideButton = new Button();
+            unitEditButton = new Button();
+            unitWindowTabControl = new TabControl();
+            createUnitPage = new TabPage();
+            unitGoldCostCounter = new NumericUpDown();
+            unitGoldCostLabel = new Label();
+            unitTabs = new TabControl();
+            unitStatsTab = new TabPage();
+            unitStatsPanel = new Panel();
+            unitSpeedSetter = new NumericUpDown();
+            unitSpeedLabel = new Label();
+            unitDefenseSetter = new NumericUpDown();
+            unitDefenseLabel = new Label();
+            unitAttackSetter = new NumericUpDown();
+            unitAttackLabel = new Label();
+            unitManaSetter = new NumericUpDown();
+            unitManaLabel = new Label();
+            unitHealthSetter = new NumericUpDown();
+            unitHealthLabel = new Label();
+            unitDescriptionTab = new TabPage();
+            unitDescriptionInput = new RichTextBox();
+            unitLevelSetter = new NumericUpDown();
+            unitLevelLabel = new Label();
+            unitRankSelector = new ComboBox();
+            unitRankLabel = new Label();
+            unitTypeSelector = new ComboBox();
+            unitTypeLabel = new Label();
+            unitCreateButton = new Button();
+            unitNameInput = new TextBox();
+            unitNameLabel = new Label();
+            unitListLabel = new Label();
+            unitList = new ListBox();
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
             saveDatapackToolStripMenuItem = new ToolStripMenuItem();
@@ -161,6 +193,20 @@ namespace SPHMMaker
             descriptionTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)itemMaxCountSetter).BeginInit();
             itemEffectTab.SuspendLayout();
+            otherPage.SuspendLayout();
+            unitWindowTabControl.SuspendLayout();
+            createUnitPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)unitGoldCostCounter).BeginInit();
+            unitTabs.SuspendLayout();
+            unitStatsTab.SuspendLayout();
+            unitStatsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)unitSpeedSetter).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)unitDefenseSetter).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)unitAttackSetter).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)unitManaSetter).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)unitHealthSetter).BeginInit();
+            unitDescriptionTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)unitLevelSetter).BeginInit();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -1026,22 +1072,339 @@ namespace SPHMMaker
             listBox2.TabIndex = 1;
             // 
             // listBox1
-            // 
+            //
             listBox1.FormattingEnabled = true;
             listBox1.ItemHeight = 15;
             listBox1.Location = new Point(25, 30);
             listBox1.Name = "listBox1";
             listBox1.Size = new Size(231, 334);
             listBox1.TabIndex = 0;
-            // 
+            //
+            // unitOverrideButton
+            //
+            unitOverrideButton.Location = new Point(684, 395);
+            unitOverrideButton.Name = "unitOverrideButton";
+            unitOverrideButton.Size = new Size(100, 24);
+            unitOverrideButton.TabIndex = 5;
+            unitOverrideButton.Text = "Override Unit";
+            unitOverrideButton.UseVisualStyleBackColor = true;
+            //
+            // unitEditButton
+            //
+            unitEditButton.Location = new Point(582, 395);
+            unitEditButton.Name = "unitEditButton";
+            unitEditButton.Size = new Size(100, 24);
+            unitEditButton.TabIndex = 4;
+            unitEditButton.Text = "Edit Unit";
+            unitEditButton.UseVisualStyleBackColor = true;
+            //
+            // unitWindowTabControl
+            //
+            unitWindowTabControl.Controls.Add(createUnitPage);
+            unitWindowTabControl.Location = new Point(6, 6);
+            unitWindowTabControl.Name = "unitWindowTabControl";
+            unitWindowTabControl.SelectedIndex = 0;
+            unitWindowTabControl.Size = new Size(570, 481);
+            unitWindowTabControl.TabIndex = 3;
+            //
+            // createUnitPage
+            //
+            createUnitPage.Controls.Add(unitGoldCostCounter);
+            createUnitPage.Controls.Add(unitGoldCostLabel);
+            createUnitPage.Controls.Add(unitTabs);
+            createUnitPage.Controls.Add(unitLevelSetter);
+            createUnitPage.Controls.Add(unitLevelLabel);
+            createUnitPage.Controls.Add(unitRankSelector);
+            createUnitPage.Controls.Add(unitRankLabel);
+            createUnitPage.Controls.Add(unitTypeSelector);
+            createUnitPage.Controls.Add(unitTypeLabel);
+            createUnitPage.Controls.Add(unitCreateButton);
+            createUnitPage.Controls.Add(unitNameInput);
+            createUnitPage.Controls.Add(unitNameLabel);
+            createUnitPage.Location = new Point(4, 24);
+            createUnitPage.Name = "createUnitPage";
+            createUnitPage.Padding = new Padding(3);
+            createUnitPage.Size = new Size(562, 453);
+            createUnitPage.TabIndex = 0;
+            createUnitPage.Text = "Create Unit";
+            createUnitPage.UseVisualStyleBackColor = true;
+            //
+            // unitGoldCostCounter
+            //
+            unitGoldCostCounter.Location = new Point(458, 40);
+            unitGoldCostCounter.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            unitGoldCostCounter.Name = "unitGoldCostCounter";
+            unitGoldCostCounter.Size = new Size(65, 23);
+            unitGoldCostCounter.TabIndex = 11;
+            //
+            // unitGoldCostLabel
+            //
+            unitGoldCostLabel.AutoSize = true;
+            unitGoldCostLabel.Location = new Point(400, 42);
+            unitGoldCostLabel.Name = "unitGoldCostLabel";
+            unitGoldCostLabel.Size = new Size(60, 15);
+            unitGoldCostLabel.TabIndex = 10;
+            unitGoldCostLabel.Text = "Gold cost:";
+            //
+            // unitTabs
+            //
+            unitTabs.Controls.Add(unitStatsTab);
+            unitTabs.Controls.Add(unitDescriptionTab);
+            unitTabs.Location = new Point(6, 96);
+            unitTabs.Name = "unitTabs";
+            unitTabs.SelectedIndex = 0;
+            unitTabs.Size = new Size(467, 322);
+            unitTabs.TabIndex = 9;
+            //
+            // unitStatsTab
+            //
+            unitStatsTab.Controls.Add(unitStatsPanel);
+            unitStatsTab.Location = new Point(4, 24);
+            unitStatsTab.Name = "unitStatsTab";
+            unitStatsTab.Padding = new Padding(3);
+            unitStatsTab.Size = new Size(459, 294);
+            unitStatsTab.TabIndex = 0;
+            unitStatsTab.Text = "Stats";
+            unitStatsTab.UseVisualStyleBackColor = true;
+            //
+            // unitStatsPanel
+            //
+            unitStatsPanel.Controls.Add(unitSpeedSetter);
+            unitStatsPanel.Controls.Add(unitSpeedLabel);
+            unitStatsPanel.Controls.Add(unitDefenseSetter);
+            unitStatsPanel.Controls.Add(unitDefenseLabel);
+            unitStatsPanel.Controls.Add(unitAttackSetter);
+            unitStatsPanel.Controls.Add(unitAttackLabel);
+            unitStatsPanel.Controls.Add(unitManaSetter);
+            unitStatsPanel.Controls.Add(unitManaLabel);
+            unitStatsPanel.Controls.Add(unitHealthSetter);
+            unitStatsPanel.Controls.Add(unitHealthLabel);
+            unitStatsPanel.Dock = DockStyle.Fill;
+            unitStatsPanel.Location = new Point(3, 3);
+            unitStatsPanel.Name = "unitStatsPanel";
+            unitStatsPanel.Size = new Size(453, 288);
+            unitStatsPanel.TabIndex = 0;
+            //
+            // unitSpeedSetter
+            //
+            unitSpeedSetter.Location = new Point(110, 180);
+            unitSpeedSetter.Maximum = new decimal(new int[] { 500, 0, 0, 0 });
+            unitSpeedSetter.Name = "unitSpeedSetter";
+            unitSpeedSetter.Size = new Size(120, 23);
+            unitSpeedSetter.TabIndex = 9;
+            //
+            // unitSpeedLabel
+            //
+            unitSpeedLabel.AutoSize = true;
+            unitSpeedLabel.Location = new Point(14, 182);
+            unitSpeedLabel.Name = "unitSpeedLabel";
+            unitSpeedLabel.Size = new Size(40, 15);
+            unitSpeedLabel.TabIndex = 8;
+            unitSpeedLabel.Text = "Speed:";
+            //
+            // unitDefenseSetter
+            //
+            unitDefenseSetter.Location = new Point(110, 144);
+            unitDefenseSetter.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            unitDefenseSetter.Name = "unitDefenseSetter";
+            unitDefenseSetter.Size = new Size(120, 23);
+            unitDefenseSetter.TabIndex = 7;
+            //
+            // unitDefenseLabel
+            //
+            unitDefenseLabel.AutoSize = true;
+            unitDefenseLabel.Location = new Point(14, 146);
+            unitDefenseLabel.Name = "unitDefenseLabel";
+            unitDefenseLabel.Size = new Size(53, 15);
+            unitDefenseLabel.TabIndex = 6;
+            unitDefenseLabel.Text = "Defense:";
+            //
+            // unitAttackSetter
+            //
+            unitAttackSetter.Location = new Point(110, 108);
+            unitAttackSetter.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            unitAttackSetter.Name = "unitAttackSetter";
+            unitAttackSetter.Size = new Size(120, 23);
+            unitAttackSetter.TabIndex = 5;
+            //
+            // unitAttackLabel
+            //
+            unitAttackLabel.AutoSize = true;
+            unitAttackLabel.Location = new Point(14, 110);
+            unitAttackLabel.Name = "unitAttackLabel";
+            unitAttackLabel.Size = new Size(44, 15);
+            unitAttackLabel.TabIndex = 4;
+            unitAttackLabel.Text = "Attack:";
+            //
+            // unitManaSetter
+            //
+            unitManaSetter.Location = new Point(110, 72);
+            unitManaSetter.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
+            unitManaSetter.Name = "unitManaSetter";
+            unitManaSetter.Size = new Size(120, 23);
+            unitManaSetter.TabIndex = 3;
+            //
+            // unitManaLabel
+            //
+            unitManaLabel.AutoSize = true;
+            unitManaLabel.Location = new Point(14, 74);
+            unitManaLabel.Name = "unitManaLabel";
+            unitManaLabel.Size = new Size(38, 15);
+            unitManaLabel.TabIndex = 2;
+            unitManaLabel.Text = "Mana:";
+            //
+            // unitHealthSetter
+            //
+            unitHealthSetter.Location = new Point(110, 36);
+            unitHealthSetter.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
+            unitHealthSetter.Name = "unitHealthSetter";
+            unitHealthSetter.Size = new Size(120, 23);
+            unitHealthSetter.TabIndex = 1;
+            //
+            // unitHealthLabel
+            //
+            unitHealthLabel.AutoSize = true;
+            unitHealthLabel.Location = new Point(14, 38);
+            unitHealthLabel.Name = "unitHealthLabel";
+            unitHealthLabel.Size = new Size(44, 15);
+            unitHealthLabel.TabIndex = 0;
+            unitHealthLabel.Text = "Health:";
+            //
+            // unitDescriptionTab
+            //
+            unitDescriptionTab.Controls.Add(unitDescriptionInput);
+            unitDescriptionTab.Location = new Point(4, 24);
+            unitDescriptionTab.Name = "unitDescriptionTab";
+            unitDescriptionTab.Padding = new Padding(3);
+            unitDescriptionTab.Size = new Size(459, 294);
+            unitDescriptionTab.TabIndex = 1;
+            unitDescriptionTab.Text = "Description";
+            unitDescriptionTab.UseVisualStyleBackColor = true;
+            //
+            // unitDescriptionInput
+            //
+            unitDescriptionInput.Dock = DockStyle.Fill;
+            unitDescriptionInput.Location = new Point(3, 3);
+            unitDescriptionInput.Name = "unitDescriptionInput";
+            unitDescriptionInput.Size = new Size(453, 288);
+            unitDescriptionInput.TabIndex = 0;
+            unitDescriptionInput.Text = "";
+            //
+            // unitLevelSetter
+            //
+            unitLevelSetter.Location = new Point(334, 9);
+            unitLevelSetter.Maximum = new decimal(new int[] { 120, 0, 0, 0 });
+            unitLevelSetter.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            unitLevelSetter.Name = "unitLevelSetter";
+            unitLevelSetter.Size = new Size(60, 23);
+            unitLevelSetter.TabIndex = 5;
+            unitLevelSetter.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            //
+            // unitLevelLabel
+            //
+            unitLevelLabel.AutoSize = true;
+            unitLevelLabel.Location = new Point(288, 11);
+            unitLevelLabel.Name = "unitLevelLabel";
+            unitLevelLabel.Size = new Size(39, 15);
+            unitLevelLabel.TabIndex = 4;
+            unitLevelLabel.Text = "Level:";
+            //
+            // unitRankSelector
+            //
+            unitRankSelector.DropDownStyle = ComboBoxStyle.DropDownList;
+            unitRankSelector.FormattingEnabled = true;
+            unitRankSelector.Items.AddRange(new object[] { "Normal", "Elite", "Boss" });
+            unitRankSelector.Location = new Point(298, 37);
+            unitRankSelector.Name = "unitRankSelector";
+            unitRankSelector.Size = new Size(96, 23);
+            unitRankSelector.TabIndex = 7;
+            unitRankSelector.SelectedIndex = 0;
+            //
+            // unitRankLabel
+            //
+            unitRankLabel.AutoSize = true;
+            unitRankLabel.Location = new Point(240, 40);
+            unitRankLabel.Name = "unitRankLabel";
+            unitRankLabel.Size = new Size(36, 15);
+            unitRankLabel.TabIndex = 6;
+            unitRankLabel.Text = "Rank:";
+            //
+            // unitTypeSelector
+            //
+            unitTypeSelector.DropDownStyle = ComboBoxStyle.DropDownList;
+            unitTypeSelector.FormattingEnabled = true;
+            unitTypeSelector.Items.AddRange(new object[] { "Friendly", "Neutral", "Hostile" });
+            unitTypeSelector.Location = new Point(81, 37);
+            unitTypeSelector.Name = "unitTypeSelector";
+            unitTypeSelector.Size = new Size(121, 23);
+            unitTypeSelector.TabIndex = 3;
+            unitTypeSelector.SelectedIndex = 0;
+            //
+            // unitTypeLabel
+            //
+            unitTypeLabel.AutoSize = true;
+            unitTypeLabel.Location = new Point(6, 40);
+            unitTypeLabel.Name = "unitTypeLabel";
+            unitTypeLabel.Size = new Size(66, 15);
+            unitTypeLabel.TabIndex = 2;
+            unitTypeLabel.Text = "Unit Type:";
+            //
+            // unitCreateButton
+            //
+            unitCreateButton.Location = new Point(458, 353);
+            unitCreateButton.Name = "unitCreateButton";
+            unitCreateButton.Size = new Size(98, 27);
+            unitCreateButton.TabIndex = 8;
+            unitCreateButton.Text = "Create Unit";
+            unitCreateButton.UseVisualStyleBackColor = true;
+            //
+            // unitNameInput
+            //
+            unitNameInput.Location = new Point(81, 8);
+            unitNameInput.Name = "unitNameInput";
+            unitNameInput.Size = new Size(192, 23);
+            unitNameInput.TabIndex = 1;
+            //
+            // unitNameLabel
+            //
+            unitNameLabel.AutoSize = true;
+            unitNameLabel.Location = new Point(6, 11);
+            unitNameLabel.Name = "unitNameLabel";
+            unitNameLabel.Size = new Size(71, 15);
+            unitNameLabel.TabIndex = 0;
+            unitNameLabel.Text = "Unit Name:";
+            //
+            // unitListLabel
+            //
+            unitListLabel.AutoSize = true;
+            unitListLabel.Location = new Point(582, 12);
+            unitListLabel.Name = "unitListLabel";
+            unitListLabel.Size = new Size(38, 15);
+            unitListLabel.TabIndex = 2;
+            unitListLabel.Text = "Units:";
+            //
+            // unitList
+            //
+            unitList.FormattingEnabled = true;
+            unitList.ItemHeight = 15;
+            unitList.Location = new Point(582, 30);
+            unitList.Name = "unitList";
+            unitList.Size = new Size(202, 364);
+            unitList.TabIndex = 1;
+            //
             // otherPage
-            // 
+            //
+            otherPage.Controls.Add(unitOverrideButton);
+            otherPage.Controls.Add(unitEditButton);
+            otherPage.Controls.Add(unitWindowTabControl);
+            otherPage.Controls.Add(unitListLabel);
+            otherPage.Controls.Add(unitList);
             otherPage.Location = new Point(4, 24);
             otherPage.Name = "otherPage";
             otherPage.Padding = new Padding(3);
             otherPage.Size = new Size(792, 483);
             otherPage.TabIndex = 1;
-            otherPage.Text = "??";
+            otherPage.Text = "Unit";
             otherPage.UseVisualStyleBackColor = true;
             // 
             // menuStrip1
@@ -1143,6 +1506,23 @@ namespace SPHMMaker
             ((System.ComponentModel.ISupportInitialize)itemMaxCountSetter).EndInit();
             itemEffectTab.ResumeLayout(false);
             itemEffectTab.PerformLayout();
+            otherPage.ResumeLayout(false);
+            otherPage.PerformLayout();
+            unitWindowTabControl.ResumeLayout(false);
+            createUnitPage.ResumeLayout(false);
+            createUnitPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)unitGoldCostCounter).EndInit();
+            unitTabs.ResumeLayout(false);
+            unitStatsTab.ResumeLayout(false);
+            unitStatsPanel.ResumeLayout(false);
+            unitStatsPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)unitSpeedSetter).EndInit();
+            ((System.ComponentModel.ISupportInitialize)unitDefenseSetter).EndInit();
+            ((System.ComponentModel.ISupportInitialize)unitAttackSetter).EndInit();
+            ((System.ComponentModel.ISupportInitialize)unitManaSetter).EndInit();
+            ((System.ComponentModel.ISupportInitialize)unitHealthSetter).EndInit();
+            unitDescriptionTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)unitLevelSetter).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
@@ -1242,5 +1622,37 @@ namespace SPHMMaker
         private Label itemPotionMaximumLabel;
         private Label itemPotionMinimumLabel;
         private Button itemCheckGeneratedTooltip;
+        private Button unitOverrideButton;
+        private Button unitEditButton;
+        private TabControl unitWindowTabControl;
+        private TabPage createUnitPage;
+        private NumericUpDown unitGoldCostCounter;
+        private Label unitGoldCostLabel;
+        private TabControl unitTabs;
+        private TabPage unitStatsTab;
+        private Panel unitStatsPanel;
+        private NumericUpDown unitSpeedSetter;
+        private Label unitSpeedLabel;
+        private NumericUpDown unitDefenseSetter;
+        private Label unitDefenseLabel;
+        private NumericUpDown unitAttackSetter;
+        private Label unitAttackLabel;
+        private NumericUpDown unitManaSetter;
+        private Label unitManaLabel;
+        private NumericUpDown unitHealthSetter;
+        private Label unitHealthLabel;
+        private TabPage unitDescriptionTab;
+        private RichTextBox unitDescriptionInput;
+        private NumericUpDown unitLevelSetter;
+        private Label unitLevelLabel;
+        private ComboBox unitRankSelector;
+        private Label unitRankLabel;
+        private ComboBox unitTypeSelector;
+        private Label unitTypeLabel;
+        private Button unitCreateButton;
+        private TextBox unitNameInput;
+        private Label unitNameLabel;
+        private Label unitListLabel;
+        private ListBox unitList;
     }
 }
