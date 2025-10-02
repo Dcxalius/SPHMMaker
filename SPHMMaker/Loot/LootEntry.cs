@@ -1,7 +1,7 @@
-namespace SPHMMaker.Loot;
-
 using System;
 using System.ComponentModel;
+
+namespace SPHMMaker.Loot;
 
 public class LootEntry : INotifyPropertyChanged
 {
@@ -58,5 +58,4 @@ public class LootEntry : INotifyPropertyChanged
 
     private void OnPropertyChanged(string propertyName) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
 }

@@ -1,7 +1,6 @@
+using System.ComponentModel;
 
 namespace SPHMMaker.Loot;
-
-using System.ComponentModel;
 
 public class LootTable : INotifyPropertyChanged
 {
