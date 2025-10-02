@@ -229,12 +229,21 @@ namespace SPHMMaker
         private void EditItemButton_Click(object sender, EventArgs e) => SetItemTo(items.SelectedIndex);
         private void SetItemTo(int aIndex)
         {
-            //TODO: Check if anything has been changed and ask the user if they want to discard the changes 
+            int previousEditingItem = editingItem;
+
+            if (!CanDiscardChanges(aIndex))
+            {
+                if (previousEditingItem >= 0 && previousEditingItem < items.Items.Count)
+                {
+                    items.SelectedIndex = previousEditingItem;
+                }
+                return;
+            }
 
             if (aIndex != ListBox.NoMatches)
             {
-                editingItem = items.SelectedIndex;
-                ItemData item = ItemManager.GetItemById(items.SelectedIndex);
+                editingItem = aIndex;
+                ItemData item = ItemManager.GetItemById(aIndex);
                 goldCostCounter.Value = item.Cost;
                 itemMaxCountSetter.Value = item.MaxStack;
                 itemNameInput.Text = item.Name;
@@ -328,18 +337,210 @@ namespace SPHMMaker
                         for (int i = 0; i < potionData.Type.Length; i++)
                         {
                             itemPotionTypeSetter.SetItemChecked((int)potionData.Type[i], true);
-                            
+
                         }
 
                         SetPotionData(potionData.Type, potionData.Value, potionData.MaxValue);
                     }
-                    
+
 
                     return;
                 }
 
                 //MessageBox.Show(index.ToString());
             }
+        }
+
+        private bool CanDiscardChanges(int newIndex)
+        {
+            if (editingItem == -1 || editingItem == newIndex)
+            {
+                return true;
+            }
+
+            ItemData originalItem;
+            try
+            {
+                originalItem = ItemManager.GetItemById(editingItem);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return true;
+            }
+            catch (NullReferenceException)
+            {
+                return true;
+            }
+
+            if (!HasUnsavedChanges(originalItem))
+            {
+                return true;
+            }
+
+            var result = MessageBox.Show(
+                "You have unsaved changes. Do you want to discard them?",
+                "Discard changes",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            return result == DialogResult.Yes;
+        }
+
+        private bool HasUnsavedChanges(ItemData original)
+        {
+            if (original == null)
+            {
+                return false;
+            }
+
+            if (!string.Equals(itemNameInput.Text, original.Name, StringComparison.Ordinal))
+            {
+                return true;
+            }
+
+            if (!string.Equals(itemDescriptionInput.Text, original.Description, StringComparison.Ordinal))
+            {
+                return true;
+            }
+
+            if ((int)itemMaxCountSetter.Value != original.MaxStack)
+            {
+                return true;
+            }
+
+            if ((int)goldCostCounter.Value != original.Cost)
+            {
+                return true;
+            }
+
+            string currentQuality = GetCheckedItemText(itemQualitySelector);
+            if (!string.Equals(currentQuality, original.Quality.ToString(), StringComparison.Ordinal))
+            {
+                return true;
+            }
+
+            string expectedTypeName = itemTypeSelector.FindString(original.TypeName) == -1
+                ? nameof(ItemData.ItemType.None)
+                : original.TypeName;
+
+            string currentType = GetCheckedItemText(itemTypeSelector);
+            if (!string.Equals(currentType, expectedTypeName, StringComparison.Ordinal))
+            {
+                return true;
+            }
+
+            if (original is BagData bag)
+            {
+                if ((int)itemBagSizeSetter.Value != bag.SlotCount)
+                {
+                    return true;
+                }
+            }
+
+            if (original is EquipmentData equipment)
+            {
+                if ((int)itemStatsAgilitySetter.Value != equipment.Agility
+                    || (int)itemStatsStrengthSetter.Value != equipment.Strength
+                    || (int)itemStatsStaminaSetter.Value != equipment.Stamina
+                    || (int)itemStatsIntelligenceSetter.Value != equipment.Intelligence
+                    || (int)itemStatsSpiritSetter.Value != equipment.Spirit
+                    || (int)itemStatsArmorSetter.Value != equipment.Armor)
+                {
+                    return true;
+                }
+
+                if (original is WeaponData weapon)
+                {
+                    if (!string.Equals(ReplaceWhitespace(itemWeaponEQTypeSetter.Text, string.Empty), weapon.Hand.ToString(), StringComparison.Ordinal))
+                    {
+                        return true;
+                    }
+
+                    if (!string.Equals(ReplaceWhitespace(itemWeaponTypeSetter.Text, string.Empty), weapon.WeaponType.ToString(), StringComparison.Ordinal))
+                    {
+                        return true;
+                    }
+
+                    if (weapon.WeaponType < WeaponData.Weapon.Shield)
+                    {
+                        WeaponData.Attack attack = weapon.GetAttack;
+
+                        if ((int)itemMinimumDamageSetter.Value != attack.MinAttackDamage
+                            || (int)itemMaximumDamageSetter.Value != attack.MaxAttackDamage
+                            || itemAttackSpeedSetter.Value != (decimal)attack.AttackSpeed)
+                        {
+                            return true;
+                        }
+                    }
+                }
+                else
+                {
+                    if (!string.Equals(itemTypeEquipmentTypeSetter.Text, equipment.Slot.ToString(), StringComparison.Ordinal))
+                    {
+                        return true;
+                    }
+
+                    if (!string.Equals(itemEquipmentMaterialSetter.Text, equipment.Material.ToString(), StringComparison.Ordinal))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            if (original is PotionData potion)
+            {
+                int[] currentTypes = itemPotionTypeSetter.CheckedIndices.Cast<int>().OrderBy(x => x).ToArray();
+                int[] originalTypes = potion.Type.Select(x => (int)x).OrderBy(x => x).ToArray();
+
+                if (!currentTypes.SequenceEqual(originalTypes))
+                {
+                    return true;
+                }
+
+                for (int i = 0; i < potion.Type.Length; i++)
+                {
+                    int potionTypeIndex = (int)potion.Type[i];
+                    decimal minValue = GetPotionControlValue(potionTypeIndex, "Minimum");
+                    decimal maxValue = GetPotionControlValue(potionTypeIndex, "Maximum");
+
+                    if (minValue != (decimal)potion.Value[i] || maxValue != (decimal)potion.MaxValue[i])
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static string GetCheckedItemText(ExtendedForm.ExtendedCheckedListBox list)
+        {
+            int? index = list.GetSingleCheckedIndex;
+            if (!index.HasValue)
+            {
+                return string.Empty;
+            }
+
+            return list.Items[index.Value]?.ToString() ?? string.Empty;
+        }
+
+        private decimal GetPotionControlValue(int typeIndex, string namePart)
+        {
+            if (typeIndex < 0 || typeIndex >= itemPotionValueFlowLayout.Controls.Count)
+            {
+                return 0;
+            }
+
+            Control.ControlCollection controls = itemPotionValueFlowLayout.Controls[typeIndex].Controls;
+            foreach (Control control in controls)
+            {
+                if (control.Name.Contains(namePart, StringComparison.OrdinalIgnoreCase))
+                {
+                    return ((NumericUpDown)control).Value;
+                }
+            }
+
+            return 0;
         }
 
         private void itemWeaponTypeSetter_SelectedIndexChanged(object sender, EventArgs e)
