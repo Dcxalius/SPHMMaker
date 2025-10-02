@@ -1,4 +1,5 @@
-﻿using SPHMMaker.Items;
+using System.Windows.Forms.DataVisualization.Charting;
+using SPHMMaker.Items;
 
 namespace SPHMMaker
 {
@@ -31,12 +32,47 @@ namespace SPHMMaker
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            ChartArea chartArea1 = new ChartArea();
+            Legend legend1 = new Legend();
+
             itemNameInput = new TextBox();
             items = new ListBox();
             itemNameLabel = new Label();
             itemSelectBoxLabel = new Label();
             MainTab = new TabControl();
+            lootTabPage = new TabPage();
+            lootDistributionChart = new Chart();
+            lootChartHintLabel = new Label();
+            lootKillsCounter = new NumericUpDown();
+            lootKillsLabel = new Label();
+            lootRemoveEntryButton = new Button();
+            lootAddEntryButton = new Button();
+            lootEntriesGrid = new DataGridView();
+            lootDeleteTableButton = new Button();
+            lootSaveTableButton = new Button();
+            lootAddTableButton = new Button();
+            lootTableIdTextBox = new TextBox();
+            lootTableIdLabel = new Label();
+            lootTablesListBox = new ListBox();
             ItemPageTab = new TabPage();
+            TilesPageTab = new TabPage();
+            tileDetailsGroup = new GroupBox();
+            tileResetButton = new Button();
+            tileSaveButton = new Button();
+            tileCreateButton = new Button();
+            tileNotesInput = new RichTextBox();
+            tileNotesLabel = new Label();
+            tileMovementCostInput = new NumericUpDown();
+            tileMovementCostLabel = new Label();
+            tileWalkableCheckbox = new CheckBox();
+            tileTextureInput = new TextBox();
+            tileTextureLabel = new Label();
+            tileNameInput = new TextBox();
+            tileNameLabel = new Label();
+            tileIdInput = new NumericUpDown();
+            tileIdLabel = new Label();
+            tileListLabel = new Label();
+            tileList = new ListBox();
             OverrideItemButton = new Button();
             EditItemButton = new Button();
             itemWindowTabControl = new TabControl();
@@ -124,8 +160,14 @@ namespace SPHMMaker
             helpToolStripMenuItem = new ToolStripMenuItem();
             fileDownloadInstructionsToolStripMenuItem = new ToolStripMenuItem();
             toolTip1 = new ToolTip(components);
+            ((System.ComponentModel.ISupportInitialize)lootDistributionChart).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)lootKillsCounter).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)lootEntriesGrid).BeginInit();
             MainTab.SuspendLayout();
+            lootTabPage.SuspendLayout();
             ItemPageTab.SuspendLayout();
+            TilesPageTab.SuspendLayout();
+            tileDetailsGroup.SuspendLayout();
             itemWindowTabControl.SuspendLayout();
             createItemPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)goldCostCounter).BeginInit();
@@ -163,6 +205,11 @@ namespace SPHMMaker
             descriptionTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)itemMaxCountSetter).BeginInit();
             itemEffectTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)tileMovementCostInput).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)tileIdInput).BeginInit();
+
+            lootTabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)lootEntriesGrid).BeginInit();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -204,15 +251,166 @@ namespace SPHMMaker
             // MainTab
             // 
             MainTab.Controls.Add(ItemPageTab);
+            MainTab.Controls.Add(TilesPageTab);
+            MainTab.Controls.Add(lootTabPage);
             MainTab.Controls.Add(otherPage);
             MainTab.Location = new Point(0, 27);
             MainTab.Name = "MainTab";
             MainTab.SelectedIndex = 0;
             MainTab.Size = new Size(800, 511);
             MainTab.TabIndex = 4;
-            // 
+            //
+            // lootTabPage
+            //
+            lootTabPage.Controls.Add(lootDistributionChart);
+            lootTabPage.Controls.Add(lootChartHintLabel);
+            lootTabPage.Controls.Add(lootKillsCounter);
+            lootTabPage.Controls.Add(lootKillsLabel);
+            lootTabPage.Controls.Add(lootRemoveEntryButton);
+            lootTabPage.Controls.Add(lootAddEntryButton);
+            lootTabPage.Controls.Add(lootEntriesGrid);
+            lootTabPage.Controls.Add(lootDeleteTableButton);
+            lootTabPage.Controls.Add(lootSaveTableButton);
+            lootTabPage.Controls.Add(lootAddTableButton);
+            lootTabPage.Controls.Add(lootTableIdTextBox);
+            lootTabPage.Controls.Add(lootTableIdLabel);
+            lootTabPage.Controls.Add(lootTablesListBox);
+            lootTabPage.Location = new Point(4, 24);
+            lootTabPage.Name = "lootTabPage";
+            lootTabPage.Padding = new Padding(3);
+            lootTabPage.Size = new Size(792, 483);
+            lootTabPage.TabIndex = 1;
+            lootTabPage.Text = "Loot";
+            lootTabPage.UseVisualStyleBackColor = true;
+            //
+            // lootTablesListBox
+            //
+            lootTablesListBox.FormattingEnabled = true;
+            lootTablesListBox.ItemHeight = 15;
+            lootTablesListBox.Location = new Point(6, 122);
+            lootTablesListBox.Name = "lootTablesListBox";
+            lootTablesListBox.Size = new Size(188, 319);
+            lootTablesListBox.TabIndex = 5;
+            //
+            // lootTableIdLabel
+            //
+            lootTableIdLabel.AutoSize = true;
+            lootTableIdLabel.Location = new Point(6, 8);
+            lootTableIdLabel.Name = "lootTableIdLabel";
+            lootTableIdLabel.Size = new Size(85, 15);
+            lootTableIdLabel.TabIndex = 0;
+            lootTableIdLabel.Text = "Loot Table ID:";
+            //
+            // lootTableIdTextBox
+            //
+            lootTableIdTextBox.Location = new Point(6, 26);
+            lootTableIdTextBox.Name = "lootTableIdTextBox";
+            lootTableIdTextBox.Size = new Size(188, 23);
+            lootTableIdTextBox.TabIndex = 1;
+            //
+            // lootAddTableButton
+            //
+            lootAddTableButton.Location = new Point(6, 55);
+            lootAddTableButton.Name = "lootAddTableButton";
+            lootAddTableButton.Size = new Size(92, 27);
+            lootAddTableButton.TabIndex = 2;
+            lootAddTableButton.Text = "New Table";
+            lootAddTableButton.UseVisualStyleBackColor = true;
+            //
+            // lootSaveTableButton
+            //
+            lootSaveTableButton.Location = new Point(102, 55);
+            lootSaveTableButton.Name = "lootSaveTableButton";
+            lootSaveTableButton.Size = new Size(92, 27);
+            lootSaveTableButton.TabIndex = 3;
+            lootSaveTableButton.Text = "Save ID";
+            lootSaveTableButton.UseVisualStyleBackColor = true;
+            //
+            // lootDeleteTableButton
+            //
+            lootDeleteTableButton.Location = new Point(6, 88);
+            lootDeleteTableButton.Name = "lootDeleteTableButton";
+            lootDeleteTableButton.Size = new Size(188, 27);
+            lootDeleteTableButton.TabIndex = 4;
+            lootDeleteTableButton.Text = "Delete Table";
+            lootDeleteTableButton.UseVisualStyleBackColor = true;
+            //
+            // lootEntriesGrid
+            //
+            lootEntriesGrid.AllowUserToAddRows = false;
+            lootEntriesGrid.AllowUserToDeleteRows = false;
+            lootEntriesGrid.AllowUserToResizeRows = false;
+            lootEntriesGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            lootEntriesGrid.Location = new Point(208, 26);
+            lootEntriesGrid.MultiSelect = false;
+            lootEntriesGrid.Name = "lootEntriesGrid";
+            lootEntriesGrid.RowHeadersVisible = false;
+            lootEntriesGrid.RowTemplate.Height = 25;
+            lootEntriesGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            lootEntriesGrid.Size = new Size(280, 250);
+            lootEntriesGrid.TabIndex = 6;
+            //
+            // lootAddEntryButton
+            //
+            lootAddEntryButton.Location = new Point(208, 282);
+            lootAddEntryButton.Name = "lootAddEntryButton";
+            lootAddEntryButton.Size = new Size(130, 27);
+            lootAddEntryButton.TabIndex = 7;
+            lootAddEntryButton.Text = "Add Entry";
+            lootAddEntryButton.UseVisualStyleBackColor = true;
+            //
+            // lootRemoveEntryButton
+            //
+            lootRemoveEntryButton.Location = new Point(358, 282);
+            lootRemoveEntryButton.Name = "lootRemoveEntryButton";
+            lootRemoveEntryButton.Size = new Size(130, 27);
+            lootRemoveEntryButton.TabIndex = 8;
+            lootRemoveEntryButton.Text = "Remove Entry";
+            lootRemoveEntryButton.UseVisualStyleBackColor = true;
+            //
+            // lootKillsLabel
+            //
+            lootKillsLabel.AutoSize = true;
+            lootKillsLabel.Location = new Point(208, 318);
+            lootKillsLabel.Name = "lootKillsLabel";
+            lootKillsLabel.Size = new Size(118, 15);
+            lootKillsLabel.TabIndex = 9;
+            lootKillsLabel.Text = "Kills for distribution:";
+            //
+            // lootKillsCounter
+            //
+            lootKillsCounter.Location = new Point(332, 316);
+            lootKillsCounter.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
+            lootKillsCounter.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            lootKillsCounter.Name = "lootKillsCounter";
+            lootKillsCounter.Size = new Size(80, 23);
+            lootKillsCounter.TabIndex = 10;
+            lootKillsCounter.Value = new decimal(new int[] { 10, 0, 0, 0 });
+            //
+            // lootChartHintLabel
+            //
+            lootChartHintLabel.AutoSize = true;
+            lootChartHintLabel.Location = new Point(506, 26);
+            lootChartHintLabel.Name = "lootChartHintLabel";
+            lootChartHintLabel.Size = new Size(238, 15);
+            lootChartHintLabel.TabIndex = 11;
+            lootChartHintLabel.Text = "Select an entry to see drop distribution.";
+            //
+            // lootDistributionChart
+            //
+            chartArea1.Name = "ChartArea1";
+            lootDistributionChart.ChartAreas.Add(chartArea1);
+            legend1.Enabled = false;
+            legend1.Name = "Legend1";
+            lootDistributionChart.Legends.Add(legend1);
+            lootDistributionChart.Location = new Point(506, 56);
+            lootDistributionChart.Name = "lootDistributionChart";
+            lootDistributionChart.Size = new Size(280, 345);
+            lootDistributionChart.TabIndex = 12;
+            lootDistributionChart.Text = "lootDistributionChart";
+            //
             // ItemPageTab
-            // 
+            //
             ItemPageTab.Controls.Add(OverrideItemButton);
             ItemPageTab.Controls.Add(EditItemButton);
             ItemPageTab.Controls.Add(itemWindowTabControl);
@@ -225,9 +423,187 @@ namespace SPHMMaker
             ItemPageTab.TabIndex = 0;
             ItemPageTab.Text = "Items";
             ItemPageTab.UseVisualStyleBackColor = true;
-            // 
+            //
+            // TilesPageTab
+            //
+            TilesPageTab.Controls.Add(tileDetailsGroup);
+            TilesPageTab.Controls.Add(tileListLabel);
+            TilesPageTab.Controls.Add(tileList);
+            TilesPageTab.Location = new Point(4, 24);
+            TilesPageTab.Name = "TilesPageTab";
+            TilesPageTab.Padding = new Padding(3);
+            TilesPageTab.Size = new Size(792, 483);
+            TilesPageTab.TabIndex = 1;
+            TilesPageTab.Text = "Tiles";
+            TilesPageTab.UseVisualStyleBackColor = true;
+            //
+            // tileDetailsGroup
+            //
+            tileDetailsGroup.Controls.Add(tileResetButton);
+            tileDetailsGroup.Controls.Add(tileSaveButton);
+            tileDetailsGroup.Controls.Add(tileCreateButton);
+            tileDetailsGroup.Controls.Add(tileNotesInput);
+            tileDetailsGroup.Controls.Add(tileNotesLabel);
+            tileDetailsGroup.Controls.Add(tileMovementCostInput);
+            tileDetailsGroup.Controls.Add(tileMovementCostLabel);
+            tileDetailsGroup.Controls.Add(tileWalkableCheckbox);
+            tileDetailsGroup.Controls.Add(tileTextureInput);
+            tileDetailsGroup.Controls.Add(tileTextureLabel);
+            tileDetailsGroup.Controls.Add(tileNameInput);
+            tileDetailsGroup.Controls.Add(tileNameLabel);
+            tileDetailsGroup.Controls.Add(tileIdInput);
+            tileDetailsGroup.Controls.Add(tileIdLabel);
+            tileDetailsGroup.Location = new Point(6, 6);
+            tileDetailsGroup.Name = "tileDetailsGroup";
+            tileDetailsGroup.Size = new Size(570, 471);
+            tileDetailsGroup.TabIndex = 0;
+            tileDetailsGroup.TabStop = false;
+            tileDetailsGroup.Text = "Tile Details";
+            //
+            // tileResetButton
+            //
+            tileResetButton.Location = new Point(352, 370);
+            tileResetButton.Name = "tileResetButton";
+            tileResetButton.Size = new Size(110, 27);
+            tileResetButton.TabIndex = 13;
+            tileResetButton.Text = "Reset";
+            tileResetButton.UseVisualStyleBackColor = true;
+            tileResetButton.Click += tileResetButton_Click;
+            //
+            // tileSaveButton
+            //
+            tileSaveButton.Location = new Point(236, 370);
+            tileSaveButton.Name = "tileSaveButton";
+            tileSaveButton.Size = new Size(110, 27);
+            tileSaveButton.TabIndex = 12;
+            tileSaveButton.Text = "Save Changes";
+            tileSaveButton.UseVisualStyleBackColor = true;
+            tileSaveButton.Click += tileSaveButton_Click;
+            //
+            // tileCreateButton
+            //
+            tileCreateButton.Location = new Point(120, 370);
+            tileCreateButton.Name = "tileCreateButton";
+            tileCreateButton.Size = new Size(110, 27);
+            tileCreateButton.TabIndex = 11;
+            tileCreateButton.Text = "Create Tile";
+            tileCreateButton.UseVisualStyleBackColor = true;
+            tileCreateButton.Click += tileCreateButton_Click;
+            //
+            // tileNotesInput
+            //
+            tileNotesInput.Location = new Point(120, 181);
+            tileNotesInput.Name = "tileNotesInput";
+            tileNotesInput.Size = new Size(414, 168);
+            tileNotesInput.TabIndex = 10;
+            tileNotesInput.Text = "";
+            //
+            // tileNotesLabel
+            //
+            tileNotesLabel.AutoSize = true;
+            tileNotesLabel.Location = new Point(12, 181);
+            tileNotesLabel.Name = "tileNotesLabel";
+            tileNotesLabel.Size = new Size(41, 15);
+            tileNotesLabel.TabIndex = 9;
+            tileNotesLabel.Text = "Notes:";
+            //
+            // tileMovementCostInput
+            //
+            tileMovementCostInput.Location = new Point(120, 146);
+            tileMovementCostInput.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
+            tileMovementCostInput.Name = "tileMovementCostInput";
+            tileMovementCostInput.Size = new Size(120, 23);
+            tileMovementCostInput.TabIndex = 8;
+            tileMovementCostInput.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            //
+            // tileMovementCostLabel
+            //
+            tileMovementCostLabel.AutoSize = true;
+            tileMovementCostLabel.Location = new Point(12, 150);
+            tileMovementCostLabel.Name = "tileMovementCostLabel";
+            tileMovementCostLabel.Size = new Size(93, 15);
+            tileMovementCostLabel.TabIndex = 7;
+            tileMovementCostLabel.Text = "Movement cost:";
+            //
+            // tileWalkableCheckbox
+            //
+            tileWalkableCheckbox.AutoSize = true;
+            tileWalkableCheckbox.Location = new Point(120, 118);
+            tileWalkableCheckbox.Name = "tileWalkableCheckbox";
+            tileWalkableCheckbox.Size = new Size(76, 19);
+            tileWalkableCheckbox.TabIndex = 6;
+            tileWalkableCheckbox.Text = "Walkable";
+            tileWalkableCheckbox.UseVisualStyleBackColor = true;
+            //
+            // tileTextureInput
+            //
+            tileTextureInput.Location = new Point(120, 87);
+            tileTextureInput.Name = "tileTextureInput";
+            tileTextureInput.Size = new Size(250, 23);
+            tileTextureInput.TabIndex = 5;
+            //
+            // tileTextureLabel
+            //
+            tileTextureLabel.AutoSize = true;
+            tileTextureLabel.Location = new Point(12, 90);
+            tileTextureLabel.Name = "tileTextureLabel";
+            tileTextureLabel.Size = new Size(48, 15);
+            tileTextureLabel.TabIndex = 4;
+            tileTextureLabel.Text = "Texture:";
+            //
+            // tileNameInput
+            //
+            tileNameInput.Location = new Point(120, 56);
+            tileNameInput.Name = "tileNameInput";
+            tileNameInput.Size = new Size(250, 23);
+            tileNameInput.TabIndex = 3;
+            //
+            // tileNameLabel
+            //
+            tileNameLabel.AutoSize = true;
+            tileNameLabel.Location = new Point(12, 59);
+            tileNameLabel.Name = "tileNameLabel";
+            tileNameLabel.Size = new Size(42, 15);
+            tileNameLabel.TabIndex = 2;
+            tileNameLabel.Text = "Name:";
+            //
+            // tileIdInput
+            //
+            tileIdInput.Location = new Point(120, 24);
+            tileIdInput.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+            tileIdInput.Name = "tileIdInput";
+            tileIdInput.Size = new Size(120, 23);
+            tileIdInput.TabIndex = 1;
+            //
+            // tileIdLabel
+            //
+            tileIdLabel.AutoSize = true;
+            tileIdLabel.Location = new Point(12, 28);
+            tileIdLabel.Name = "tileIdLabel";
+            tileIdLabel.Size = new Size(22, 15);
+            tileIdLabel.TabIndex = 0;
+            tileIdLabel.Text = "ID:";
+            //
+            // tileListLabel
+            //
+            tileListLabel.AutoSize = true;
+            tileListLabel.Location = new Point(582, 12);
+            tileListLabel.Name = "tileListLabel";
+            tileListLabel.Size = new Size(35, 15);
+            tileListLabel.TabIndex = 1;
+            tileListLabel.Text = "Tiles:";
+            //
+            // tileList
+            //
+            tileList.FormattingEnabled = true;
+            tileList.ItemHeight = 15;
+            tileList.Location = new Point(582, 30);
+            tileList.Name = "tileList";
+            tileList.Size = new Size(202, 364);
+            tileList.TabIndex = 2;
+            //
             // OverrideItemButton
-            // 
+            //
             OverrideItemButton.Location = new Point(684, 395);
             OverrideItemButton.Name = "OverrideItemButton";
             OverrideItemButton.Size = new Size(100, 24);
@@ -999,50 +1375,50 @@ namespace SPHMMaker
             itemEffectTab.TabIndex = 1;
             itemEffectTab.Text = "Item Effects";
             itemEffectTab.UseVisualStyleBackColor = true;
-            // 
+            //
             // label2
-            // 
+            //
             label2.AutoSize = true;
             label2.Location = new Point(306, 7);
             label2.Name = "label2";
             label2.Size = new Size(119, 15);
             label2.TabIndex = 3;
             label2.Text = "Selected Item Effects:";
-            // 
+            //
             // label1
-            // 
+            //
             label1.AutoSize = true;
             label1.Location = new Point(18, 5);
             label1.Name = "label1";
             label1.Size = new Size(62, 15);
             label1.TabIndex = 2;
             label1.Text = "All effects:";
-            // 
+            //
             // listBox2
-            // 
+            //
             listBox2.FormattingEnabled = true;
             listBox2.ItemHeight = 15;
             listBox2.Location = new Point(305, 30);
             listBox2.Name = "listBox2";
             listBox2.Size = new Size(231, 334);
             listBox2.TabIndex = 1;
-            // 
+            //
             // listBox1
-            // 
+            //
             listBox1.FormattingEnabled = true;
             listBox1.ItemHeight = 15;
             listBox1.Location = new Point(25, 30);
             listBox1.Name = "listBox1";
             listBox1.Size = new Size(231, 334);
             listBox1.TabIndex = 0;
-            // 
+            //
             // otherPage
-            // 
+            //
             otherPage.Location = new Point(4, 24);
             otherPage.Name = "otherPage";
             otherPage.Padding = new Padding(3);
             otherPage.Size = new Size(792, 483);
-            otherPage.TabIndex = 1;
+            otherPage.TabIndex = 2;
             otherPage.Text = "??";
             otherPage.UseVisualStyleBackColor = true;
             // 
@@ -1120,7 +1496,12 @@ namespace SPHMMaker
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "MainForm";
-            Text = "Main Form";
+            Text = "SPHM Maker";
+            ((System.ComponentModel.ISupportInitialize)lootDistributionChart).EndInit();
+            ((System.ComponentModel.ISupportInitialize)lootKillsCounter).EndInit();
+            ((System.ComponentModel.ISupportInitialize)lootEntriesGrid).EndInit();
+            lootTabPage.ResumeLayout(false);
+            lootTabPage.PerformLayout();
             MainTab.ResumeLayout(false);
             ItemPageTab.ResumeLayout(false);
             ItemPageTab.PerformLayout();
@@ -1173,6 +1554,15 @@ namespace SPHMMaker
             ((System.ComponentModel.ISupportInitialize)itemMaxCountSetter).EndInit();
             itemEffectTab.ResumeLayout(false);
             itemEffectTab.PerformLayout();
+            tileDetailsGroup.ResumeLayout(false);
+            tileDetailsGroup.PerformLayout();
+            TilesPageTab.ResumeLayout(false);
+            TilesPageTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)tileMovementCostInput).EndInit();
+            ((System.ComponentModel.ISupportInitialize)tileIdInput).EndInit();
+            lootTabPage.ResumeLayout(false);
+            lootTabPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)lootEntriesGrid).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
@@ -1187,7 +1577,26 @@ namespace SPHMMaker
         private Label itemSelectBoxLabel;
         private TabControl MainTab;
         private TabPage ItemPageTab;
+        private TabPage lootTabPage;
+        private TabPage TilesPageTab;
         private TabPage otherPage;
+        private GroupBox tileDetailsGroup;
+        private Button tileResetButton;
+        private Button tileSaveButton;
+        private Button tileCreateButton;
+        private RichTextBox tileNotesInput;
+        private Label tileNotesLabel;
+        private NumericUpDown tileMovementCostInput;
+        private Label tileMovementCostLabel;
+        private CheckBox tileWalkableCheckbox;
+        private TextBox tileTextureInput;
+        private Label tileTextureLabel;
+        private TextBox tileNameInput;
+        private Label tileNameLabel;
+        private NumericUpDown tileIdInput;
+        private Label tileIdLabel;
+        private Label tileListLabel;
+        private ListBox tileList;
         private TabControl itemWindowTabControl;
         private TabPage createItemPage;
         private TabPage itemEffectTab;
@@ -1212,6 +1621,19 @@ namespace SPHMMaker
         private ToolStripMenuItem fileDownloadInstructionsToolStripMenuItem;
         private Button EditItemButton;
         private Button OverrideItemButton;
+        private ListBox lootTablesListBox;
+        private Label lootTableIdLabel;
+        private TextBox lootTableIdTextBox;
+        private Button lootAddTableButton;
+        private Button lootSaveTableButton;
+        private Button lootDeleteTableButton;
+        private DataGridView lootEntriesGrid;
+        private Button lootAddEntryButton;
+        private Button lootRemoveEntryButton;
+        private Label lootKillsLabel;
+        private NumericUpDown lootKillsCounter;
+        private Chart lootDistributionChart;
+        private Label lootChartHintLabel;
         private ToolTip toolTip1;
         private ExtendedForm.ExtendedCheckedListBox itemQualitySelector;
         private TabControl itemTypeTabControl;
