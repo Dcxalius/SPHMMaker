@@ -15,10 +15,16 @@ namespace SPHMMaker
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing)
             {
-                components.Dispose();
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+
+                DisposeItemImages();
             }
+
             base.Dispose(disposing);
         }
 
@@ -175,12 +181,15 @@ namespace SPHMMaker
             // 
             // items
             // 
+            items.DrawMode = DrawMode.OwnerDrawFixed;
             items.FormattingEnabled = true;
-            items.ItemHeight = 15;
+            items.IntegralHeight = false;
+            items.ItemHeight = 56;
             items.Location = new Point(582, 30);
             items.Name = "items";
             items.Size = new Size(202, 364);
             items.TabIndex = 1;
+            items.DrawItem += items_DrawItem;
             items.MouseDoubleClick += items_MouseDoubleClick;
             // 
             // itemNameLabel
