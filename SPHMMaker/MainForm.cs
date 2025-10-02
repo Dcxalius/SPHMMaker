@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
 using SPHMMaker.Items;
 using SPHMMaker.SpawnZones;
 using SPHMMaker.Tiles;
