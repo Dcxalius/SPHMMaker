@@ -1406,7 +1406,9 @@ namespace SPHMMaker
 
         private void tileResetButton_Click(object sender, EventArgs e) => ResetTileEditor();
 
-            MessageBox.Show(instructions, "File Download Instructions", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        private void xdd()
+        {
+            MessageBox.Show("instructions", "File Download Instructions", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void spriteEditorToolStripMenuItem_Click(object sender, EventArgs e)
