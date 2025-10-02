@@ -11,7 +11,6 @@ using SPHMMaker.Items;
 using SPHMMaker.SpawnZones;
 using SPHMMaker.Tiles;
 using SPHMMaker.Loot;
-using System.Windows.Forms.DataVisualization.Charting;
 
 namespace SPHMMaker
 {
