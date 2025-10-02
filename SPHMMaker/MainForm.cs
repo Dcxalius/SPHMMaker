@@ -4,9 +4,9 @@ using SPHMMaker.Items;
 
 namespace SPHMMaker
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public static Form1 Instance;
+        public static MainForm Instance;
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool AllocConsole();
@@ -14,7 +14,7 @@ namespace SPHMMaker
         int editingItem = -1;
 
 
-        public Form1()
+        public MainForm()
         {
             Instance = this;
             InitializeComponent();
