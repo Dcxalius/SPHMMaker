@@ -9,6 +9,7 @@ using SPHMMaker.Items;
 using SPHMMaker.SpawnZones;
 using SPHMMaker.Tiles;
 using SPHMMaker.Loot;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace SPHMMaker
 {
@@ -41,35 +42,7 @@ namespace SPHMMaker
         private readonly BindingSource lootTableBinding = new();
         private readonly BindingSource lootEntryBinding = new();
         private LootTable? activeLootTable;
-
-        readonly BindingList<UnitData> unitDefinitions = new();
-        readonly BindingList<SpawnZoneData> spawnZoneDefinitions = new();
-        readonly BindingSource unitBindingSource = new();
-        readonly BindingSource spawnZoneBindingSource = new();
-        readonly BindingSource assignmentBindingSource = new();
-
-        TabPage? spawnZoneTabPage;
-        ListBox? unitDataListBox;
-        Label? selectedUnitLabel;
-        TextBox? unitNameInput;
-        NumericUpDown? unitLevelSetter;
-        TextBox? unitNotesInput;
-        Button? createUnitButton;
-        Button? updateUnitButton;
-        Button? deleteUnitButton;
-        ListBox? spawnZoneListBox;
-        Label? selectedZoneLabel;
-        TextBox? spawnZoneNameInput;
-        TextBox? spawnZoneNotesInput;
-        Button? createSpawnZoneButton;
-        Button? updateSpawnZoneButton;
-        Button? deleteSpawnZoneButton;
-        ListBox? spawnZoneAssignmentsListBox;
-        NumericUpDown? assignmentMinimumSetter;
-        NumericUpDown? assignmentMaximumSetter;
-        Button? assignUnitButton;
-        Button? removeAssignmentButton;
-
+        int editingTile = -1;
 
 
         public MainForm()
@@ -82,9 +55,6 @@ namespace SPHMMaker
             InitializeItems();
 
             InitializeLootTab();
-
-            InitializeSpawnZoneTab();
-            InitializeSpawnZoneDataBindings();
         }
 
         private void InitializeLootTab()
