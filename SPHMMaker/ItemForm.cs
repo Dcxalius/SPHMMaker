@@ -11,7 +11,7 @@ using static SPHMMaker.Items.SubTypes.PotionData;
 
 namespace SPHMMaker
 {
-    public partial class Form1
+    public partial class MainForm
     {
         private static readonly Regex sWhitespace = new Regex(@"\s+");
         public static string ReplaceWhitespace(string input, string replacement) //TODO: Move this

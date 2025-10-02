@@ -2,7 +2,7 @@
 
 namespace SPHMMaker
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -1097,7 +1097,7 @@ namespace SPHMMaker
             fileDownloadInstructionsToolStripMenuItem.Text = "File Download Instructions";
             fileDownloadInstructionsToolStripMenuItem.Click += fileDownloadInstructionsToolStripMenuItem_Click;
             //
-            // Form1
+            // MainForm
             //
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -1105,8 +1105,8 @@ namespace SPHMMaker
             Controls.Add(MainTab);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
-            Name = "Form1";
-            Text = "Form1";
+            Name = "MainForm";
+            Text = "Main Form";
             MainTab.ResumeLayout(false);
             ItemPageTab.ResumeLayout(false);
             ItemPageTab.PerformLayout();

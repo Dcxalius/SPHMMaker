@@ -12,13 +12,13 @@ namespace SPHMMaker
         public static void AddPostLoad(Action a) => postLoads?.Add(a);
         static List<Action>? postLoads;
         public static int i;
-        public static Form1 form;
+        public static MainForm form;
 
         public static void Init()
         {
             ApplicationConfiguration.Initialize();
             postLoads = new List<Action>();
-            form = new Form1();
+            form = new MainForm();
 
             if (postLoads != null)
             {

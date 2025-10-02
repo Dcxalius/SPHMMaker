@@ -49,7 +49,7 @@ namespace SPHMMaker.Items
         {
             CreateDir();
             //CreateList();
-            //listBox = Form1.Instance.Controls.Find("items", true).First() as ListBox;
+            //listBox = MainForm.Instance.Controls.Find("items", true).First() as ListBox;
         }
 
         [MemberNotNull("items")]
