@@ -1,9 +1,13 @@
+
+using System.IO;
+using System.Linq;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using SPHMMaker.Items;
+using SPHMMaker.Tiles;
 using SPHMMaker.Loot;
 
 namespace SPHMMaker
@@ -16,6 +20,7 @@ namespace SPHMMaker
         static extern bool AllocConsole();
 
         int editingItem = -1;
+        int editingTile = -1;
         LootTable? selectedLootTable;
 
 
@@ -26,6 +31,7 @@ namespace SPHMMaker
             AllocConsole();
 
             InitializeItems();
+            InitializeTiles();
             InitializeLoot();
         }
         private void loadDatapackToolStripMenuItem_Click(object sender, EventArgs e)
@@ -56,6 +62,7 @@ namespace SPHMMaker
             }
 
             ItemManager.Load(path + "\\Items");
+            TileManager.Load(path + "\\Tiles");
         }
 
         private void saveDatapackToolStripMenuItem_Click(object sender, EventArgs e)
@@ -136,187 +143,137 @@ namespace SPHMMaker
             MessageBox.Show(instructions, "File Download Instructions", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        void InitializeLoot()
-        {
-            lootTableListBox.DisplayMember = nameof(LootTable.Display);
-            lootTableListBox.DataSource = LootManager.LootTables;
-            lootEntriesGrid.AutoGenerateColumns = false;
-            lootEntriesGrid.DataSource = new BindingList<LootEntry>();
-
-            lootEntriesGrid.CellValueChanged += (_, _) => UpdateLootChart();
-            lootEntriesGrid.CurrentCellDirtyStateChanged += (_, _) =>
-            {
-                if (lootEntriesGrid.IsCurrentCellDirty)
-                {
-                    lootEntriesGrid.CommitEdit(DataGridViewDataErrorContexts.Commit);
-                }
-            };
-            lootEntriesGrid.SelectionChanged += (_, _) => UpdateLootChart();
-            lootEntriesGrid.RowsRemoved += (_, _) => UpdateLootChart();
-            lootEntriesGrid.RowsAdded += (_, _) => UpdateLootChart();
-
-            lootKillCountSetter.ValueChanged += (_, _) => UpdateLootChart();
-
-            lootTableIdInput.ValueChanged += (_, _) =>
-            {
-                if (selectedLootTable is null)
-                {
-                    return;
-                }
-
-                int requestedId = (int)lootTableIdInput.Value;
-                if (requestedId == selectedLootTable.Id)
-                {
-                    return;
-                }
-
-                if (LootManager.ContainsId(requestedId))
-                {
-                    MessageBox.Show($"Loot table id {requestedId} already exists.", "Duplicate Id", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    lootTableIdInput.Value = selectedLootTable.Id;
-                    return;
-                }
-
-                selectedLootTable.Id = requestedId;
-            };
-
-            lootTableNameInput.TextChanged += (_, _) =>
-            {
-                if (selectedLootTable is null)
-                {
-                    return;
-                }
-
-                selectedLootTable.Name = lootTableNameInput.Text;
-            };
-
-            lootAddTableButton.Click += (_, _) =>
-            {
-                int id = (int)lootTableIdInput.Value;
-                if (LootManager.ContainsId(id))
-                {
-                    MessageBox.Show($"Loot table id {id} already exists.", "Duplicate Id", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                LootTable table = LootManager.CreateLootTable(id, lootTableNameInput.Text);
-                lootTableListBox.SelectedItem = table;
-            };
-
-            lootRemoveTableButton.Click += (_, _) =>
-            {
-                if (selectedLootTable is null)
-                {
-                    return;
-                }
-
-                LootManager.Remove(selectedLootTable);
-                selectedLootTable = null;
-                lootEntriesGrid.DataSource = new BindingList<LootEntry>();
-                lootTableNameInput.Clear();
-                lootTableIdInput.Value = 0;
-                UpdateLootChart();
-            };
-
-            lootTableListBox.SelectedIndexChanged += (_, _) =>
-            {
-                if (lootTableListBox.SelectedItem is LootTable table)
-                {
-                    SelectLootTable(table);
-                }
-                else
-                {
-                    selectedLootTable = null;
-                    lootEntriesGrid.DataSource = new BindingList<LootEntry>();
-                }
-
-                UpdateLootChart();
-            };
-
-            lootEntriesGrid.DataError += (_, args) =>
-            {
-                MessageBox.Show("Invalid value entered. Please use numeric values for the item id and drop chance (0-1).", "Invalid value", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                args.Cancel = true;
-            };
-
-            InitializeLootChart();
-        }
-
-        void SelectLootTable(LootTable table)
-        {
-            if (selectedLootTable == table)
-            {
-                return;
-            }
-
-            selectedLootTable = table;
-            lootTableIdInput.Value = Math.Max(lootTableIdInput.Minimum, Math.Min(lootTableIdInput.Maximum, table.Id));
-            lootTableNameInput.Text = table.Name;
-
-            BindingList<LootEntry> entries = table.Entries;
-            lootEntriesGrid.DataSource = entries;
-        }
-
-        void InitializeLootChart()
-        {
-            lootProbabilityChart.Series.Clear();
-            lootProbabilityChart.ChartAreas.Clear();
-            ChartArea chartArea = new("LootProbabilityArea");
-            chartArea.AxisX.Title = "Number of drops";
-            chartArea.AxisX.Interval = 1;
-            chartArea.AxisX.MajorGrid.LineColor = Color.LightGray;
-            chartArea.AxisY.Title = "Probability (%)";
-            chartArea.AxisY.LabelStyle.Format = "{0:P1}";
-            chartArea.AxisY.MajorGrid.LineColor = Color.LightGray;
-            lootProbabilityChart.ChartAreas.Add(chartArea);
-
-            lootProbabilityChart.Legends.Clear();
-            lootProbabilityChart.Titles.Clear();
-            lootProbabilityChart.Titles.Add("Drop probability distribution");
-        }
-
-        LootEntry? SelectedLootEntry
+        private TileData? FoldDataIntoTile
         {
             get
             {
-                if (lootEntriesGrid.CurrentRow?.DataBoundItem is LootEntry entry)
+                int id = (int)tileIdInput.Value;
+                string name = tileNameInput.Text;
+                string texture = tileTextureInput.Text;
+                bool isWalkable = tileWalkableCheckbox.Checked;
+                int movementCost = (int)tileMovementCostInput.Value;
+                string notes = tileNotesInput.Text;
+
+                if (string.IsNullOrWhiteSpace(name))
                 {
-                    return entry;
+                    MessageBox.Show("Tile name cannot be empty.");
+                    return null;
                 }
 
-                return null;
+                if (string.IsNullOrWhiteSpace(texture))
+                {
+                    MessageBox.Show("Texture name cannot be empty.");
+                    return null;
+                }
+
+                if (!TileManager.FreeIdCheck(id) && (editingTile < 0 || TileManager.Tiles[editingTile].ID != id))
+                {
+                    MessageBox.Show("Tile ID must be unique.");
+                    return null;
+                }
+
+                return new TileData(id, name, texture, isWalkable, movementCost, notes);
             }
         }
 
-        void UpdateLootChart()
+        private void InitializeTiles()
         {
-            lootProbabilityChart.Series.Clear();
+            TileManager.SetListBox(tileList);
+            if (!TileManager.Load(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tiles")))
+            {
+                TileManager.LoadDefaults();
+            }
 
-            LootEntry? entry = SelectedLootEntry;
-            int kills = (int)lootKillCountSetter.Value;
+            tileList.SelectedIndexChanged += tileList_SelectedIndexChanged;
+            ResetTileEditor();
+        }
 
-            if (entry is null || selectedLootTable is null)
+        private int GetNextTileId()
+        {
+            int highest = -1;
+            foreach (TileData tile in TileManager.Tiles)
+            {
+                if (tile.ID > highest)
+                {
+                    highest = tile.ID;
+                }
+            }
+
+            return highest + 1;
+        }
+
+        private void ResetTileEditor()
+        {
+            editingTile = -1;
+            int nextId = GetNextTileId();
+            if (nextId < tileIdInput.Minimum)
+            {
+                nextId = (int)tileIdInput.Minimum;
+            }
+            if (nextId > tileIdInput.Maximum)
+            {
+                nextId = (int)tileIdInput.Maximum;
+            }
+
+            tileIdInput.Value = nextId;
+            tileNameInput.Text = string.Empty;
+            tileTextureInput.Text = string.Empty;
+            tileWalkableCheckbox.Checked = true;
+            tileMovementCostInput.Value = Math.Max(tileMovementCostInput.Minimum, 1m);
+            tileNotesInput.Text = string.Empty;
+            tileList.ClearSelected();
+        }
+
+        private void tileList_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            if (tileList.SelectedItem is not TileData tile)
             {
                 return;
             }
 
-            var distribution = LootProbability.CalculateDistribution(entry, kills);
+            editingTile = tileList.SelectedIndex;
+            tileIdInput.Value = Math.Min(Math.Max(tile.ID, (int)tileIdInput.Minimum), (int)tileIdInput.Maximum);
+            tileNameInput.Text = tile.Name;
+            tileTextureInput.Text = tile.Texture;
+            tileWalkableCheckbox.Checked = tile.IsWalkable;
+            int movementValue = Math.Min(Math.Max(tile.MovementCost, (int)tileMovementCostInput.Minimum), (int)tileMovementCostInput.Maximum);
+            tileMovementCostInput.Value = movementValue;
+            tileNotesInput.Text = tile.Notes;
+        }
 
-            Series series = new($"Item {entry.ItemId}")
+        private void tileCreateButton_Click(object sender, EventArgs e)
+        {
+            TileData? tile = FoldDataIntoTile;
+            if (tile is null)
             {
-                ChartType = SeriesChartType.Column,
-                XValueType = ChartValueType.Int32,
-                YValueType = ChartValueType.Double
-            };
-
-            foreach (var point in distribution)
-            {
-                double percentage = point.Probability;
-                series.Points.AddXY(point.Drops, percentage);
+                return;
             }
 
-            lootProbabilityChart.Series.Add(series);
-            lootProbabilityChart.ChartAreas[0].RecalculateAxesScale();
+            TileManager.CreateTile(tile);
+            tileList.SelectedItem = TileManager.Tiles.FirstOrDefault(t => t.ID == tile.ID);
+            ResetTileEditor();
         }
+
+        private void tileSaveButton_Click(object sender, EventArgs e)
+        {
+            if (tileList.SelectedIndex < 0)
+            {
+                MessageBox.Show("Select a tile to update.");
+                return;
+            }
+
+            editingTile = tileList.SelectedIndex;
+            TileData? tile = FoldDataIntoTile;
+            if (tile is null)
+            {
+                return;
+            }
+
+            TileManager.OverrideTile(tileList.SelectedIndex, tile);
+            tileList.SelectedItem = TileManager.Tiles.FirstOrDefault(t => t.ID == tile.ID);
+        }
+
+        private void tileResetButton_Click(object sender, EventArgs e) => ResetTileEditor();
+
     }
 }
