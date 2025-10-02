@@ -34,9 +34,6 @@ namespace SPHMMaker
             components = new System.ComponentModel.Container();
             ChartArea chartArea1 = new ChartArea();
             Legend legend1 = new Legend();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
 
             itemNameInput = new TextBox();
             items = new ListBox();
@@ -154,21 +151,6 @@ namespace SPHMMaker
             label1 = new Label();
             listBox2 = new ListBox();
             listBox1 = new ListBox();
-            lootTabPage = new TabPage();
-            lootProbabilityChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            lootKillCountLabel = new Label();
-            lootKillCountSetter = new NumericUpDown();
-            lootEntriesGrid = new DataGridView();
-            lootDropChanceColumn = new DataGridViewTextBoxColumn();
-            lootItemIdColumn = new DataGridViewTextBoxColumn();
-            lootTableNameInput = new TextBox();
-            lootTableNameLabel = new Label();
-            lootTableIdInput = new NumericUpDown();
-            lootTableIdLabel = new Label();
-            lootRemoveTableButton = new Button();
-            lootAddTableButton = new Button();
-            lootTableListBox = new ListBox();
-            lootTablesLabel = new Label();
             otherPage = new TabPage();
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
@@ -227,10 +209,7 @@ namespace SPHMMaker
             ((System.ComponentModel.ISupportInitialize)tileIdInput).BeginInit();
 
             lootTabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)lootProbabilityChart).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)lootKillCountSetter).BeginInit();
             ((System.ComponentModel.ISupportInitialize)lootEntriesGrid).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)lootTableIdInput).BeginInit();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -1433,168 +1412,6 @@ namespace SPHMMaker
             listBox1.Size = new Size(231, 334);
             listBox1.TabIndex = 0;
             //
-            // lootTabPage
-            //
-            lootTabPage.Controls.Add(lootProbabilityChart);
-            lootTabPage.Controls.Add(lootKillCountLabel);
-            lootTabPage.Controls.Add(lootKillCountSetter);
-            lootTabPage.Controls.Add(lootEntriesGrid);
-            lootTabPage.Controls.Add(lootTableNameInput);
-            lootTabPage.Controls.Add(lootTableNameLabel);
-            lootTabPage.Controls.Add(lootTableIdInput);
-            lootTabPage.Controls.Add(lootTableIdLabel);
-            lootTabPage.Controls.Add(lootRemoveTableButton);
-            lootTabPage.Controls.Add(lootAddTableButton);
-            lootTabPage.Controls.Add(lootTableListBox);
-            lootTabPage.Controls.Add(lootTablesLabel);
-            lootTabPage.Location = new Point(4, 24);
-            lootTabPage.Name = "lootTabPage";
-            lootTabPage.Padding = new Padding(3);
-            lootTabPage.Size = new Size(792, 483);
-            lootTabPage.TabIndex = 2;
-            lootTabPage.Text = "Loot";
-            lootTabPage.UseVisualStyleBackColor = true;
-            //
-            // lootProbabilityChart
-            //
-            lootProbabilityChart.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            chartArea1.Name = "ChartArea1";
-            lootProbabilityChart.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            lootProbabilityChart.Legends.Add(legend1);
-            lootProbabilityChart.Location = new Point(220, 246);
-            lootProbabilityChart.Name = "lootProbabilityChart";
-            lootProbabilityChart.Size = new Size(556, 219);
-            lootProbabilityChart.TabIndex = 11;
-            lootProbabilityChart.Text = "lootProbabilityChart";
-            //
-            // lootKillCountLabel
-            //
-            lootKillCountLabel.AutoSize = true;
-            lootKillCountLabel.Location = new Point(220, 220);
-            lootKillCountLabel.Name = "lootKillCountLabel";
-            lootKillCountLabel.Size = new Size(95, 15);
-            lootKillCountLabel.TabIndex = 9;
-            lootKillCountLabel.Text = "Simulation kills:";
-            //
-            // lootKillCountSetter
-            //
-            lootKillCountSetter.Location = new Point(321, 218);
-            lootKillCountSetter.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            lootKillCountSetter.Minimum = new decimal(new int[] { 0, 0, 0, 0 });
-            lootKillCountSetter.Name = "lootKillCountSetter";
-            lootKillCountSetter.Size = new Size(80, 23);
-            lootKillCountSetter.TabIndex = 10;
-            lootKillCountSetter.Value = new decimal(new int[] { 10, 0, 0, 0 });
-            //
-            // lootEntriesGrid
-            //
-            lootEntriesGrid.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            lootEntriesGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            lootEntriesGrid.Columns.AddRange(new DataGridViewColumn[] { lootItemIdColumn, lootDropChanceColumn });
-            lootEntriesGrid.Location = new Point(220, 64);
-            lootEntriesGrid.MultiSelect = false;
-            lootEntriesGrid.Name = "lootEntriesGrid";
-            lootEntriesGrid.RowHeadersVisible = false;
-            lootEntriesGrid.RowTemplate.Height = 25;
-            lootEntriesGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            lootEntriesGrid.Size = new Size(556, 150);
-            lootEntriesGrid.TabIndex = 8;
-            //
-            // lootDropChanceColumn
-            //
-            lootDropChanceColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            lootDropChanceColumn.DataPropertyName = "DropChance";
-            lootDropChanceColumn.FillWeight = 60F;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle1.Format = "P2";
-            dataGridViewCellStyle1.NullValue = null;
-            lootDropChanceColumn.DefaultCellStyle = dataGridViewCellStyle1;
-            lootDropChanceColumn.HeaderText = "Drop chance";
-            lootDropChanceColumn.Name = "lootDropChanceColumn";
-            lootDropChanceColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
-            lootDropChanceColumn.ValueType = typeof(double);
-            //
-            // lootItemIdColumn
-            //
-            lootItemIdColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            lootItemIdColumn.DataPropertyName = "ItemId";
-            lootItemIdColumn.FillWeight = 40F;
-            lootItemIdColumn.HeaderText = "Item ID";
-            lootItemIdColumn.MinimumWidth = 80;
-            lootItemIdColumn.Name = "lootItemIdColumn";
-            lootItemIdColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
-            lootItemIdColumn.ValueType = typeof(int);
-            //
-            // lootTableNameInput
-            //
-            lootTableNameInput.Location = new Point(268, 33);
-            lootTableNameInput.Name = "lootTableNameInput";
-            lootTableNameInput.Size = new Size(250, 23);
-            lootTableNameInput.TabIndex = 6;
-            //
-            // lootTableNameLabel
-            //
-            lootTableNameLabel.AutoSize = true;
-            lootTableNameLabel.Location = new Point(220, 36);
-            lootTableNameLabel.Name = "lootTableNameLabel";
-            lootTableNameLabel.Size = new Size(45, 15);
-            lootTableNameLabel.TabIndex = 5;
-            lootTableNameLabel.Text = "Name:";
-            //
-            // lootTableIdInput
-            //
-            lootTableIdInput.Location = new Point(268, 6);
-            lootTableIdInput.Maximum = new decimal(new int[] { 999999, 0, 0, 0 });
-            lootTableIdInput.Name = "lootTableIdInput";
-            lootTableIdInput.Size = new Size(120, 23);
-            lootTableIdInput.TabIndex = 4;
-            //
-            // lootTableIdLabel
-            //
-            lootTableIdLabel.AutoSize = true;
-            lootTableIdLabel.Location = new Point(220, 8);
-            lootTableIdLabel.Name = "lootTableIdLabel";
-            lootTableIdLabel.Size = new Size(22, 15);
-            lootTableIdLabel.TabIndex = 3;
-            lootTableIdLabel.Text = "ID:";
-            //
-            // lootRemoveTableButton
-            //
-            lootRemoveTableButton.Location = new Point(110, 371);
-            lootRemoveTableButton.Name = "lootRemoveTableButton";
-            lootRemoveTableButton.Size = new Size(96, 23);
-            lootRemoveTableButton.TabIndex = 2;
-            lootRemoveTableButton.Text = "Remove";
-            lootRemoveTableButton.UseVisualStyleBackColor = true;
-            //
-            // lootAddTableButton
-            //
-            lootAddTableButton.Location = new Point(6, 371);
-            lootAddTableButton.Name = "lootAddTableButton";
-            lootAddTableButton.Size = new Size(96, 23);
-            lootAddTableButton.TabIndex = 1;
-            lootAddTableButton.Text = "Add table";
-            lootAddTableButton.UseVisualStyleBackColor = true;
-            //
-            // lootTableListBox
-            //
-            lootTableListBox.FormattingEnabled = true;
-            lootTableListBox.ItemHeight = 15;
-            lootTableListBox.Location = new Point(6, 26);
-            lootTableListBox.Name = "lootTableListBox";
-            lootTableListBox.Size = new Size(200, 334);
-            lootTableListBox.TabIndex = 0;
-            //
-            // lootTablesLabel
-            //
-            lootTablesLabel.AutoSize = true;
-            lootTablesLabel.Location = new Point(6, 8);
-            lootTablesLabel.Name = "lootTablesLabel";
-            lootTablesLabel.Size = new Size(70, 15);
-            lootTablesLabel.TabIndex = 0;
-            lootTablesLabel.Text = "Loot tables:";
-            //
             // otherPage
             //
             otherPage.Location = new Point(4, 24);
@@ -1731,10 +1548,7 @@ namespace SPHMMaker
             ((System.ComponentModel.ISupportInitialize)tileIdInput).EndInit();
             lootTabPage.ResumeLayout(false);
             lootTabPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)lootProbabilityChart).EndInit();
-            ((System.ComponentModel.ISupportInitialize)lootKillCountSetter).EndInit();
             ((System.ComponentModel.ISupportInitialize)lootEntriesGrid).EndInit();
-            ((System.ComponentModel.ISupportInitialize)lootTableIdInput).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
@@ -1868,20 +1682,5 @@ namespace SPHMMaker
         private Label itemPotionMaximumLabel;
         private Label itemPotionMinimumLabel;
         private Button itemCheckGeneratedTooltip;
-        private System.Windows.Forms.DataVisualization.Charting.Chart lootProbabilityChart;
-        private Label lootKillCountLabel;
-        private NumericUpDown lootKillCountSetter;
-        private DataGridView lootEntriesGrid;
-        private DataGridViewTextBoxColumn lootDropChanceColumn;
-        private DataGridViewTextBoxColumn lootItemIdColumn;
-        private TextBox lootTableNameInput;
-        private Label lootTableNameLabel;
-        private NumericUpDown lootTableIdInput;
-        private Label lootTableIdLabel;
-        private Button lootRemoveTableButton;
-        private Button lootAddTableButton;
-        private ListBox lootTableListBox;
-        private Label lootTablesLabel;
-        private TabPage lootTabPage;
     }
 }
