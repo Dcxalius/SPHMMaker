@@ -429,7 +429,7 @@ namespace SPHMMaker
             //DirectoryInfo di = new DirectoryInfo(path);
             //di.GetAccessControl().GetAccessRules();
 
-            string[] foldersThatShouldBeHere = ["Items"];
+            string[] foldersThatShouldBeHere = new[] { "Items" };
 
             string[] folders = Directory.GetDirectories(path);
 
@@ -1406,5 +1406,13 @@ namespace SPHMMaker
 
         private void tileResetButton_Click(object sender, EventArgs e) => ResetTileEditor();
 
+            MessageBox.Show(instructions, "File Download Instructions", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void spriteEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var editor = new SpriteEditorForm();
+            editor.Show(this);
+        }
     }
 }

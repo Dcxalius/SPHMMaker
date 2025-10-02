@@ -159,6 +159,8 @@ namespace SPHMMaker
             exitToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
             fileDownloadInstructionsToolStripMenuItem = new ToolStripMenuItem();
+            toolsToolStripMenuItem = new ToolStripMenuItem();
+            spriteEditorToolStripMenuItem = new ToolStripMenuItem();
             toolTip1 = new ToolTip(components);
             ((System.ComponentModel.ISupportInitialize)lootDistributionChart).BeginInit();
             ((System.ComponentModel.ISupportInitialize)lootKillsCounter).BeginInit();
@@ -1424,7 +1426,7 @@ namespace SPHMMaker
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, helpToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, toolsToolStripMenuItem, helpToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(968, 24);
@@ -1465,6 +1467,21 @@ namespace SPHMMaker
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             helpToolStripMenuItem.Size = new Size(44, 20);
             helpToolStripMenuItem.Text = "Help";
+            //
+            // toolsToolStripMenuItem
+            //
+            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { spriteEditorToolStripMenuItem });
+            toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            toolsToolStripMenuItem.Size = new Size(48, 20);
+            toolsToolStripMenuItem.Text = "Tools";
+            //
+            // spriteEditorToolStripMenuItem
+            //
+            spriteEditorToolStripMenuItem.Name = "spriteEditorToolStripMenuItem";
+            spriteEditorToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.E;
+            spriteEditorToolStripMenuItem.Size = new Size(239, 22);
+            spriteEditorToolStripMenuItem.Text = "Open Sprite Editor";
+            spriteEditorToolStripMenuItem.Click += spriteEditorToolStripMenuItem_Click;
             //
             // fileDownloadInstructionsToolStripMenuItem
             //
@@ -1601,6 +1618,8 @@ namespace SPHMMaker
         private ToolStripMenuItem saveDatapackToolStripMenuItem;
         private ToolStripMenuItem loadDatapackToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
+        private ToolStripMenuItem toolsToolStripMenuItem;
+        private ToolStripMenuItem spriteEditorToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem fileDownloadInstructionsToolStripMenuItem;
         private Button EditItemButton;
