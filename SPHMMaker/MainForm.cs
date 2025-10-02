@@ -1,9 +1,14 @@
+
 using System.IO;
 using System.Linq;
+using System.ComponentModel;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 using SPHMMaker.Items;
 using SPHMMaker.Tiles;
+using SPHMMaker.Loot;
 
 namespace SPHMMaker
 {
@@ -16,6 +21,7 @@ namespace SPHMMaker
 
         int editingItem = -1;
         int editingTile = -1;
+        LootTable? selectedLootTable;
 
 
         public MainForm()
@@ -26,6 +32,7 @@ namespace SPHMMaker
 
             InitializeItems();
             InitializeTiles();
+            InitializeLoot();
         }
         private void loadDatapackToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -267,5 +274,6 @@ namespace SPHMMaker
         }
 
         private void tileResetButton_Click(object sender, EventArgs e) => ResetTileEditor();
+
     }
 }
