@@ -1,3 +1,4 @@
+
 namespace SPHMMaker.Loot;
 
 using System.ComponentModel;

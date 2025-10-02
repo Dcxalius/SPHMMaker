@@ -13,4 +13,8 @@
     <PackageReference Include="System.Windows.Forms.DataVisualization" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+  </ItemGroup>
+
 </Project>
