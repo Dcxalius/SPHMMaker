@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPHMMaker;
+using SPHMMaker.Items.Effects;
 
 namespace SPHMMaker.Items
 {
@@ -54,11 +55,14 @@ namespace SPHMMaker.Items
         public ItemQuality Quality => quality;
         ItemQuality quality;
 
+        public IReadOnlyList<EffectData> Effects => effects;
+        readonly List<EffectData> effects;
+
         public int Cost => cost;
         int cost;
 
         [JsonConstructor]
-        public ItemData(int id, string gfxName, string name, string description, int maxStack, ItemQuality quality, int cost)
+        public ItemData(int id, string gfxName, string name, string description, int maxStack, ItemQuality quality, int cost, IEnumerable<EffectData>? effects = null)
         {
             this.id = id;
             gfx = new GfxPath(GfxType.Item, gfxName);
@@ -67,6 +71,26 @@ namespace SPHMMaker.Items
             this.maxStack = maxStack;
             this.quality = quality;
             this.cost = cost;
+            this.effects = SanitizeEffects(effects);
+        }
+
+        static List<EffectData> SanitizeEffects(IEnumerable<EffectData>? source)
+        {
+            if (source == null)
+            {
+                return new List<EffectData>();
+            }
+
+            return source
+                .Where(effect => effect != null)
+                .Select(effect => effect!.Clone())
+                .ToList();
+        }
+
+        public void SetEffects(IEnumerable<EffectData> updatedEffects)
+        {
+            effects.Clear();
+            effects.AddRange(SanitizeEffects(updatedEffects));
         }
 
         public int CompareTo(ItemData? other)

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SPHMMaker.Items.Effects;
 
 namespace SPHMMaker.Items.SubTypes
 {
@@ -29,7 +30,7 @@ namespace SPHMMaker.Items.SubTypes
         public float ValueOfType(PotionType aType) => value[Array.IndexOf(type, aType)];
         public bool IsOfType(PotionType aType) => type.Contains(aType);
 
-        public PotionData(int id, string gfxName, string name, string description, int maxStack, PotionType[] type, ItemQuality quality, int cost, float[] value, float[] maxValue) : base(id, gfxName, name, description, maxStack, quality, cost, value)
+        public PotionData(int id, string gfxName, string name, string description, int maxStack, PotionType[] type, ItemQuality quality, int cost, float[] value, float[] maxValue, IEnumerable<EffectData>? effects = null) : base(id, gfxName, name, description, maxStack, quality, cost, value, effects)
         {
             this.type = type ?? Array.Empty<PotionType>();
             this.maxValue = maxValue ?? Array.Empty<float>();

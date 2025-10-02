@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using SPHMMaker.Items.Effects;
 
 namespace SPHMMaker.Items
 {
@@ -62,7 +63,7 @@ namespace SPHMMaker.Items
         public HandRequirement Hand => (HandRequirement)(Slot - EQType.OneHanded);
 
 
-        public WeaponData(int id, string gfxName, string name, string description, EQType slot, int armor, int[] baseStats, int minAttackDamage, int maxAttackDamage, float attackSpeed, ItemQuality quality, Weapon weaponType, int cost) : base(id, gfxName, name, description, slot, armor, baseStats, quality, cost, MaterialType.None)
+        public WeaponData(int id, string gfxName, string name, string description, EQType slot, int armor, int[] baseStats, int minAttackDamage, int maxAttackDamage, float attackSpeed, ItemQuality quality, Weapon weaponType, int cost, IEnumerable<EffectData>? effects = null) : base(id, gfxName, name, description, slot, armor, baseStats, quality, cost, MaterialType.None, effects)
         {
             if (minAttackDamage != 0 || maxAttackDamage != 0)
             {

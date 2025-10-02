@@ -111,10 +111,28 @@ namespace SPHMMaker
             itemCountLabel = new Label();
             createItemButton = new Button();
             itemEffectTab = new TabPage();
-            label2 = new Label();
-            label1 = new Label();
-            listBox2 = new ListBox();
-            listBox1 = new ListBox();
+            effectRemoveFromItemButton = new Button();
+            effectAddToItemButton = new Button();
+            itemEffectsListBox = new ListBox();
+            effectLibraryListBox = new ListBox();
+            effectEditorGroup = new GroupBox();
+            effectDescriptionInput = new TextBox();
+            effectDescriptionLabel = new Label();
+            effectDurationInput = new NumericUpDown();
+            effectDurationLabel = new Label();
+            effectMagnitudeInput = new NumericUpDown();
+            effectMagnitudeLabel = new Label();
+            effectTargetSelector = new ComboBox();
+            effectTargetLabel = new Label();
+            effectTypeSelector = new ComboBox();
+            effectTypeLabel = new Label();
+            effectNameInput = new TextBox();
+            effectNameLabel = new Label();
+            effectDeleteButton = new Button();
+            effectSaveButton = new Button();
+            effectNewButton = new Button();
+            itemEffectsLabel = new Label();
+            effectLibraryLabel = new Label();
             otherPage = new TabPage();
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
@@ -162,6 +180,9 @@ namespace SPHMMaker
             ((System.ComponentModel.ISupportInitialize)itemMinimumDamageSetter).BeginInit();
             descriptionTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)itemMaxCountSetter).BeginInit();
+            effectEditorGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)effectDurationInput).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)effectMagnitudeInput).BeginInit();
             itemEffectTab.SuspendLayout();
             menuStrip1.SuspendLayout();
             SuspendLayout();
@@ -985,13 +1006,19 @@ namespace SPHMMaker
             createItemButton.Text = "Create Item";
             createItemButton.UseVisualStyleBackColor = true;
             createItemButton.Click += createItemButton_Click;
-            // 
+            //
             // itemEffectTab
-            // 
-            itemEffectTab.Controls.Add(label2);
-            itemEffectTab.Controls.Add(label1);
-            itemEffectTab.Controls.Add(listBox2);
-            itemEffectTab.Controls.Add(listBox1);
+            //
+            itemEffectTab.Controls.Add(effectRemoveFromItemButton);
+            itemEffectTab.Controls.Add(effectAddToItemButton);
+            itemEffectTab.Controls.Add(itemEffectsListBox);
+            itemEffectTab.Controls.Add(effectLibraryListBox);
+            itemEffectTab.Controls.Add(effectEditorGroup);
+            itemEffectTab.Controls.Add(itemEffectsLabel);
+            itemEffectTab.Controls.Add(effectLibraryLabel);
+            itemEffectTab.Controls.Add(effectDeleteButton);
+            itemEffectTab.Controls.Add(effectSaveButton);
+            itemEffectTab.Controls.Add(effectNewButton);
             itemEffectTab.Location = new Point(4, 24);
             itemEffectTab.Name = "itemEffectTab";
             itemEffectTab.Padding = new Padding(3);
@@ -999,42 +1026,222 @@ namespace SPHMMaker
             itemEffectTab.TabIndex = 1;
             itemEffectTab.Text = "Item Effects";
             itemEffectTab.UseVisualStyleBackColor = true;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(306, 7);
-            label2.Name = "label2";
-            label2.Size = new Size(119, 15);
-            label2.TabIndex = 3;
-            label2.Text = "Selected Item Effects:";
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(18, 5);
-            label1.Name = "label1";
-            label1.Size = new Size(62, 15);
-            label1.TabIndex = 2;
-            label1.Text = "All effects:";
-            // 
-            // listBox2
-            // 
-            listBox2.FormattingEnabled = true;
-            listBox2.ItemHeight = 15;
-            listBox2.Location = new Point(305, 30);
-            listBox2.Name = "listBox2";
-            listBox2.Size = new Size(231, 334);
-            listBox2.TabIndex = 1;
-            // 
-            // listBox1
-            // 
-            listBox1.FormattingEnabled = true;
-            listBox1.ItemHeight = 15;
-            listBox1.Location = new Point(25, 30);
-            listBox1.Name = "listBox1";
-            listBox1.Size = new Size(231, 334);
-            listBox1.TabIndex = 0;
+            //
+            // effectRemoveFromItemButton
+            //
+            effectRemoveFromItemButton.Location = new Point(402, 352);
+            effectRemoveFromItemButton.Name = "effectRemoveFromItemButton";
+            effectRemoveFromItemButton.Size = new Size(150, 23);
+            effectRemoveFromItemButton.TabIndex = 9;
+            effectRemoveFromItemButton.Text = "Remove Selected";
+            effectRemoveFromItemButton.UseVisualStyleBackColor = true;
+            effectRemoveFromItemButton.Click += effectRemoveFromItemButton_Click;
+            //
+            // effectAddToItemButton
+            //
+            effectAddToItemButton.Location = new Point(280, 352);
+            effectAddToItemButton.Name = "effectAddToItemButton";
+            effectAddToItemButton.Size = new Size(116, 23);
+            effectAddToItemButton.TabIndex = 8;
+            effectAddToItemButton.Text = "Add to Item";
+            effectAddToItemButton.UseVisualStyleBackColor = true;
+            effectAddToItemButton.Click += effectAddToItemButton_Click;
+            //
+            // itemEffectsListBox
+            //
+            itemEffectsListBox.FormattingEnabled = true;
+            itemEffectsListBox.ItemHeight = 15;
+            itemEffectsListBox.Location = new Point(280, 24);
+            itemEffectsListBox.Name = "itemEffectsListBox";
+            itemEffectsListBox.Size = new Size(272, 319);
+            itemEffectsListBox.TabIndex = 7;
+            //
+            // effectLibraryListBox
+            //
+            effectLibraryListBox.FormattingEnabled = true;
+            effectLibraryListBox.ItemHeight = 15;
+            effectLibraryListBox.Location = new Point(6, 24);
+            effectLibraryListBox.Name = "effectLibraryListBox";
+            effectLibraryListBox.Size = new Size(260, 169);
+            effectLibraryListBox.TabIndex = 0;
+            effectLibraryListBox.SelectedIndexChanged += effectLibraryListBox_SelectedIndexChanged;
+            //
+            // effectEditorGroup
+            //
+            effectEditorGroup.Controls.Add(effectDescriptionInput);
+            effectEditorGroup.Controls.Add(effectDescriptionLabel);
+            effectEditorGroup.Controls.Add(effectDurationInput);
+            effectEditorGroup.Controls.Add(effectDurationLabel);
+            effectEditorGroup.Controls.Add(effectMagnitudeInput);
+            effectEditorGroup.Controls.Add(effectMagnitudeLabel);
+            effectEditorGroup.Controls.Add(effectTargetSelector);
+            effectEditorGroup.Controls.Add(effectTargetLabel);
+            effectEditorGroup.Controls.Add(effectTypeSelector);
+            effectEditorGroup.Controls.Add(effectTypeLabel);
+            effectEditorGroup.Controls.Add(effectNameInput);
+            effectEditorGroup.Controls.Add(effectNameLabel);
+            effectEditorGroup.Location = new Point(6, 233);
+            effectEditorGroup.Name = "effectEditorGroup";
+            effectEditorGroup.Size = new Size(260, 214);
+            effectEditorGroup.TabIndex = 6;
+            effectEditorGroup.TabStop = false;
+            effectEditorGroup.Text = "Effect editor";
+            //
+            // effectDescriptionInput
+            //
+            effectDescriptionInput.Location = new Point(13, 176);
+            effectDescriptionInput.Multiline = true;
+            effectDescriptionInput.Name = "effectDescriptionInput";
+            effectDescriptionInput.Size = new Size(231, 32);
+            effectDescriptionInput.TabIndex = 10;
+            //
+            // effectDescriptionLabel
+            //
+            effectDescriptionLabel.AutoSize = true;
+            effectDescriptionLabel.Location = new Point(10, 160);
+            effectDescriptionLabel.Name = "effectDescriptionLabel";
+            effectDescriptionLabel.Size = new Size(72, 15);
+            effectDescriptionLabel.TabIndex = 9;
+            effectDescriptionLabel.Text = "Description:";
+            //
+            // effectDurationInput
+            //
+            effectDurationInput.DecimalPlaces = 2;
+            effectDurationInput.Location = new Point(94, 138);
+            effectDurationInput.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
+            effectDurationInput.Name = "effectDurationInput";
+            effectDurationInput.Size = new Size(150, 23);
+            effectDurationInput.TabIndex = 8;
+            effectDurationInput.ThousandsSeparator = true;
+            //
+            // effectDurationLabel
+            //
+            effectDurationLabel.AutoSize = true;
+            effectDurationLabel.Location = new Point(10, 140);
+            effectDurationLabel.Name = "effectDurationLabel";
+            effectDurationLabel.Size = new Size(57, 15);
+            effectDurationLabel.TabIndex = 7;
+            effectDurationLabel.Text = "Duration:";
+            //
+            // effectMagnitudeInput
+            //
+            effectMagnitudeInput.DecimalPlaces = 2;
+            effectMagnitudeInput.Location = new Point(94, 108);
+            effectMagnitudeInput.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
+            effectMagnitudeInput.Minimum = new decimal(new int[] { 100000, 0, 0, int.MinValue });
+            effectMagnitudeInput.Name = "effectMagnitudeInput";
+            effectMagnitudeInput.Size = new Size(150, 23);
+            effectMagnitudeInput.TabIndex = 6;
+            effectMagnitudeInput.ThousandsSeparator = true;
+            //
+            // effectMagnitudeLabel
+            //
+            effectMagnitudeLabel.AutoSize = true;
+            effectMagnitudeLabel.Location = new Point(10, 110);
+            effectMagnitudeLabel.Name = "effectMagnitudeLabel";
+            effectMagnitudeLabel.Size = new Size(69, 15);
+            effectMagnitudeLabel.TabIndex = 5;
+            effectMagnitudeLabel.Text = "Magnitude:";
+            //
+            // effectTargetSelector
+            //
+            effectTargetSelector.DropDownStyle = ComboBoxStyle.DropDownList;
+            effectTargetSelector.FormattingEnabled = true;
+            effectTargetSelector.Location = new Point(94, 78);
+            effectTargetSelector.Name = "effectTargetSelector";
+            effectTargetSelector.Size = new Size(150, 23);
+            effectTargetSelector.TabIndex = 4;
+            //
+            // effectTargetLabel
+            //
+            effectTargetLabel.AutoSize = true;
+            effectTargetLabel.Location = new Point(10, 80);
+            effectTargetLabel.Name = "effectTargetLabel";
+            effectTargetLabel.Size = new Size(44, 15);
+            effectTargetLabel.TabIndex = 3;
+            effectTargetLabel.Text = "Target:";
+            //
+            // effectTypeSelector
+            //
+            effectTypeSelector.DropDownStyle = ComboBoxStyle.DropDownList;
+            effectTypeSelector.FormattingEnabled = true;
+            effectTypeSelector.Location = new Point(94, 48);
+            effectTypeSelector.Name = "effectTypeSelector";
+            effectTypeSelector.Size = new Size(150, 23);
+            effectTypeSelector.TabIndex = 2;
+            //
+            // effectTypeLabel
+            //
+            effectTypeLabel.AutoSize = true;
+            effectTypeLabel.Location = new Point(10, 50);
+            effectTypeLabel.Name = "effectTypeLabel";
+            effectTypeLabel.Size = new Size(35, 15);
+            effectTypeLabel.TabIndex = 1;
+            effectTypeLabel.Text = "Type:";
+            //
+            // effectNameInput
+            //
+            effectNameInput.Location = new Point(94, 18);
+            effectNameInput.Name = "effectNameInput";
+            effectNameInput.Size = new Size(150, 23);
+            effectNameInput.TabIndex = 1;
+            //
+            // effectNameLabel
+            //
+            effectNameLabel.AutoSize = true;
+            effectNameLabel.Location = new Point(10, 21);
+            effectNameLabel.Name = "effectNameLabel";
+            effectNameLabel.Size = new Size(42, 15);
+            effectNameLabel.TabIndex = 0;
+            effectNameLabel.Text = "Name:";
+            //
+            // itemEffectsLabel
+            //
+            itemEffectsLabel.AutoSize = true;
+            itemEffectsLabel.Location = new Point(280, 6);
+            itemEffectsLabel.Name = "itemEffectsLabel";
+            itemEffectsLabel.Size = new Size(122, 15);
+            itemEffectsLabel.TabIndex = 5;
+            itemEffectsLabel.Text = "Selected item effects:";
+            //
+            // effectLibraryLabel
+            //
+            effectLibraryLabel.AutoSize = true;
+            effectLibraryLabel.Location = new Point(6, 6);
+            effectLibraryLabel.Name = "effectLibraryLabel";
+            effectLibraryLabel.Size = new Size(84, 15);
+            effectLibraryLabel.TabIndex = 4;
+            effectLibraryLabel.Text = "Effect library:";
+            //
+            // effectDeleteButton
+            //
+            effectDeleteButton.Location = new Point(182, 199);
+            effectDeleteButton.Name = "effectDeleteButton";
+            effectDeleteButton.Size = new Size(84, 28);
+            effectDeleteButton.TabIndex = 3;
+            effectDeleteButton.Text = "Delete";
+            effectDeleteButton.UseVisualStyleBackColor = true;
+            effectDeleteButton.Click += effectDeleteButton_Click;
+            //
+            // effectSaveButton
+            //
+            effectSaveButton.Location = new Point(95, 199);
+            effectSaveButton.Name = "effectSaveButton";
+            effectSaveButton.Size = new Size(81, 28);
+            effectSaveButton.TabIndex = 2;
+            effectSaveButton.Text = "Save";
+            effectSaveButton.UseVisualStyleBackColor = true;
+            effectSaveButton.Click += effectSaveButton_Click;
+            //
+            // effectNewButton
+            //
+            effectNewButton.Location = new Point(6, 199);
+            effectNewButton.Name = "effectNewButton";
+            effectNewButton.Size = new Size(83, 28);
+            effectNewButton.TabIndex = 1;
+            effectNewButton.Text = "New";
+            effectNewButton.UseVisualStyleBackColor = true;
+            effectNewButton.Click += effectNewButton_Click;
             // 
             // otherPage
             // 
@@ -1157,6 +1364,10 @@ namespace SPHMMaker
             ((System.ComponentModel.ISupportInitialize)itemMinimumDamageSetter).EndInit();
             descriptionTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)itemMaxCountSetter).EndInit();
+            effectEditorGroup.ResumeLayout(false);
+            effectEditorGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)effectDurationInput).EndInit();
+            ((System.ComponentModel.ISupportInitialize)effectMagnitudeInput).EndInit();
             itemEffectTab.ResumeLayout(false);
             itemEffectTab.PerformLayout();
             menuStrip1.ResumeLayout(false);
@@ -1224,10 +1435,28 @@ namespace SPHMMaker
         private Label itemWeaponTypeLabel;
         private ComboBox itemWeaponTypeSetter;
         private ComboBox itemWeaponEQTypeSetter;
-        private Label label2;
-        private Label label1;
-        private ListBox listBox2;
-        private ListBox listBox1;
+        private Button effectRemoveFromItemButton;
+        private Button effectAddToItemButton;
+        private ListBox itemEffectsListBox;
+        private ListBox effectLibraryListBox;
+        private GroupBox effectEditorGroup;
+        private TextBox effectDescriptionInput;
+        private Label effectDescriptionLabel;
+        private NumericUpDown effectDurationInput;
+        private Label effectDurationLabel;
+        private NumericUpDown effectMagnitudeInput;
+        private Label effectMagnitudeLabel;
+        private ComboBox effectTargetSelector;
+        private Label effectTargetLabel;
+        private ComboBox effectTypeSelector;
+        private Label effectTypeLabel;
+        private TextBox effectNameInput;
+        private Label effectNameLabel;
+        private Label itemEffectsLabel;
+        private Label effectLibraryLabel;
+        private Button effectDeleteButton;
+        private Button effectSaveButton;
+        private Button effectNewButton;
         private Label itemEquipmentTypeLabel;
         private Label itemWeaponEQTypeLabel;
         private Label itemMaximumDamageLabel;

@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static SPHMMaker.Items.SubTypes.PotionData;
+using SPHMMaker.Items.Effects;
 
 namespace SPHMMaker
 {
@@ -31,6 +32,7 @@ namespace SPHMMaker
                 ItemData.ItemQuality itemQuality = Enum.Parse<ItemData.ItemQuality>(itemQualitySelector.Items[itemQualitySelector.GetSingleCheckedIndex.Value].ToString());
                 int[] stats = [(int)itemStatsAgilitySetter.Value, (int)itemStatsStrengthSetter.Value, (int)itemStatsStaminaSetter.Value, (int)itemStatsIntelligenceSetter.Value, (int)itemStatsSpiritSetter.Value];
                 int cost = (int)goldCostCounter.Value;
+                IEnumerable<EffectData> effects = CloneCurrentEffects();
 
                 {
                     string s = string.Empty;
@@ -51,26 +53,26 @@ namespace SPHMMaker
                 switch (itemTypeSelector.Items[itemTypeSelector.GetSingleCheckedIndex.Value].ToString())
                 {
                     case nameof(ItemData.ItemType.None):
-                        item = new ItemData(id, name, gfxName, description, maxStack, itemQuality, cost);
+                        item = new ItemData(id, name, gfxName, description, maxStack, itemQuality, cost, effects);
                         break;
                     case nameof(ItemData.ItemType.Bag):
-                        item = new BagData(id, gfxName, name, description, (int)itemBagSizeSetter.Value, cost, itemQuality);
+                        item = new BagData(id, gfxName, name, description, (int)itemBagSizeSetter.Value, cost, itemQuality, effects);
                         break;
                     case nameof(ItemData.ItemType.Consumable): //TODO
                         PotionData.PotionType[] potionTypes = itemPotionTypeSetter.CheckedIndices.Cast<PotionData.PotionType>().ToArray();
                         float[] minVal = GetPotionData(potionTypes.Length, "Minimum");
                         float[] maxVal = GetPotionData(potionTypes.Length, "Maximum");
 
-                        item = new PotionData(id, gfxName, name, description, maxStack, potionTypes, itemQuality, cost, minVal, maxVal);
+                        item = new PotionData(id, gfxName, name, description, maxStack, potionTypes, itemQuality, cost, minVal, maxVal, effects);
                         break;
                     case nameof(ItemData.ItemType.Equipment):
-                        item = new EquipmentData(id, gfxName, name, description, Enum.Parse<EquipmentData.EQType>(itemTypeEquipmentTypeSetter.Text), (int)itemStatsArmorSetter.Value, stats, itemQuality, cost, Enum.Parse<EquipmentData.MaterialType>(itemEquipmentMaterialSetter.Text));
+                        item = new EquipmentData(id, gfxName, name, description, Enum.Parse<EquipmentData.EQType>(itemTypeEquipmentTypeSetter.Text), (int)itemStatsArmorSetter.Value, stats, itemQuality, cost, Enum.Parse<EquipmentData.MaterialType>(itemEquipmentMaterialSetter.Text), effects);
                         break;
                     case nameof(ItemData.ItemType.Weapon):
                         if (itemWeaponTypeSetter.SelectedIndex < Math.Log2((double)WeaponData.Weapon.Shield) )
-                            item = new WeaponData(id, gfxName, name, description, Enum.Parse<EquipmentData.EQType>(ReplaceWhitespace(itemWeaponEQTypeSetter.Text, "")), (int)itemStatsArmorSetter.Value, stats, (int)itemMinimumDamageSetter.Value, (int)itemMaximumDamageSetter.Value, (float)itemAttackSpeedSetter.Value, itemQuality, Enum.Parse<WeaponData.Weapon>(ReplaceWhitespace(itemWeaponTypeSetter.Text, "")), cost);
+                            item = new WeaponData(id, gfxName, name, description, Enum.Parse<EquipmentData.EQType>(ReplaceWhitespace(itemWeaponEQTypeSetter.Text, "")), (int)itemStatsArmorSetter.Value, stats, (int)itemMinimumDamageSetter.Value, (int)itemMaximumDamageSetter.Value, (float)itemAttackSpeedSetter.Value, itemQuality, Enum.Parse<WeaponData.Weapon>(ReplaceWhitespace(itemWeaponTypeSetter.Text, "")), cost, effects);
                         else
-                            item = new WeaponData(id, gfxName, name, description, Enum.Parse<EquipmentData.EQType>(ReplaceWhitespace(itemWeaponEQTypeSetter.Text, "")), (int)itemStatsArmorSetter.Value, stats, 0, 0, 0, itemQuality, Enum.Parse<WeaponData.Weapon>(ReplaceWhitespace(itemWeaponTypeSetter.Text, "")), cost);
+                            item = new WeaponData(id, gfxName, name, description, Enum.Parse<EquipmentData.EQType>(ReplaceWhitespace(itemWeaponEQTypeSetter.Text, "")), (int)itemStatsArmorSetter.Value, stats, 0, 0, 0, itemQuality, Enum.Parse<WeaponData.Weapon>(ReplaceWhitespace(itemWeaponTypeSetter.Text, "")), cost, effects);
                         break;
 
                     default:
@@ -244,6 +246,7 @@ namespace SPHMMaker
             {
                 editingItem = aIndex;
                 ItemData item = ItemManager.GetItemById(aIndex);
+                LoadEffectsFromItem(item);
                 goldCostCounter.Value = item.Cost;
                 itemMaxCountSetter.Value = item.MaxStack;
                 itemNameInput.Text = item.Name;
@@ -437,6 +440,11 @@ namespace SPHMMaker
                 }
             }
 
+            if (!EffectsMatch(original.Effects, currentItemEffects))
+            {
+                return true;
+            }
+
             if (original is EquipmentData equipment)
             {
                 if ((int)itemStatsAgilitySetter.Value != equipment.Agility
@@ -568,6 +576,24 @@ namespace SPHMMaker
                 itemDummyDpsLabel.Visible = true;
             }
 
+        }
+
+        private static bool EffectsMatch(IReadOnlyList<EffectData> originalEffects, IList<EffectData> currentEffects)
+        {
+            if (originalEffects.Count != currentEffects.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < originalEffects.Count; i++)
+            {
+                if (!originalEffects[i].Equals(currentEffects[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SPHMMaker.Items.Effects;
 
 namespace SPHMMaker.Items
 {
@@ -87,7 +88,7 @@ namespace SPHMMaker.Items
         EQType slot;
 
         [JsonConstructor]
-        public EquipmentData(int id, string gfxName, string name, string description, EQType slot, int armor, int[] baseStats, ItemQuality quality, int cost, MaterialType material) : base(id, gfxName, name, description, 1, quality, cost)
+        public EquipmentData(int id, string gfxName, string name, string description, EQType slot, int armor, int[] baseStats, ItemQuality quality, int cost, MaterialType material, IEnumerable<EffectData>? effects = null) : base(id, gfxName, name, description, 1, quality, cost, effects)
         {
             this.slot = slot;
             //this.baseStats = new EquipmentStats(baseStats);

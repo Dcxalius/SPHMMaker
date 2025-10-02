@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SPHMMaker.Items.Effects;
 
 namespace SPHMMaker.Items
 {
@@ -16,7 +17,7 @@ namespace SPHMMaker.Items
 
 
         [JsonConstructor]
-        public ConsumableData(int id, string gfxName, string name, string description, int maxStack, ItemQuality quality, int cost, float[] value) : base(id, gfxName, name, description, maxStack, quality, cost)
+        public ConsumableData(int id, string gfxName, string name, string description, int maxStack, ItemQuality quality, int cost, float[] value, IEnumerable<EffectData>? effects = null) : base(id, gfxName, name, description, maxStack, quality, cost, effects)
         {
             this.value = value;
             Assert();
