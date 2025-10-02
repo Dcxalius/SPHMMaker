@@ -12,4 +12,19 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="SpriteEditorForm.Designer.cs">
+      <DependentUpon>SpriteEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Update="NewCanvasDialog.Designer.cs">
+      <DependentUpon>NewCanvasDialog.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="SpriteEditorForm.resx">
+      <DependentUpon>SpriteEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="NewCanvasDialog.resx">
+      <DependentUpon>NewCanvasDialog.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

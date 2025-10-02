@@ -1048,7 +1048,7 @@ namespace SPHMMaker
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, helpToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, toolsToolStripMenuItem, helpToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(968, 24);
@@ -1082,6 +1082,20 @@ namespace SPHMMaker
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             exitToolStripMenuItem.Size = new Size(190, 22);
             exitToolStripMenuItem.Text = "Exit";
+            //
+            // toolsToolStripMenuItem
+            //
+            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { spriteEditorToolStripMenuItem });
+            toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            toolsToolStripMenuItem.Size = new Size(46, 20);
+            toolsToolStripMenuItem.Text = "Tools";
+            //
+            // spriteEditorToolStripMenuItem
+            //
+            spriteEditorToolStripMenuItem.Name = "spriteEditorToolStripMenuItem";
+            spriteEditorToolStripMenuItem.Size = new Size(138, 22);
+            spriteEditorToolStripMenuItem.Text = "Sprite Editor";
+            spriteEditorToolStripMenuItem.Click += spriteEditorToolStripMenuItem_Click;
             //
             // helpToolStripMenuItem
             //
@@ -1192,6 +1206,8 @@ namespace SPHMMaker
         private ToolStripMenuItem saveDatapackToolStripMenuItem;
         private ToolStripMenuItem loadDatapackToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
+        private ToolStripMenuItem toolsToolStripMenuItem;
+        private ToolStripMenuItem spriteEditorToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem fileDownloadInstructionsToolStripMenuItem;
         private Button EditItemButton;

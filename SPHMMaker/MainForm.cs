@@ -12,6 +12,7 @@ namespace SPHMMaker
         static extern bool AllocConsole();
 
         int editingItem = -1;
+        SpriteEditorForm? spriteEditorForm;
 
 
         public MainForm()
@@ -125,9 +126,28 @@ namespace SPHMMaker
                 "1. Hover the message that contains the attachment and select the download icon." + Environment.NewLine +
                 "2. Pick a destination on your computer when the save dialog appears." + Environment.NewLine +
                 "3. After the download finishes, open the saved file from the chosen folder." + Environment.NewLine +
-                "4. If the download is a compressed archive (.zip), extract it before importing it into the game.";
+                "4. If the download is a compressed archive (.zip), extract it before importing it into the game." + Environment.NewLine +
+                "5. You can edit downloaded sprites using Tools > Sprite Editor.";
 
             MessageBox.Show(instructions, "File Download Instructions", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void spriteEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (spriteEditorForm == null || spriteEditorForm.IsDisposed)
+            {
+                spriteEditorForm = new SpriteEditorForm();
+                spriteEditorForm.Show(this);
+            }
+            else
+            {
+                if (spriteEditorForm.WindowState == FormWindowState.Minimized)
+                {
+                    spriteEditorForm.WindowState = FormWindowState.Normal;
+                }
+
+                spriteEditorForm.Focus();
+            }
         }
     }
 }
