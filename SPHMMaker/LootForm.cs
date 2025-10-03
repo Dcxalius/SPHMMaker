@@ -8,8 +8,6 @@ namespace SPHMMaker
 {
     public partial class MainForm
     {
-        private readonly BindingSource lootTableBinding = new();
-        private readonly BindingSource lootEntryBinding = new();
         private LootTable? activeLootTable;
 
         private void InitializeLootTab()

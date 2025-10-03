@@ -53,6 +53,8 @@ namespace SPHMMaker
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool AllocConsole();
 
+        private readonly BindingSource lootTableBinding = new();
+        private readonly BindingSource lootEntryBinding = new();
         private readonly BindingSource classBindingSource = new();
         private readonly BindingSource unitBindingSource = new();
         private readonly BindingSource spawnZoneBindingSource = new();
