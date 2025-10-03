@@ -25,6 +25,27 @@ namespace SPHMMaker
         readonly Dictionary<string, Image> itemImageCache = new();
         readonly Image defaultItemImage;
         bool imagesDisposed;
+        TabPage? spawnZoneTabPage;
+        ListBox? unitDataListBox;
+        Label? selectedUnitLabel;
+        TextBox? unitNameInput;
+        NumericUpDown? unitLevelSetter;
+        TextBox? unitNotesInput;
+        Button? createUnitButton;
+        Button? updateUnitButton;
+        Button? deleteUnitButton;
+        ListBox? spawnZoneListBox;
+        Label? selectedZoneLabel;
+        TextBox? spawnZoneNameInput;
+        TextBox? spawnZoneNotesInput;
+        Button? createSpawnZoneButton;
+        Button? updateSpawnZoneButton;
+        Button? deleteSpawnZoneButton;
+        ListBox? spawnZoneAssignmentsListBox;
+        NumericUpDown? assignmentMinimumSetter;
+        NumericUpDown? assignmentMaximumSetter;
+        Button? assignUnitButton;
+        Button? removeAssignmentButton;
 
         static readonly IReadOnlyDictionary<ItemData.ItemQuality, Color> ItemQualityColors = new Dictionary<ItemData.ItemQuality, Color>
         {
@@ -42,6 +63,11 @@ namespace SPHMMaker
         int editingItem = -1;
         private readonly BindingSource lootTableBinding = new();
         private readonly BindingSource lootEntryBinding = new();
+        private readonly BindingSource unitBindingSource = new();
+        private readonly BindingSource spawnZoneBindingSource = new();
+        private readonly BindingSource assignmentBindingSource = new();
+        private readonly BindingList<UnitData> unitDefinitions = new();
+        private readonly BindingList<SpawnZoneData> spawnZoneDefinitions = new();
         private LootTable? activeLootTable;
         int editingTile = -1;
 
@@ -56,6 +82,8 @@ namespace SPHMMaker
             InitializeItems();
 
             InitializeLootTab();
+            InitializeSpawnZoneTab();
+            InitializeSpawnZoneDataBindings();
         }
 
         private void InitializeLootTab()
@@ -682,7 +710,11 @@ namespace SPHMMaker
 
         private void itemCheckGeneratedTooltip_Click(object sender, EventArgs e)
         {
-            ItemData item = FoldDataIntoItem;
+            ItemData? item = FoldDataIntoItem();
+            if (item is null)
+            {
+                return;
+            }
             string tooltip = itemNameInput.Text;
             tooltip += "\n";
             tooltip += itemDescriptionInput.Text;
