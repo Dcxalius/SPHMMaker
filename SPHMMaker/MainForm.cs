@@ -76,6 +76,9 @@ namespace SPHMMaker
         private readonly BindingSource assignmentBindingSource = new();
         private readonly BindingList<ClassData> classDefinitions = new();
         private readonly BindingSource raceBindingSource = new();
+        private readonly BindingSource unitBindingSource = new();
+        private readonly BindingSource spawnZoneBindingSource = new();
+        private readonly BindingSource assignmentBindingSource = new();
         private readonly BindingList<RaceData> raceDefinitions = new();
         private readonly BindingList<UnitData> unitDefinitions = new();
         private readonly BindingList<SpawnZoneData> spawnZoneDefinitions = new();
