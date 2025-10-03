@@ -8,6 +8,7 @@ namespace SPHMMaker
 {
     public partial class MainForm
     {
+        private int editingTile = -1;
         private TileData? FoldDataIntoTile
         {
             get
