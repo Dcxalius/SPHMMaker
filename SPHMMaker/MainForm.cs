@@ -15,14 +15,6 @@ namespace SPHMMaker
     public partial class MainForm : Form
     {
         public static MainForm Instance;
-        const int ItemImageSize = 48;
-        const int ItemHorizontalPadding = 8;
-        const int ItemVerticalPadding = 4;
-        static readonly string[] SupportedImageExtensions = new[] { ".png", ".jpg", ".jpeg", ".bmp" };
-
-        readonly Dictionary<string, Image> itemImageCache = new();
-        readonly Image defaultItemImage;
-        bool imagesDisposed;
         TabPage? classTabPage;
         ListBox? classListBox;
         Label? selectedClassLabel;
@@ -66,6 +58,8 @@ namespace SPHMMaker
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool AllocConsole();
 
+        private readonly BindingSource lootTableBinding = new();
+        private readonly BindingSource lootEntryBinding = new();
         int editingItem = -1;
         private readonly BindingSource classBindingSource = new();
         private readonly BindingSource unitBindingSource = new();
