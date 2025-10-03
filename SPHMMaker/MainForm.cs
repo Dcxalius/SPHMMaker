@@ -1411,14 +1411,30 @@ namespace SPHMMaker
 
             if (spawnZoneListBox?.SelectedItem is SpawnZoneData zone)
             {
+                SpawnZoneAssignment? currentSelection = spawnZoneAssignmentsListBox.SelectedItem as SpawnZoneAssignment;
+
                 assignmentBindingSource.DataSource = zone.Assignments;
                 spawnZoneAssignmentsListBox.DataSource = assignmentBindingSource;
                 spawnZoneAssignmentsListBox.DisplayMember = nameof(SpawnZoneAssignment.DisplayText);
+                assignmentBindingSource.ResetBindings(false);
+
+                if (currentSelection != null && zone.Assignments.Contains(currentSelection))
+                {
+                    spawnZoneAssignmentsListBox.SelectedItem = currentSelection;
+                    PopulateAssignmentFields(currentSelection);
+                }
+                else
+                {
+                    spawnZoneAssignmentsListBox.ClearSelected();
+                    PopulateAssignmentFields(null);
+                }
             }
             else
             {
                 assignmentBindingSource.DataSource = null;
                 spawnZoneAssignmentsListBox.DataSource = null;
+                spawnZoneAssignmentsListBox.ClearSelected();
+                PopulateAssignmentFields(null);
             }
         }
 
