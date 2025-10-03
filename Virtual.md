@@ -219,9 +219,16 @@ Unique compiler and runtime error messages, enriched with details where availabl
     - **Reason:** `spawnZoneDefinitions` is referenced without a declaration in scope, indicating a missing field or property.  
     - **Fix:** Declare the `spawnZoneDefinitions` collection/property or reference the actual data structure that holds the spawn zone definitions.
 
-32. The name 'assignmentBindingSource' does not exist in the current context  
-    - **Code:** CS0103  
-    - **File:** MainForm.cs  
-    - **Line:** 1370, 1371, 1376, 1422, 1437  
-    - **Reason:** The binding source for assignments is not declared, so the compiler cannot find `assignmentBindingSource`.  
+32. The name 'assignmentBindingSource' does not exist in the current context
+    - **Code:** CS0103
+    - **File:** MainForm.cs
+    - **Line:** 1370, 1371, 1376, 1422, 1437
+    - **Reason:** The binding source for assignments is not declared, so the compiler cannot find `assignmentBindingSource`.
     - **Fix:** Define the binding source in the designer or update the code to reference the existing assignments binding component.
+
+33. Exception Unhandled: "BeginInit" has already been called without an "EndInit"
+    - **Type:** System.InvalidOperationException
+    - **File:** MainForm.Designer.cs
+    - **Line:** ~170-180 and ~1510-1520
+    - **Reason:** Prior revisions emitted two `BeginInit()` calls for `lootEntriesGrid` (and matching duplicate `EndInit()`/`ResumeLayout()` calls) whenever `InitializeComponent()` executed. The extra `BeginInit()` was injected after `lootTabPage.SuspendLayout()` was called a second time, leaving the grid in an unfinished initialization state and raising the `InvalidOperationException` at runtime.
+    - **Fix:** Remove the redundant `lootTabPage.SuspendLayout()` / `lootEntriesGrid.BeginInit()` block and the mirrored `ResumeLayout()` / `EndInit()` calls at the bottom of the method so that the grid is initialized exactly once. The remaining `BeginInit()` at ~173 and `EndInit()` at ~1513 now form a balanced pair, allowing the form to load normally.
