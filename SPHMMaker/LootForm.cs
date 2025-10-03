@@ -123,16 +123,17 @@ namespace SPHMMaker
         private void lootAddTableButton_Click(object? sender, EventArgs e)
         {
             string idText = lootTableIdTextBox.Text.Trim();
+            int id;
             if (string.IsNullOrEmpty(idText))
             {
-                int id = CreateDefaultLootTableId();
+                id = CreateDefaultLootTableId();
                 lootTableIdTextBox.Text = id.ToString();
                 lootTableIdTextBox.Focus();
                 lootTableIdTextBox.SelectAll();
                 return;
             }
 
-            if (!int.TryParse(idText, out int id))
+            if (!int.TryParse(idText, out id))
             {
                 MessageBox.Show("Loot table ID must be a whole number.", "Invalid ID", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 lootTableIdTextBox.Focus();
