@@ -4,7 +4,7 @@ namespace SPHMMaker.Loot;
 
 public class LootTable : INotifyPropertyChanged
 {
-    private string id = string.Empty;
+    private int id;
 
     public LootTable()
     {
@@ -13,7 +13,7 @@ public class LootTable : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public string Id
+    public int Id
     {
         get => id;
         set
@@ -30,7 +30,7 @@ public class LootTable : INotifyPropertyChanged
 
     public BindingList<LootEntry> Entries { get; }
 
-    public override string ToString() => Id;
+    public override string ToString() => Id.ToString();
 
     private void OnPropertyChanged(string propertyName) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
