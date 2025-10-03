@@ -1,0 +1,10 @@
+{
+  "id": 2,
+  "gfxName": "pouch_small",
+  "name": "Small Pouch",
+  "description": "Adds a few extra inventory slots.",
+  "slotCount": 8,
+  "cost": 12,
+  "quality": "Common",
+  "itemType": "Bag"
+}

@@ -1,0 +1,8 @@
+{
+  "ID": 2,
+  "Name": "Stone",
+  "Texture": "stone",
+  "IsWalkable": true,
+  "MovementCost": 1,
+  "Notes": "Chiseled stone floor."
+}
