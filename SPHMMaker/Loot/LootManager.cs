@@ -11,7 +11,7 @@ public static class LootManager
 
     public static LootTable Create(int id)
     {
-        LootTable table = new()
+        var table = new LootTable
         {
             Id = id
         };
