@@ -62,7 +62,6 @@ namespace SPHMMaker
         private readonly BindingList<ClassData> classDefinitions = new();
         private readonly BindingList<UnitData> unitDefinitions = new();
         private readonly BindingList<SpawnZoneData> spawnZoneDefinitions = new();
-        int editingTile = -1;
 
         string? datapackSourcePath;
         string? datapackExtractionRoot;
