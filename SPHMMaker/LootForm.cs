@@ -132,14 +132,14 @@ namespace SPHMMaker
                 return;
             }
 
-            if (!int.TryParse(idText, out int id))
+            if (!int.TryParse(idText, out int parsedId))
             {
                 MessageBox.Show("Loot table ID must be a whole number.", "Invalid ID", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 lootTableIdTextBox.Focus();
                 lootTableIdTextBox.SelectAll();
                 return;
             }
-            else if (LootManager.ContainsId(id))
+            else if (LootManager.ContainsId(parsedId))
             {
                 MessageBox.Show("A loot table with that ID already exists.", "Duplicate ID", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 lootTableIdTextBox.Focus();
@@ -147,7 +147,7 @@ namespace SPHMMaker
                 return;
             }
 
-            LootTable table = LootManager.Create(id);
+            LootTable table = LootManager.Create(parsedId);
             lootTableBinding.ResetBindings(false);
             lootTablesListBox.SelectedItem = table;
             lootTableIdTextBox.Focus();
@@ -170,7 +170,7 @@ namespace SPHMMaker
                 return;
             }
 
-            if (!int.TryParse(idText, out int id))
+            if (!int.TryParse(idText, out int parsedId))
             {
                 MessageBox.Show("Loot table ID must be a whole number.", "Invalid ID", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 lootTableIdTextBox.Focus();
@@ -178,7 +178,7 @@ namespace SPHMMaker
                 return;
             }
 
-            if (activeLootTable.Id != id && LootManager.ContainsId(id))
+            if (activeLootTable.Id != parsedId && LootManager.ContainsId(parsedId))
             {
                 MessageBox.Show("A loot table with that ID already exists.", "Duplicate ID", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 lootTableIdTextBox.Focus();
@@ -186,7 +186,7 @@ namespace SPHMMaker
                 return;
             }
 
-            activeLootTable.Id = id;
+            activeLootTable.Id = parsedId;
             lootTableBinding.ResetBindings(false);
         }
 

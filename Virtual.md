@@ -9,12 +9,13 @@ Unique compiler and runtime error messages, enriched with details where availabl
    - **Reason:** The target method parameter is defined as an `int`, but the call site is passing in a `string` literal or property without converting it.  
    - **Fix:** Update the call to parse the string to an integer (e.g., `int.Parse`/`int.TryParse`) or change the method signature to accept a string if that is the intended type.
 
-2. 'LootManager' does not contain a definition for 'Create'  
-   - **Code:** CS0117  
-   - **File:** MainForm.cs  
-   - **Line:** 184  
-   - **Reason:** The `LootManager` class lacks a `Create` member, so the call is referencing a method that was never implemented or has a different name/signature.  
+2. 'LootManager' does not contain a definition for 'Create'
+   - **Code:** CS0117
+   - **File:** MainForm.cs
+   - **Line:** 184
+   - **Reason:** The `LootManager` class lacks a `Create` member, so the call is referencing a method that was never implemented or has a different name/signature.
    - **Fix:** Implement a `Create` method on `LootManager` with the expected signature or replace the call with the correct existing factory/initialization method.
+   - **Status:** Resolved by adding `LootManager.Create(int id)` in `Loot/LootManager.cs`, which instantiates and registers a new `LootTable`.
 
 3. Argument 1: cannot convert from 'int' to 'string?'  
    - **Code:** CS1503  
@@ -234,8 +235,15 @@ Unique compiler and runtime error messages, enriched with details where availabl
     - **Fix:** Remove the redundant `lootTabPage.SuspendLayout()` / `lootEntriesGrid.BeginInit()` block and the mirrored `ResumeLayout()` / `EndInit()` calls at the bottom of the method so that the grid is initialized exactly once. The remaining `BeginInit()` at ~173 and `EndInit()` at ~1513 now form a balanced pair, allowing the form to load normally.
 
 34. Duplicate item helper definitions in `MainForm`
-    - **Code:** CS0102 / CS0111 / CS0121
-    - **File:** MainForm.cs (and partials such as ItemForm.cs, MainForm.OtherPartial.cs)
-    - **Line:** Various (`CreateDefaultItemImage`, `itemCheckGeneratedTooltip_Click`, `items_DrawItem`, `CalculateImageRectangle`, `GetItemImage`, `GetCandidatePaths`, `TryLoadImage`, `TryLoadImageCore`, `GetQualityColor`, `DisposeItemImages`)
-    - **Reason:** The partial `MainForm` class declared the same item rendering and image-loading helpers in multiple files, leading the compiler to see duplicate member definitions and causing ambiguous method invocations like `CreateDefaultItemImage()`.
-    - **Fix:** Consolidate these helpers into a single partial file so that only one implementation exists, and remove duplicate field declarations such as `editingItem` to restore unique member definitions across the partial class.
+   - **Code:** CS0102 / CS0111 / CS0121
+   - **File:** MainForm.cs (and partials such as ItemForm.cs, MainForm.OtherPartial.cs)
+   - **Line:** Various (`CreateDefaultItemImage`, `itemCheckGeneratedTooltip_Click`, `items_DrawItem`, `CalculateImageRectangle`, `GetItemImage`, `GetCandidatePaths`, `TryLoadImage`, `TryLoadImageCore`, `GetQualityColor`, `DisposeItemImages`)
+   - **Reason:** The partial `MainForm` class declared the same item rendering and image-loading helpers in multiple files, leading the compiler to see duplicate member definitions and causing ambiguous method invocations like `CreateDefaultItemImage()`.
+   - **Fix:** Consolidate these helpers into a single partial file so that only one implementation exists, and remove duplicate field declarations such as `editingItem` to restore unique member definitions across the partial class.
+
+35. A local or parameter named 'id' cannot be declared in this scope because that name is used in an enclosing local scope
+   - **Code:** CS0136
+   - **File:** LootForm.cs
+   - **Line:** 135, 173
+   - **Reason:** Both loot table handlers declared an `id` variable in an inner scope and then attempted to redeclare it via `out int id`, conflicting with the variable captured by the enclosing scope under the project's configured language version.
+   - **Fix:** Rename the `out` variable (for example, to `parsedId`) and update subsequent references so each scope uses a distinct identifier.
