@@ -1,0 +1,10 @@
+{
+  "id": 1,
+  "gfxName": "coin_copper",
+  "name": "Copper Coin",
+  "description": "A simple copper piece used for trade.",
+  "maxStack": 100,
+  "quality": "Common",
+  "cost": 1,
+  "itemType": "None"
+}

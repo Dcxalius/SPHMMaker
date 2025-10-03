@@ -1,0 +1,19 @@
+{
+  "id": 5,
+  "gfxName": "armor_leather_vest",
+  "name": "Hardened Leather Vest",
+  "description": "Provides sturdy protection for hunters and scouts.",
+  "slot": "Chest",
+  "armor": 35,
+  "baseStats": [
+    6,
+    2,
+    12,
+    0,
+    4
+  ],
+  "quality": "Rare",
+  "cost": 240,
+  "material": "Leather",
+  "itemType": "Equipment"
+}
