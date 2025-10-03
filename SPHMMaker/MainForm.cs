@@ -197,11 +197,19 @@ namespace SPHMMaker
 
         private void lootAddTableButton_Click(object? sender, EventArgs e)
         {
-            string id = lootTableIdTextBox.Text.Trim();
+            string idText = lootTableIdTextBox.Text.Trim();
+            int id;
 
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(idText))
             {
                 id = CreateDefaultLootTableId();
+            }
+            else if (!int.TryParse(idText, out id))
+            {
+                MessageBox.Show("Loot table ID must be a whole number.", "Invalid ID", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                lootTableIdTextBox.Focus();
+                lootTableIdTextBox.SelectAll();
+                return;
             }
             else if (LootManager.ContainsId(id))
             {
@@ -223,16 +231,24 @@ namespace SPHMMaker
                 return;
             }
 
-            string id = lootTableIdTextBox.Text.Trim();
+            string idText = lootTableIdTextBox.Text.Trim();
 
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(idText))
             {
                 MessageBox.Show("Loot table ID cannot be empty.", "Missing ID", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 lootTableIdTextBox.Focus();
                 return;
             }
 
-            if (!string.Equals(activeLootTable.Id, id, StringComparison.OrdinalIgnoreCase) && LootManager.ContainsId(id))
+            if (!int.TryParse(idText, out int id))
+            {
+                MessageBox.Show("Loot table ID must be a whole number.", "Invalid ID", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                lootTableIdTextBox.Focus();
+                lootTableIdTextBox.SelectAll();
+                return;
+            }
+
+            if (activeLootTable.Id != id && LootManager.ContainsId(id))
             {
                 MessageBox.Show("A loot table with that ID already exists.", "Duplicate ID", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -317,7 +333,7 @@ namespace SPHMMaker
                 lootAddEntryButton.Enabled = true;
                 lootKillsCounter.Enabled = true;
 
-                lootTableIdTextBox.Text = activeLootTable.Id;
+                lootTableIdTextBox.Text = activeLootTable.Id.ToString();
                 lootEntryBinding.DataSource = activeLootTable.Entries;
                 activeLootTable.Entries.ListChanged += LootEntries_ListChanged;
                 lootEntryBinding.ResetBindings(false);
@@ -445,18 +461,16 @@ namespace SPHMMaker
             return result;
         }
 
-        private static string CreateDefaultLootTableId()
+        private static int CreateDefaultLootTableId()
         {
             int index = 1;
-            string id;
 
-            do
+            while (LootManager.ContainsId(index))
             {
-                id = $"loot_table_{index++}";
+                index++;
             }
-            while (LootManager.ContainsId(id));
 
-            return id;
+            return index;
         }
 
         private void DetachFromActiveLootTable()

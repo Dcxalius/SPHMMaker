@@ -9,7 +9,7 @@ public static class LootManager
 {
     public static BindingList<LootTable> LootTables { get; } = new();
 
-    public static LootTable Create(string id)
+    public static LootTable Create(int id)
     {
         LootTable table = new()
         {
@@ -25,8 +25,8 @@ public static class LootManager
         LootTables.Remove(table);
     }
 
-    public static bool ContainsId(string id) =>
-        LootTables.Any(table => table.Id.Equals(id, StringComparison.OrdinalIgnoreCase));
+    public static bool ContainsId(int id) =>
+        LootTables.Any(table => table.Id == id);
 
-    public static IEnumerable<string> GetIds() => LootTables.Select(table => table.Id);
+    public static IEnumerable<int> GetIds() => LootTables.Select(table => table.Id);
 }
