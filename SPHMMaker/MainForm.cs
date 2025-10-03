@@ -71,6 +71,11 @@ namespace SPHMMaker
         private LootTable? activeLootTable;
         int editingTile = -1;
 
+        string? datapackSourcePath;
+        string? datapackExtractionRoot;
+        string? datapackRootPath;
+        bool datapackLoadedFromArchive;
+
 
         public MainForm()
         {
@@ -482,33 +487,13 @@ namespace SPHMMaker
         }
         private void loadDatapackToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string? path = GetDirectory();
-
-            if (path is null)
+            var selection = PromptForDatapackLoad();
+            if (selection.Path is null)
             {
                 return;
             }
 
-            //TODO: Check access?
-            //DirectoryInfo di = new DirectoryInfo(path);
-            //di.GetAccessControl().GetAccessRules();
-
-            string[] foldersThatShouldBeHere = new[] { "Items" };
-
-            string[] folders = Directory.GetDirectories(path);
-
-
-            foreach (string folder in foldersThatShouldBeHere)
-            {
-                if (!folders.Contains(path + "\\" + folder))
-                {
-                    MessageBox.Show($"Error, {folder} is not found");
-                    return;
-                }
-            }
-
-            ItemManager.Load(path + "\\Items");
-            TileManager.Load(path + "\\Tiles");
+            LoadDatapack(selection.Path, selection.IsArchive);
         }
 
         private void items_DrawItem(object? sender, DrawItemEventArgs e)
@@ -698,28 +683,267 @@ namespace SPHMMaker
 
         private void saveDatapackToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string? s = GetDirectory();
-
-            if (s is null)
+            var selection = PromptForDatapackSave();
+            if (selection.Path is null)
             {
                 MessageBox.Show("Save aborted.");
                 return;
             }
 
-            //ItemManager.Save(s);
+            SaveDatapack(selection.Path, selection.IsArchive);
         }
 
-        string? GetDirectory()
+        private (string? Path, bool IsArchive) PromptForDatapackLoad()
         {
-            var fbg = new FolderBrowserDialog()
+            DialogResult choice = MessageBox.Show(
+                "Is the datapack stored as a .zip archive?\nChoose Yes to load a .zip file or No to load from an extracted folder.",
+                "Load Datapack",
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Question);
+
+            if (choice == DialogResult.Cancel)
             {
-                InitialDirectory = AppDomain.CurrentDomain.BaseDirectory
+                return (null, false);
+            }
+
+            if (choice == DialogResult.Yes)
+            {
+                using OpenFileDialog dialog = new()
+                {
+                    Filter = "Datapack archive (*.zip)|*.zip",
+                    Title = "Select Datapack Archive",
+                    InitialDirectory = GetInitialDatapackDirectory()
+                };
+
+                return dialog.ShowDialog() == DialogResult.OK
+                    ? (dialog.FileName, true)
+                    : (null, false);
+            }
+
+            using FolderBrowserDialog folderDialog = new()
+            {
+                Description = "Select Datapack Folder",
+                SelectedPath = GetInitialDatapackDirectory()
             };
 
-            if (fbg.ShowDialog() != DialogResult.OK)
-                return null;
+            return folderDialog.ShowDialog() == DialogResult.OK
+                ? (folderDialog.SelectedPath, false)
+                : (null, false);
+        }
 
-            return fbg.SelectedPath;
+        private (string? Path, bool IsArchive) PromptForDatapackSave()
+        {
+            DialogResult choice = MessageBox.Show(
+                "Would you like to save the datapack as a .zip archive?\nChoose Yes for a .zip file or No to export to a folder.",
+                "Save Datapack",
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Question);
+
+            if (choice == DialogResult.Cancel)
+            {
+                return (null, false);
+            }
+
+            if (choice == DialogResult.Yes)
+            {
+                using SaveFileDialog dialog = new()
+                {
+                    Filter = "Datapack archive (*.zip)|*.zip",
+                    Title = "Save Datapack",
+                    FileName = GetDefaultDatapackFileName(includeExtension: true),
+                    InitialDirectory = GetInitialDatapackDirectory()
+                };
+
+                return dialog.ShowDialog() == DialogResult.OK
+                    ? (dialog.FileName, true)
+                    : (null, false);
+            }
+
+            using FolderBrowserDialog folderDialog = new()
+            {
+                Description = "Select Folder to Save Datapack",
+                SelectedPath = GetInitialDatapackDirectory()
+            };
+
+            return folderDialog.ShowDialog() == DialogResult.OK
+                ? (folderDialog.SelectedPath, false)
+                : (null, false);
+        }
+
+        private void LoadDatapack(string path, bool isArchive)
+        {
+            string? previousExtraction = datapackExtractionRoot;
+            string? newExtractionRoot = null;
+
+            try
+            {
+                string datapackRoot = path;
+
+                if (isArchive)
+                {
+                    var extraction = DatapackArchive.ExtractToTemporaryDirectory(path);
+                    datapackRoot = extraction.DatapackRoot;
+                    newExtractionRoot = extraction.ExtractionRoot;
+                }
+
+                string itemsDirectory = Path.Combine(datapackRoot, "Items");
+                if (!Directory.Exists(itemsDirectory))
+                {
+                    throw new DirectoryNotFoundException("The datapack does not contain an Items directory.");
+                }
+
+                bool itemsLoaded = ItemManager.Load(itemsDirectory);
+                if (!itemsLoaded)
+                {
+                    throw new InvalidDataException("Failed to load item data from the datapack.");
+                }
+
+                string tilesDirectory = Path.Combine(datapackRoot, "Tiles");
+                TileManager.Load(tilesDirectory);
+
+                datapackSourcePath = path;
+                datapackRootPath = datapackRoot;
+                datapackLoadedFromArchive = isArchive;
+                datapackExtractionRoot = newExtractionRoot;
+
+                if (!string.IsNullOrEmpty(previousExtraction) && previousExtraction != newExtractionRoot)
+                {
+                    TryDeleteDirectory(previousExtraction);
+                }
+
+                MessageBox.Show("Datapack loaded successfully.", "Load Datapack", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                if (newExtractionRoot != null)
+                {
+                    TryDeleteDirectory(newExtractionRoot);
+                }
+
+                datapackExtractionRoot = previousExtraction;
+
+                MessageBox.Show($"Failed to load datapack: {ex.Message}", "Load Datapack", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void SaveDatapack(string destinationPath, bool asArchive)
+        {
+            try
+            {
+                if (asArchive)
+                {
+                    string tempRoot = Path.Combine(Path.GetTempPath(), "SPHMMaker", "export", Guid.NewGuid().ToString("N"));
+                    Directory.CreateDirectory(tempRoot);
+
+                    try
+                    {
+                        bool itemsSaved = ItemManager.Save(Path.Combine(tempRoot, "Items"));
+                        bool tilesSaved = TileManager.Save(Path.Combine(tempRoot, "Tiles"));
+
+                        if (!itemsSaved && !tilesSaved)
+                        {
+                            throw new InvalidOperationException("There is no data to save.");
+                        }
+
+                        DatapackArchive.CreateArchive(tempRoot, destinationPath);
+                    }
+                    finally
+                    {
+                        TryDeleteDirectory(tempRoot);
+                    }
+                }
+                else
+                {
+                    Directory.CreateDirectory(destinationPath);
+
+                    string itemsDirectory = Path.Combine(destinationPath, "Items");
+                    string tilesDirectory = Path.Combine(destinationPath, "Tiles");
+
+                    if (Directory.Exists(itemsDirectory))
+                    {
+                        Directory.Delete(itemsDirectory, true);
+                    }
+
+                    if (Directory.Exists(tilesDirectory))
+                    {
+                        Directory.Delete(tilesDirectory, true);
+                    }
+
+                    bool itemsSaved = ItemManager.Save(itemsDirectory);
+                    bool tilesSaved = TileManager.Save(tilesDirectory);
+
+                    if (!itemsSaved && !tilesSaved)
+                    {
+                        throw new InvalidOperationException("There is no data to save.");
+                    }
+                }
+
+                MessageBox.Show("Datapack saved successfully.", "Save Datapack", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to save datapack: {ex.Message}", "Save Datapack", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private string GetDefaultDatapackFileName(bool includeExtension)
+        {
+            string baseName = "datapack";
+
+            if (!string.IsNullOrEmpty(datapackSourcePath))
+            {
+                if (datapackLoadedFromArchive)
+                {
+                    baseName = Path.GetFileNameWithoutExtension(datapackSourcePath) ?? baseName;
+                }
+                else
+                {
+                    string trimmed = datapackSourcePath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                    string? folderName = Path.GetFileName(trimmed);
+                    if (!string.IsNullOrEmpty(folderName))
+                    {
+                        baseName = folderName;
+                    }
+                }
+            }
+
+            return includeExtension ? baseName + ".zip" : baseName;
+        }
+
+        private string GetInitialDatapackDirectory()
+        {
+            if (string.IsNullOrEmpty(datapackSourcePath))
+            {
+                return AppDomain.CurrentDomain.BaseDirectory;
+            }
+
+            if (datapackLoadedFromArchive)
+            {
+                string? directory = Path.GetDirectoryName(datapackSourcePath);
+                return string.IsNullOrEmpty(directory) ? AppDomain.CurrentDomain.BaseDirectory : directory;
+            }
+
+            return Directory.Exists(datapackSourcePath) ? datapackSourcePath : AppDomain.CurrentDomain.BaseDirectory;
+        }
+
+        private static void TryDeleteDirectory(string? path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
+
+            try
+            {
+                if (Directory.Exists(path))
+                {
+                    Directory.Delete(path, true);
+                }
+            }
+            catch
+            {
+                // Ignore cleanup failures.
+            }
         }
 
         private void itemCheckGeneratedTooltip_Click(object sender, EventArgs e)
@@ -1658,6 +1882,13 @@ namespace SPHMMaker
         }
 
         private void tileResetButton_Click(object sender, EventArgs e) => ResetTileEditor();
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            TryDeleteDirectory(datapackExtractionRoot);
+            datapackExtractionRoot = null;
+            base.OnFormClosed(e);
+        }
 
         private void xdd()
         {
