@@ -9,27 +9,27 @@ namespace SPHMMaker
 {
     public partial class MainForm
     {
-        TabPage? spawnZoneTabPage;
-        ListBox? unitDataListBox;
-        Label? selectedUnitLabel;
-        TextBox? unitNameInput;
-        NumericUpDown? unitLevelSetter;
-        TextBox? unitNotesInput;
-        Button? createUnitButton;
-        Button? updateUnitButton;
-        Button? deleteUnitButton;
-        ListBox? spawnZoneListBox;
-        Label? selectedZoneLabel;
-        TextBox? spawnZoneNameInput;
-        TextBox? spawnZoneNotesInput;
-        Button? createSpawnZoneButton;
-        Button? updateSpawnZoneButton;
-        Button? deleteSpawnZoneButton;
-        ListBox? spawnZoneAssignmentsListBox;
-        NumericUpDown? assignmentMinimumSetter;
-        NumericUpDown? assignmentMaximumSetter;
-        Button? assignUnitButton;
-        Button? removeAssignmentButton;
+        private TabPage? spawnZoneTabPage;
+        private ListBox? unitDataListBox;
+        private Label? selectedUnitLabel;
+        private TextBox? unitNameInput;
+        private NumericUpDown? unitLevelSetter;
+        private TextBox? unitNotesInput;
+        private Button? createUnitButton;
+        private Button? updateUnitButton;
+        private Button? deleteUnitButton;
+        private ListBox? spawnZoneListBox;
+        private Label? selectedZoneLabel;
+        private TextBox? spawnZoneNameInput;
+        private TextBox? spawnZoneNotesInput;
+        private Button? createSpawnZoneButton;
+        private Button? updateSpawnZoneButton;
+        private Button? deleteSpawnZoneButton;
+        private ListBox? spawnZoneAssignmentsListBox;
+        private NumericUpDown? assignmentMinimumSetter;
+        private NumericUpDown? assignmentMaximumSetter;
+        private Button? assignUnitButton;
+        private Button? removeAssignmentButton;
 
         private readonly BindingSource unitBindingSource = new();
         private readonly BindingSource spawnZoneBindingSource = new();
@@ -37,7 +37,7 @@ namespace SPHMMaker
         private readonly BindingList<UnitData> unitDefinitions = new();
         private readonly BindingList<SpawnZoneData> spawnZoneDefinitions = new();
 
-        void InitializeSpawnZoneTab()
+        private void InitializeSpawnZoneTab()
         {
             if (MainTab == null)
             {
@@ -377,7 +377,7 @@ namespace SPHMMaker
             assignmentLayout.SetColumnSpan(assignmentHintLabel, 2);
         }
 
-        void InitializeSpawnZoneDataBindings()
+        private void InitializeSpawnZoneDataBindings()
         {
             unitBindingSource.DataSource = unitDefinitions;
             spawnZoneBindingSource.DataSource = spawnZoneDefinitions;
@@ -393,14 +393,18 @@ namespace SPHMMaker
                 spawnZoneListBox.DataSource = spawnZoneBindingSource;
                 spawnZoneListBox.DisplayMember = nameof(SpawnZoneData.DisplayText);
             }
+
+            PopulateUnitFields(unitDataListBox?.SelectedItem as UnitData);
+            PopulateSpawnZoneFields(spawnZoneListBox?.SelectedItem as SpawnZoneData);
+            PopulateAssignmentFields(spawnZoneAssignmentsListBox?.SelectedItem as SpawnZoneAssignment);
         }
 
-        void UnitDataListBox_SelectedIndexChanged(object? sender, EventArgs e)
+        private void UnitDataListBox_SelectedIndexChanged(object? sender, EventArgs e)
         {
             PopulateUnitFields(unitDataListBox?.SelectedItem as UnitData);
         }
 
-        void PopulateUnitFields(UnitData? unit)
+        private void PopulateUnitFields(UnitData? unit)
         {
             if (unitNameInput == null || unitLevelSetter == null || unitNotesInput == null)
             {
@@ -424,7 +428,7 @@ namespace SPHMMaker
             UpdateSelectedUnitLabel();
         }
 
-        void UpdateSelectedUnitLabel()
+        private void UpdateSelectedUnitLabel()
         {
             if (selectedUnitLabel == null)
             {
@@ -441,7 +445,7 @@ namespace SPHMMaker
             }
         }
 
-        void CreateUnitButton_Click(object? sender, EventArgs e)
+        private void CreateUnitButton_Click(object? sender, EventArgs e)
         {
             if (unitNameInput == null || unitLevelSetter == null)
             {
@@ -471,7 +475,7 @@ namespace SPHMMaker
             }
         }
 
-        void UpdateUnitButton_Click(object? sender, EventArgs e)
+        private void UpdateUnitButton_Click(object? sender, EventArgs e)
         {
             if (unitNameInput == null || unitLevelSetter == null)
             {
@@ -501,7 +505,7 @@ namespace SPHMMaker
             UpdateSelectedUnitLabel();
         }
 
-        void DeleteUnitButton_Click(object? sender, EventArgs e)
+        private void DeleteUnitButton_Click(object? sender, EventArgs e)
         {
             if (unitDataListBox?.SelectedItem is not UnitData unit)
             {
@@ -515,7 +519,7 @@ namespace SPHMMaker
             UpdateAssignmentBinding();
         }
 
-        void RemoveUnitAssignments(UnitData unit)
+        private void RemoveUnitAssignments(UnitData unit)
         {
             foreach (SpawnZoneData zone in spawnZoneDefinitions)
             {
@@ -528,7 +532,7 @@ namespace SPHMMaker
             }
         }
 
-        void UpdateAssignmentDisplayForUnit(UnitData unit)
+        private void UpdateAssignmentDisplayForUnit(UnitData unit)
         {
             foreach (SpawnZoneData zone in spawnZoneDefinitions)
             {
@@ -539,12 +543,12 @@ namespace SPHMMaker
             }
         }
 
-        void SpawnZoneListBox_SelectedIndexChanged(object? sender, EventArgs e)
+        private void SpawnZoneListBox_SelectedIndexChanged(object? sender, EventArgs e)
         {
             PopulateSpawnZoneFields(spawnZoneListBox?.SelectedItem as SpawnZoneData);
         }
 
-        void PopulateSpawnZoneFields(SpawnZoneData? zone)
+        private void PopulateSpawnZoneFields(SpawnZoneData? zone)
         {
             if (spawnZoneNameInput == null || spawnZoneNotesInput == null)
             {
@@ -570,7 +574,7 @@ namespace SPHMMaker
             UpdateAssignmentBinding();
         }
 
-        void CreateSpawnZoneButton_Click(object? sender, EventArgs e)
+        private void CreateSpawnZoneButton_Click(object? sender, EventArgs e)
         {
             if (spawnZoneNameInput == null)
             {
@@ -600,7 +604,7 @@ namespace SPHMMaker
             }
         }
 
-        void UpdateSpawnZoneButton_Click(object? sender, EventArgs e)
+        private void UpdateSpawnZoneButton_Click(object? sender, EventArgs e)
         {
             if (spawnZoneNameInput == null)
             {
@@ -627,7 +631,7 @@ namespace SPHMMaker
             spawnZoneBindingSource.ResetCurrentItem();
         }
 
-        void DeleteSpawnZoneButton_Click(object? sender, EventArgs e)
+        private void DeleteSpawnZoneButton_Click(object? sender, EventArgs e)
         {
             if (spawnZoneListBox?.SelectedItem is not SpawnZoneData zone)
             {
@@ -641,7 +645,7 @@ namespace SPHMMaker
             UpdateAssignmentBinding();
         }
 
-        void DetachAssignments(SpawnZoneData zone)
+        private void DetachAssignments(SpawnZoneData zone)
         {
             foreach (SpawnZoneAssignment assignment in zone.Assignments.ToList())
             {
@@ -651,7 +655,7 @@ namespace SPHMMaker
             zone.Assignments.Clear();
         }
 
-        void UpdateAssignmentBinding()
+        private void UpdateAssignmentBinding()
         {
             if (spawnZoneAssignmentsListBox == null)
             {
@@ -669,9 +673,11 @@ namespace SPHMMaker
                 assignmentBindingSource.DataSource = null;
                 spawnZoneAssignmentsListBox.DataSource = null;
             }
+
+            PopulateAssignmentFields(spawnZoneAssignmentsListBox?.SelectedItem as SpawnZoneAssignment);
         }
 
-        void AssignUnitButton_Click(object? sender, EventArgs e)
+        private void AssignUnitButton_Click(object? sender, EventArgs e)
         {
             if (spawnZoneListBox?.SelectedItem is not SpawnZoneData zone)
             {
@@ -716,7 +722,7 @@ namespace SPHMMaker
             spawnZoneAssignmentsListBox!.SelectedItem = assignment;
         }
 
-        void RemoveAssignmentButton_Click(object? sender, EventArgs e)
+        private void RemoveAssignmentButton_Click(object? sender, EventArgs e)
         {
             if (spawnZoneListBox?.SelectedItem is not SpawnZoneData zone ||
                 spawnZoneAssignmentsListBox?.SelectedItem is not SpawnZoneAssignment assignment)
@@ -731,12 +737,12 @@ namespace SPHMMaker
             PopulateAssignmentFields(null);
         }
 
-        void SpawnZoneAssignmentsListBox_SelectedIndexChanged(object? sender, EventArgs e)
+        private void SpawnZoneAssignmentsListBox_SelectedIndexChanged(object? sender, EventArgs e)
         {
             PopulateAssignmentFields(spawnZoneAssignmentsListBox?.SelectedItem as SpawnZoneAssignment);
         }
 
-        void PopulateAssignmentFields(SpawnZoneAssignment? assignment)
+        private void PopulateAssignmentFields(SpawnZoneAssignment? assignment)
         {
             if (assignmentMinimumSetter == null || assignmentMaximumSetter == null)
             {
