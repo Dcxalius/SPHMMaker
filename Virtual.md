@@ -232,3 +232,10 @@ Unique compiler and runtime error messages, enriched with details where availabl
     - **Line:** ~170-180 and ~1510-1520
     - **Reason:** Prior revisions emitted two `BeginInit()` calls for `lootEntriesGrid` (and matching duplicate `EndInit()`/`ResumeLayout()` calls) whenever `InitializeComponent()` executed. The extra `BeginInit()` was injected after `lootTabPage.SuspendLayout()` was called a second time, leaving the grid in an unfinished initialization state and raising the `InvalidOperationException` at runtime.
     - **Fix:** Remove the redundant `lootTabPage.SuspendLayout()` / `lootEntriesGrid.BeginInit()` block and the mirrored `ResumeLayout()` / `EndInit()` calls at the bottom of the method so that the grid is initialized exactly once. The remaining `BeginInit()` at ~173 and `EndInit()` at ~1513 now form a balanced pair, allowing the form to load normally.
+
+34. Duplicate item helper definitions in `MainForm`
+    - **Code:** CS0102 / CS0111 / CS0121
+    - **File:** MainForm.cs (and partials such as ItemForm.cs, MainForm.OtherPartial.cs)
+    - **Line:** Various (`CreateDefaultItemImage`, `itemCheckGeneratedTooltip_Click`, `items_DrawItem`, `CalculateImageRectangle`, `GetItemImage`, `GetCandidatePaths`, `TryLoadImage`, `TryLoadImageCore`, `GetQualityColor`, `DisposeItemImages`)
+    - **Reason:** The partial `MainForm` class declared the same item rendering and image-loading helpers in multiple files, leading the compiler to see duplicate member definitions and causing ambiguous method invocations like `CreateDefaultItemImage()`.
+    - **Fix:** Consolidate these helpers into a single partial file so that only one implementation exists, and remove duplicate field declarations such as `editingItem` to restore unique member definitions across the partial class.

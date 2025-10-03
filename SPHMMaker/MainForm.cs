@@ -55,7 +55,6 @@ namespace SPHMMaker
 
         private readonly BindingSource lootTableBinding = new();
         private readonly BindingSource lootEntryBinding = new();
-        int editingItem = -1;
         private readonly BindingSource classBindingSource = new();
         private readonly BindingSource unitBindingSource = new();
         private readonly BindingSource spawnZoneBindingSource = new();
