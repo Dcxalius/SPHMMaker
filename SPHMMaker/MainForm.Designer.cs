@@ -215,9 +215,6 @@ namespace SPHMMaker
             itemEffectTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)tileMovementCostInput).BeginInit();
             ((System.ComponentModel.ISupportInitialize)tileIdInput).BeginInit();
-
-            lootTabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)lootEntriesGrid).BeginInit();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -1572,9 +1569,6 @@ namespace SPHMMaker
             TilesPageTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)tileMovementCostInput).EndInit();
             ((System.ComponentModel.ISupportInitialize)tileIdInput).EndInit();
-            lootTabPage.ResumeLayout(false);
-            lootTabPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)lootEntriesGrid).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
