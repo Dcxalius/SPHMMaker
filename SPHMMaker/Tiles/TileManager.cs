@@ -131,6 +131,7 @@ namespace SPHMMaker.Tiles
 
             Directory.CreateDirectory(destination);
             var usedNames = new HashSet<string>(PathComparer);
+            var updatedFileNames = new List<string>(tiles.Count);
 
             for (int i = 0; i < tiles.Count; i++)
             {
@@ -143,16 +144,10 @@ namespace SPHMMaker.Tiles
                 File.WriteAllText(fullPath, json);
 
                 usedNames.Add(fileName);
-                if (tileFileNames.Count > i)
-                {
-                    tileFileNames[i] = fileName;
-                }
-                else
-                {
-                    tileFileNames.Add(fileName);
-                }
+                updatedFileNames.Add(fileName);
             }
 
+            tileFileNames = updatedFileNames;
             return true;
         }
 
