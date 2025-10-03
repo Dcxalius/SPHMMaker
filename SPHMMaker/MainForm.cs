@@ -6,15 +6,42 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using SPHMMaker.Items;
+using SPHMMaker.Classes;
 using SPHMMaker.SpawnZones;
 using SPHMMaker.Tiles;
 using SPHMMaker.Loot;
+using SPHMMaker.Races;
 
 namespace SPHMMaker
 {
     public partial class MainForm : Form
     {
         public static MainForm Instance;
+        const int ItemImageSize = 48;
+        const int ItemHorizontalPadding = 8;
+        const int ItemVerticalPadding = 4;
+        static readonly string[] SupportedImageExtensions = new[] { ".png", ".jpg", ".jpeg", ".bmp" };
+
+        readonly Dictionary<string, Image> itemImageCache = new();
+        readonly Image defaultItemImage;
+        bool imagesDisposed;
+        TabPage? classTabPage;
+        ListBox? classListBox;
+        Label? selectedClassLabel;
+        TextBox? classNameInput;
+        TextBox? classRoleInput;
+        NumericUpDown? classBaseHealthSetter;
+        NumericUpDown? classBaseManaSetter;
+        TextBox? classDescriptionInput;
+        Button? createClassButton;
+        Button? updateClassButton;
+        Button? deleteClassButton;
+        Label? selectedRaceLabel;
+        TextBox? raceNameInput;
+        TextBox? raceDescriptionInput;
+        Button? createRaceButton;
+        Button? updateRaceButton;
+        Button? deleteRaceButton;
         TabPage? spawnZoneTabPage;
         ListBox? unitDataListBox;
         Label? selectedUnitLabel;
@@ -43,9 +70,16 @@ namespace SPHMMaker
 
         private readonly BindingSource lootTableBinding = new();
         private readonly BindingSource lootEntryBinding = new();
+        private readonly BindingSource classBindingSource = new();
         private readonly BindingSource unitBindingSource = new();
         private readonly BindingSource spawnZoneBindingSource = new();
         private readonly BindingSource assignmentBindingSource = new();
+        private readonly BindingList<ClassData> classDefinitions = new();
+        private readonly BindingSource raceBindingSource = new();
+        private readonly BindingSource unitBindingSource = new();
+        private readonly BindingSource spawnZoneBindingSource = new();
+        private readonly BindingSource assignmentBindingSource = new();
+        private readonly BindingList<RaceData> raceDefinitions = new();
         private readonly BindingList<UnitData> unitDefinitions = new();
         private readonly BindingList<SpawnZoneData> spawnZoneDefinitions = new();
         private LootTable? activeLootTable;
@@ -66,9 +100,414 @@ namespace SPHMMaker
 
             InitializeItems();
 
+            InitializeClassTab();
+            InitializeClassDataBindings();
+
             InitializeLootTab();
+            InitializeRaceTab();
+            InitializeRaceDataBindings();
             InitializeSpawnZoneTab();
             InitializeSpawnZoneDataBindings();
+        }
+
+        void InitializeClassTab()
+        {
+            if (MainTab == null)
+            {
+                return;
+            }
+
+            classTabPage = new TabPage("Classes")
+            {
+                Padding = new Padding(8)
+            };
+
+            var layout = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 2,
+                RowCount = 1
+            };
+            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
+            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+
+            classTabPage.Controls.Add(layout);
+            MainTab.Controls.Add(classTabPage);
+
+            var classListGroup = new GroupBox
+            {
+                Text = "Available Classes",
+                Dock = DockStyle.Fill
+            };
+
+            layout.Controls.Add(classListGroup, 0, 0);
+
+            var classListLayout = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 1,
+                RowCount = 2
+            };
+            classListLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            classListLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+
+            classListGroup.Controls.Add(classListLayout);
+
+            classListBox = new ListBox
+            {
+                Dock = DockStyle.Fill
+            };
+            classListBox.SelectedIndexChanged += ClassListBox_SelectedIndexChanged;
+            classListLayout.Controls.Add(classListBox, 0, 0);
+
+            selectedClassLabel = new Label
+            {
+                Text = "Selected class: None",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+            classListLayout.Controls.Add(selectedClassLabel, 0, 1);
+
+            var classDetailsGroup = new GroupBox
+            {
+                Text = "Class Details",
+                Dock = DockStyle.Fill
+            };
+
+            layout.Controls.Add(classDetailsGroup, 1, 0);
+
+            var classDetailsLayout = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 2,
+                RowCount = 6
+            };
+            classDetailsLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35F));
+            classDetailsLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65F));
+            classDetailsLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            classDetailsLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            classDetailsLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            classDetailsLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            classDetailsLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            classDetailsLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+
+            classDetailsGroup.Controls.Add(classDetailsLayout);
+
+            var classNameLabel = new Label
+            {
+                Text = "Name",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+            classDetailsLayout.Controls.Add(classNameLabel, 0, 0);
+
+            classNameInput = new TextBox
+            {
+                Dock = DockStyle.Fill
+            };
+            classDetailsLayout.Controls.Add(classNameInput, 1, 0);
+
+            var classRoleLabel = new Label
+            {
+                Text = "Role",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+            classDetailsLayout.Controls.Add(classRoleLabel, 0, 1);
+
+            classRoleInput = new TextBox
+            {
+                Dock = DockStyle.Fill
+            };
+            classDetailsLayout.Controls.Add(classRoleInput, 1, 1);
+
+            var baseHealthLabel = new Label
+            {
+                Text = "Base Health",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+            classDetailsLayout.Controls.Add(baseHealthLabel, 0, 2);
+
+            classBaseHealthSetter = new NumericUpDown
+            {
+                Dock = DockStyle.Fill,
+                Minimum = 1,
+                Maximum = 100000,
+                Value = 100
+            };
+            classDetailsLayout.Controls.Add(classBaseHealthSetter, 1, 2);
+
+            var baseManaLabel = new Label
+            {
+                Text = "Base Mana",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+            classDetailsLayout.Controls.Add(baseManaLabel, 0, 3);
+
+            classBaseManaSetter = new NumericUpDown
+            {
+                Dock = DockStyle.Fill,
+                Minimum = 0,
+                Maximum = 100000
+            };
+            classDetailsLayout.Controls.Add(classBaseManaSetter, 1, 3);
+
+            var classDescriptionLabel = new Label
+            {
+                Text = "Description",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+            classDetailsLayout.Controls.Add(classDescriptionLabel, 0, 4);
+
+            classDescriptionInput = new TextBox
+            {
+                Dock = DockStyle.Fill,
+                Multiline = true,
+                ScrollBars = ScrollBars.Vertical
+            };
+            classDetailsLayout.Controls.Add(classDescriptionInput, 1, 4);
+
+            var classButtonPanel = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.LeftToRight,
+                AutoSize = true
+            };
+            classDetailsLayout.Controls.Add(classButtonPanel, 0, 5);
+            classDetailsLayout.SetColumnSpan(classButtonPanel, 2);
+
+            createClassButton = new Button
+            {
+                Text = "Add Class"
+            };
+            createClassButton.Click += CreateClassButton_Click;
+            classButtonPanel.Controls.Add(createClassButton);
+
+            updateClassButton = new Button
+            {
+                Text = "Update Class"
+            };
+            updateClassButton.Click += UpdateClassButton_Click;
+            classButtonPanel.Controls.Add(updateClassButton);
+
+            deleteClassButton = new Button
+            {
+                Text = "Remove Class"
+            };
+            deleteClassButton.Click += DeleteClassButton_Click;
+            classButtonPanel.Controls.Add(deleteClassButton);
+
+            UpdateClassButtonStates();
+        }
+
+        void InitializeClassDataBindings()
+        {
+            classBindingSource.DataSource = classDefinitions;
+
+            if (classListBox != null)
+            {
+                classListBox.DisplayMember = nameof(ClassData.DisplayText);
+                classListBox.DataSource = classBindingSource;
+            }
+
+            PopulateClassFields(null);
+        }
+
+        void ClassListBox_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            PopulateClassFields(classListBox?.SelectedItem as ClassData);
+        }
+
+        void PopulateClassFields(ClassData? classData)
+        {
+            if (classNameInput == null ||
+                classRoleInput == null ||
+                classBaseHealthSetter == null ||
+                classBaseManaSetter == null ||
+                classDescriptionInput == null)
+            {
+                return;
+            }
+
+            if (classData == null)
+            {
+                ClearClassInputs();
+            }
+            else
+            {
+                classNameInput.Text = classData.Name;
+                classRoleInput.Text = classData.Role;
+
+                decimal healthValue = Math.Clamp((decimal)classData.BaseHealth, classBaseHealthSetter.Minimum, classBaseHealthSetter.Maximum);
+                classBaseHealthSetter.Value = healthValue;
+
+                decimal manaValue = Math.Clamp((decimal)classData.BaseMana, classBaseManaSetter.Minimum, classBaseManaSetter.Maximum);
+                classBaseManaSetter.Value = manaValue;
+
+                classDescriptionInput.Text = classData.Description;
+            }
+
+            UpdateSelectedClassLabel();
+            UpdateClassButtonStates();
+        }
+
+        void ClearClassInputs()
+        {
+            if (classNameInput != null)
+            {
+                classNameInput.Text = string.Empty;
+            }
+
+            if (classRoleInput != null)
+            {
+                classRoleInput.Text = string.Empty;
+            }
+
+            if (classBaseHealthSetter != null)
+            {
+                decimal defaultHealth = Math.Clamp(100m, classBaseHealthSetter.Minimum, classBaseHealthSetter.Maximum);
+                classBaseHealthSetter.Value = defaultHealth;
+            }
+
+            if (classBaseManaSetter != null)
+            {
+                decimal defaultMana = Math.Clamp(0m, classBaseManaSetter.Minimum, classBaseManaSetter.Maximum);
+                classBaseManaSetter.Value = defaultMana;
+            }
+
+            if (classDescriptionInput != null)
+            {
+                classDescriptionInput.Text = string.Empty;
+            }
+        }
+
+        void UpdateSelectedClassLabel()
+        {
+            if (selectedClassLabel == null)
+            {
+                return;
+            }
+
+            if (classListBox?.SelectedItem is ClassData classData)
+            {
+                selectedClassLabel.Text = $"Selected class: {classData.DisplayText}";
+            }
+            else
+            {
+                selectedClassLabel.Text = "Selected class: None";
+            }
+        }
+
+        void UpdateClassButtonStates()
+        {
+            bool hasSelection = classListBox?.SelectedItem is ClassData;
+
+            if (updateClassButton != null)
+            {
+                updateClassButton.Enabled = hasSelection;
+            }
+
+            if (deleteClassButton != null)
+            {
+                deleteClassButton.Enabled = hasSelection;
+            }
+        }
+
+        void CreateClassButton_Click(object? sender, EventArgs e)
+        {
+            if (classNameInput == null ||
+                classRoleInput == null ||
+                classBaseHealthSetter == null ||
+                classBaseManaSetter == null ||
+                classDescriptionInput == null)
+            {
+                return;
+            }
+
+            string name = classNameInput.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                MessageBox.Show("Class name cannot be empty.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                classNameInput.Focus();
+                return;
+            }
+
+            var newClass = new ClassData
+            {
+                Name = name,
+                Role = classRoleInput.Text.Trim(),
+                BaseHealth = (int)classBaseHealthSetter.Value,
+                BaseMana = (int)classBaseManaSetter.Value,
+                Description = classDescriptionInput.Text
+            };
+
+            classDefinitions.Add(newClass);
+            classBindingSource.ResetBindings(false);
+
+            if (classListBox != null)
+            {
+                classListBox.SelectedItem = newClass;
+            }
+        }
+
+        void UpdateClassButton_Click(object? sender, EventArgs e)
+        {
+            if (classNameInput == null ||
+                classRoleInput == null ||
+                classBaseHealthSetter == null ||
+                classBaseManaSetter == null ||
+                classDescriptionInput == null)
+            {
+                return;
+            }
+
+            if (classListBox?.SelectedItem is not ClassData classData)
+            {
+                return;
+            }
+
+            string name = classNameInput.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                MessageBox.Show("Class name cannot be empty.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                classNameInput.Focus();
+                return;
+            }
+
+            classData.Name = name;
+            classData.Role = classRoleInput.Text.Trim();
+            classData.BaseHealth = (int)classBaseHealthSetter.Value;
+            classData.BaseMana = (int)classBaseManaSetter.Value;
+            classData.Description = classDescriptionInput.Text;
+
+            classBindingSource.ResetCurrentItem();
+            UpdateSelectedClassLabel();
+        }
+
+        void DeleteClassButton_Click(object? sender, EventArgs e)
+        {
+            if (classListBox?.SelectedItem is not ClassData classData)
+            {
+                return;
+            }
+
+            DialogResult result = MessageBox.Show($"Delete class '{classData.DisplayText}'?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+            {
+                return;
+            }
+
+            classDefinitions.Remove(classData);
+            classBindingSource.ResetBindings(false);
+
+            PopulateClassFields(classListBox?.SelectedItem as ClassData);
         }
 
         private void InitializeLootTab()
@@ -1651,5 +2090,258 @@ namespace SPHMMaker
             var editor = new SpriteEditorForm();
             editor.Show(this);
         }
+
+        void InitializeRaceTab()
+        {
+            if (MainTab == null)
+            {
+                return;
+            }
+
+            raceTabPage = new TabPage("Races")
+            {
+                Padding = new Padding(8)
+            };
+
+            var layout = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 2,
+                RowCount = 2
+            };
+            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
+            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 80F));
+            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+
+            raceTabPage.Controls.Add(layout);
+            MainTab.Controls.Add(raceTabPage);
+
+            raceListBox = new ListBox
+            {
+                Dock = DockStyle.Fill
+            };
+            raceListBox.SelectedIndexChanged += RaceListBox_SelectedIndexChanged;
+            layout.Controls.Add(raceListBox, 0, 0);
+            layout.SetRowSpan(raceListBox, 2);
+
+            var detailGroup = new GroupBox
+            {
+                Text = "Race Details",
+                Dock = DockStyle.Fill
+            };
+            layout.Controls.Add(detailGroup, 1, 0);
+
+            var detailLayout = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 2,
+                RowCount = 4
+            };
+            detailLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
+            detailLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
+            detailLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            detailLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            detailLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            detailLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+
+            detailGroup.Controls.Add(detailLayout);
+
+            selectedRaceLabel = new Label
+            {
+                Text = "Selected race: None",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+            detailLayout.Controls.Add(selectedRaceLabel, 0, 0);
+            detailLayout.SetColumnSpan(selectedRaceLabel, 2);
+
+            var nameLabel = new Label
+            {
+                Text = "Name",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+            detailLayout.Controls.Add(nameLabel, 0, 1);
+
+            raceNameInput = new TextBox
+            {
+                Dock = DockStyle.Fill
+            };
+            detailLayout.Controls.Add(raceNameInput, 1, 1);
+
+            var descriptionLabel = new Label
+            {
+                Text = "Description",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+            detailLayout.Controls.Add(descriptionLabel, 0, 2);
+            detailLayout.SetColumnSpan(descriptionLabel, 2);
+
+            raceDescriptionInput = new TextBox
+            {
+                Dock = DockStyle.Fill,
+                Multiline = true,
+                ScrollBars = ScrollBars.Vertical
+            };
+            detailLayout.Controls.Add(raceDescriptionInput, 0, 3);
+            detailLayout.SetColumnSpan(raceDescriptionInput, 2);
+
+            var buttonPanel = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.LeftToRight,
+                AutoSize = true
+            };
+            layout.Controls.Add(buttonPanel, 1, 1);
+
+            createRaceButton = new Button
+            {
+                Text = "Create Race"
+            };
+            createRaceButton.Click += CreateRaceButton_Click;
+            buttonPanel.Controls.Add(createRaceButton);
+
+            updateRaceButton = new Button
+            {
+                Text = "Save Changes",
+                Enabled = false
+            };
+            updateRaceButton.Click += UpdateRaceButton_Click;
+            buttonPanel.Controls.Add(updateRaceButton);
+
+            deleteRaceButton = new Button
+            {
+                Text = "Remove Race",
+                Enabled = false
+            };
+            deleteRaceButton.Click += DeleteRaceButton_Click;
+            buttonPanel.Controls.Add(deleteRaceButton);
+        }
+
+        void InitializeRaceDataBindings()
+        {
+            raceBindingSource.DataSource = raceDefinitions;
+
+            if (raceListBox != null)
+            {
+                raceListBox.DisplayMember = nameof(RaceData.DisplayText);
+                raceListBox.DataSource = raceBindingSource;
+            }
+
+            PopulateRaceFields(raceListBox?.SelectedItem as RaceData);
+        }
+
+        void RaceListBox_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            PopulateRaceFields(raceListBox?.SelectedItem as RaceData);
+        }
+
+        void PopulateRaceFields(RaceData? race)
+        {
+            if (raceNameInput == null || raceDescriptionInput == null)
+            {
+                return;
+            }
+
+            if (race == null)
+            {
+                raceNameInput.Text = string.Empty;
+                raceDescriptionInput.Text = string.Empty;
+            }
+            else
+            {
+                raceNameInput.Text = race.Name;
+                raceDescriptionInput.Text = race.Description;
+            }
+
+            if (selectedRaceLabel != null)
+            {
+                selectedRaceLabel.Text = race == null ? "Selected race: None" : $"Selected race: {race.DisplayText}";
+            }
+
+            if (updateRaceButton != null)
+            {
+                updateRaceButton.Enabled = race != null;
+            }
+
+            if (deleteRaceButton != null)
+            {
+                deleteRaceButton.Enabled = race != null;
+            }
+        }
+
+        void CreateRaceButton_Click(object? sender, EventArgs e)
+        {
+            if (raceNameInput == null)
+            {
+                return;
+            }
+
+            string name = raceNameInput.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                MessageBox.Show("Please enter a race name before adding it.", "Missing Data", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var race = new RaceData
+            {
+                Name = name,
+                Description = raceDescriptionInput?.Text.Trim() ?? string.Empty
+            };
+
+            raceDefinitions.Add(race);
+            raceBindingSource.ResetBindings(false);
+
+            if (raceListBox != null)
+            {
+                raceListBox.SelectedItem = race;
+            }
+        }
+
+        void UpdateRaceButton_Click(object? sender, EventArgs e)
+        {
+            if (raceNameInput == null)
+            {
+                return;
+            }
+
+            if (raceListBox?.SelectedItem is not RaceData race)
+            {
+                MessageBox.Show("Select a race to update first.", "Nothing Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            string name = raceNameInput.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                MessageBox.Show("A race must have a name.", "Missing Data", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            race.Name = name;
+            race.Description = raceDescriptionInput?.Text.Trim() ?? string.Empty;
+
+            raceBindingSource.ResetCurrentItem();
+            PopulateRaceFields(race);
+        }
+
+        void DeleteRaceButton_Click(object? sender, EventArgs e)
+        {
+            if (raceListBox?.SelectedItem is not RaceData race)
+            {
+                MessageBox.Show("Select a race to remove first.", "Nothing Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            raceDefinitions.Remove(race);
+            raceBindingSource.ResetBindings(false);
+            PopulateRaceFields(raceListBox?.SelectedItem as RaceData);
+        }
+
     }
 }
