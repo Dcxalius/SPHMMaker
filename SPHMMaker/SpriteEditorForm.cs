@@ -240,8 +240,8 @@ namespace SPHMMaker
         private void InitializeSidebar()
         {
             sidebar.Dock = DockStyle.Left;
-            sidebar.Width = 200;
-            sidebar.Padding = new Padding(8);
+            sidebar.Width = 220;
+            sidebar.Padding = new Padding(12);
             sidebar.BackColor = SystemColors.ControlLight;
 
             primaryPreview.Size = new Size(64, 64);
@@ -261,14 +261,15 @@ namespace SPHMMaker
             swapButton.Text = "Swap";
             swapButton.Width = 64;
             swapButton.Height = 32;
-            swapButton.Margin = new Padding(0, 0, 0, 12);
+            swapButton.Margin = new Padding(0, 8, 0, 8);
             swapButton.Click += (_, _) => SwapColors();
 
-            palettePanel.Dock = DockStyle.Bottom;
-            palettePanel.Height = 260;
+            palettePanel.Dock = DockStyle.Fill;
             palettePanel.FlowDirection = FlowDirection.LeftToRight;
             palettePanel.WrapContents = true;
             palettePanel.AutoScroll = true;
+            palettePanel.Margin = new Padding(0);
+            palettePanel.Padding = new Padding(0, 8, 0, 0);
 
             foreach (Color color in GetDefaultPalette())
             {
@@ -277,10 +278,11 @@ namespace SPHMMaker
 
             var instructions = new Label
             {
-                Dock = DockStyle.Bottom,
-                Height = 60,
-                TextAlign = ContentAlignment.MiddleLeft,
-                Text = "Left Click: Primary\nRight Click: Secondary\nUse palette or swatches to change colors."
+                Dock = DockStyle.Top,
+                Height = 44,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Margin = new Padding(0, 8, 0, 0),
+                Text = "Left click sets Primary\nRight click sets Secondary"
             };
 
             sidebar.Controls.Add(instructions);
@@ -318,11 +320,36 @@ namespace SPHMMaker
         {
             return new[]
             {
-                Color.Black, Color.White, Color.Gray, Color.DarkGray, Color.LightGray,
-                Color.Red, Color.OrangeRed, Color.Orange, Color.Gold, Color.Yellow,
-                Color.Green, Color.Lime, Color.SeaGreen, Color.Aqua, Color.Cyan,
-                Color.Blue, Color.RoyalBlue, Color.Navy, Color.Purple, Color.Magenta,
-                Color.Brown, Color.SaddleBrown, Color.Chocolate, Color.Sienna, Color.Beige
+                Color.FromArgb(255, 26, 28, 44),
+                Color.FromArgb(255, 45, 55, 72),
+                Color.FromArgb(255, 77, 93, 133),
+                Color.FromArgb(255, 148, 176, 194),
+                Color.FromArgb(255, 236, 244, 243),
+                Color.FromArgb(255, 72, 28, 36),
+                Color.FromArgb(255, 123, 31, 44),
+                Color.FromArgb(255, 190, 58, 52),
+                Color.FromArgb(255, 235, 125, 87),
+                Color.FromArgb(255, 255, 203, 117),
+                Color.FromArgb(255, 78, 52, 32),
+                Color.FromArgb(255, 139, 94, 60),
+                Color.FromArgb(255, 201, 143, 92),
+                Color.FromArgb(255, 243, 201, 150),
+                Color.FromArgb(255, 255, 236, 209),
+                Color.FromArgb(255, 20, 75, 46),
+                Color.FromArgb(255, 38, 134, 70),
+                Color.FromArgb(255, 98, 184, 82),
+                Color.FromArgb(255, 167, 224, 100),
+                Color.FromArgb(255, 211, 241, 152),
+                Color.FromArgb(255, 14, 84, 99),
+                Color.FromArgb(255, 30, 129, 149),
+                Color.FromArgb(255, 46, 175, 186),
+                Color.FromArgb(255, 112, 218, 222),
+                Color.FromArgb(255, 182, 240, 240),
+                Color.FromArgb(255, 24, 66, 137),
+                Color.FromArgb(255, 41, 118, 184),
+                Color.FromArgb(255, 68, 162, 220),
+                Color.FromArgb(255, 126, 195, 255),
+                Color.FromArgb(255, 193, 223, 255)
             };
         }
 
