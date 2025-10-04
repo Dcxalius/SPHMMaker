@@ -1,0 +1,22 @@
+{
+  "id": 42,
+  "gfxName": "weapon_steel_claymore",
+  "name": "Steel Claymore",
+  "description": "A hefty two-handed blade that cleaves through armored foes.",
+  "slot": "TwoHanded",
+  "armor": 0,
+  "baseStats": [
+    0,
+    9,
+    4,
+    0,
+    0
+  ],
+  "minAttackDamage": 28,
+  "maxAttackDamage": 54,
+  "attackSpeed": 2.30,
+  "quality": "Rare",
+  "weaponType": "TwoHandedSword",
+  "cost": 320,
+  "itemType": "Weapon"
+}

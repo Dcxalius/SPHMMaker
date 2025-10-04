@@ -1,0 +1,10 @@
+{
+  "id": 82,
+  "gfxName": "trash_broken_arrow",
+  "name": "Broken Arrow",
+  "description": "Splintered shafts gathered after target practice.",
+  "maxStack": 40,
+  "quality": "Poor",
+  "cost": 1,
+  "itemType": "Trash"
+}

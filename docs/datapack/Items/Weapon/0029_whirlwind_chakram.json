@@ -1,0 +1,22 @@
+{
+  "id": 49,
+  "gfxName": "weapon_whirlwind_chakram",
+  "name": "Whirlwind Chakram",
+  "description": "A balanced ring blade that arcs back to its thrower.",
+  "slot": "Ranged",
+  "armor": 0,
+  "baseStats": [
+    8,
+    0,
+    4,
+    0,
+    0
+  ],
+  "minAttackDamage": 16,
+  "maxAttackDamage": 30,
+  "attackSpeed": 1.35,
+  "quality": "Rare",
+  "weaponType": "Thrown",
+  "cost": 295,
+  "itemType": "Weapon"
+}

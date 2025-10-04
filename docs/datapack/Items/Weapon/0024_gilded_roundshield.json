@@ -1,0 +1,22 @@
+{
+  "id": 44,
+  "gfxName": "weapon_gilded_roundshield",
+  "name": "Gilded Roundshield",
+  "description": "Polished shieldwork that gleams brightly and deflects blows.",
+  "slot": "OffHanded",
+  "armor": 24,
+  "baseStats": [
+    0,
+    4,
+    10,
+    0,
+    0
+  ],
+  "minAttackDamage": 8,
+  "maxAttackDamage": 14,
+  "attackSpeed": 1.60,
+  "quality": "Rare",
+  "weaponType": "Shield",
+  "cost": 260,
+  "itemType": "Weapon"
+}

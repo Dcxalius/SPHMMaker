@@ -1,0 +1,13 @@
+{
+  "id": 3,
+  "gfxName": "consumable_hearty_stew",
+  "name": "Hearty Stew Bowl",
+  "description": "A steaming bowl of root vegetables and venison that bolsters morale.",
+  "maxStack": 10,
+  "quality": "Rare",
+  "cost": 60,
+  "value": [
+    90.0
+  ],
+  "itemType": "Consumable"
+}

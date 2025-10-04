@@ -1,0 +1,10 @@
+{
+  "id": 62,
+  "gfxName": "container_scroll_case",
+  "name": "Mage's Scroll Case",
+  "description": "Tubes of oiled leather sized for spell scrolls and maps.",
+  "slotCount": 12,
+  "cost": 72,
+  "quality": "Uncommon",
+  "itemType": "Bag"
+}

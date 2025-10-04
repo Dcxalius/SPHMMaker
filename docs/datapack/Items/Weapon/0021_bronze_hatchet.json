@@ -1,0 +1,22 @@
+{
+  "id": 41,
+  "gfxName": "weapon_bronze_hatchet",
+  "name": "Bronze Hatchet",
+  "description": "A sturdy axe that doubles as a woodcutter's trusted companion.",
+  "slot": "OneHanded",
+  "armor": 0,
+  "baseStats": [
+    0,
+    5,
+    2,
+    0,
+    0
+  ],
+  "minAttackDamage": 16,
+  "maxAttackDamage": 30,
+  "attackSpeed": 1.70,
+  "quality": "Uncommon",
+  "weaponType": "Axe",
+  "cost": 195,
+  "itemType": "Weapon"
+}

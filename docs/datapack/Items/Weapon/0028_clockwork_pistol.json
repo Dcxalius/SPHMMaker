@@ -1,0 +1,22 @@
+{
+  "id": 48,
+  "gfxName": "weapon_clockwork_pistol",
+  "name": "Clockwork Pistol",
+  "description": "A compact firearm crafted by guild artificers.",
+  "slot": "Ranged",
+  "armor": 0,
+  "baseStats": [
+    4,
+    2,
+    3,
+    0,
+    0
+  ],
+  "minAttackDamage": 18,
+  "maxAttackDamage": 32,
+  "attackSpeed": 1.50,
+  "quality": "Uncommon",
+  "weaponType": "Gun",
+  "cost": 310,
+  "itemType": "Weapon"
+}

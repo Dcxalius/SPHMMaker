@@ -1,0 +1,19 @@
+{
+  "id": 13,
+  "gfxName": "potion_focus",
+  "name": "Focus Draught",
+  "description": "A crisp tonic that sharpens the senses of rangers and scouts.",
+  "maxStack": 6,
+  "type": [
+    "Energy"
+  ],
+  "quality": "Uncommon",
+  "cost": 64,
+  "value": [
+    48.0
+  ],
+  "maxValue": [
+    96.0
+  ],
+  "itemType": "Consumable"
+}

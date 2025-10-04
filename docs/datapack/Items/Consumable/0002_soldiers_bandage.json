@@ -1,0 +1,13 @@
+{
+  "id": 2,
+  "gfxName": "consumable_bandage",
+  "name": "Soldier's Bandage",
+  "description": "Sterilized wraps that mend light wounds when applied between battles.",
+  "maxStack": 30,
+  "quality": "Common",
+  "cost": 18,
+  "value": [
+    45.0
+  ],
+  "itemType": "Consumable"
+}

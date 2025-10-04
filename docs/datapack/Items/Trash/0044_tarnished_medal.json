@@ -1,0 +1,10 @@
+{
+  "id": 84,
+  "gfxName": "trash_tarnished_medal",
+  "name": "Tarnished Medal",
+  "description": "A military commendation dulled by age and rain.",
+  "maxStack": 10,
+  "quality": "Common",
+  "cost": 12,
+  "itemType": "Trash"
+}

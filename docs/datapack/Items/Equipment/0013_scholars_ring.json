@@ -1,0 +1,19 @@
+{
+  "id": 23,
+  "gfxName": "equipment_scholars_ring",
+  "name": "Scholar's Signet",
+  "description": "A silver ring etched with runes that heighten the mind.",
+  "slot": "Finger",
+  "armor": 0,
+  "baseStats": [
+    0,
+    0,
+    3,
+    7,
+    5
+  ],
+  "quality": "Uncommon",
+  "cost": 95,
+  "material": "None",
+  "itemType": "Equipment"
+}

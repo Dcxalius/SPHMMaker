@@ -1,0 +1,19 @@
+{
+  "id": 21,
+  "gfxName": "equipment_guardian_hauberk",
+  "name": "Guardian's Hauberk",
+  "description": "Interlocking mail favored by city watch captains.",
+  "slot": "Chest",
+  "armor": 38,
+  "baseStats": [
+    2,
+    6,
+    12,
+    0,
+    4
+  ],
+  "quality": "Uncommon",
+  "cost": 180,
+  "material": "Mail",
+  "itemType": "Equipment"
+}

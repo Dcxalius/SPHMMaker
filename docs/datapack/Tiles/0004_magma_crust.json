@@ -1,0 +1,8 @@
+{
+  "ID": 4,
+  "Name": "Magma Crust",
+  "Texture": "tile_magma_crust",
+  "IsWalkable": false,
+  "MovementCost": 0,
+  "Notes": "A blistering crust that cracks with molten glow."
+}

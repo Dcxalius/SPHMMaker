@@ -1,0 +1,19 @@
+{
+  "id": 10,
+  "gfxName": "potion_minor_heal",
+  "name": "Minor Healing Draught",
+  "description": "Restores a small amount of vitality over a few moments.",
+  "maxStack": 8,
+  "type": [
+    "Heal"
+  ],
+  "quality": "Common",
+  "cost": 35,
+  "value": [
+    120.0
+  ],
+  "maxValue": [
+    240.0
+  ],
+  "itemType": "Consumable"
+}
