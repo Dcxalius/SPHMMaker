@@ -730,6 +730,9 @@ namespace SPHMMaker
 
         private string GetInitialDatapackDirectory()
         {
+#if DEBUG
+            return @"C:\\Users\\Dcxalius\\source\\repos\\Dcxalius\\SPHMMaker\\docs\\datapack";
+#else
             if (string.IsNullOrEmpty(datapackSourcePath))
             {
                 return AppDomain.CurrentDomain.BaseDirectory;
@@ -742,6 +745,7 @@ namespace SPHMMaker
             }
 
             return Directory.Exists(datapackSourcePath) ? datapackSourcePath : AppDomain.CurrentDomain.BaseDirectory;
+#endif
         }
 
         private static void TryDeleteDirectory(string? path)
