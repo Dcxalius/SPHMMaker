@@ -84,6 +84,31 @@ namespace SPHMMaker.Tiles
 
         public static bool Load(string path)
         {
+            if (File.Exists(path) && PathComparer.Equals(Path.GetExtension(path), ".json"))
+            {
+                var rawData = File.ReadAllText(path);
+                var aggregateTiles = JsonConvert.DeserializeObject<List<TileData>>(rawData, SerializerSettings);
+                if (aggregateTiles == null || aggregateTiles.Count == 0)
+                {
+                    LoadDefaults();
+                    return false;
+                }
+
+                var orderedTiles = aggregateTiles.OrderBy(tile => tile.ID).ToList();
+                tiles = orderedTiles.ToList();
+
+                var usedNames = new HashSet<string>(PathComparer);
+                tileFileNames = new List<string>(tiles.Count);
+                foreach (var tile in tiles)
+                {
+                    string fileName = EnsureUniqueTileFileName(GenerateTileFileName(tile), usedNames: usedNames);
+                    tileFileNames.Add(fileName);
+                }
+
+                RefreshDataSource();
+                return true;
+            }
+
             if (!Directory.Exists(path))
             {
                 LoadDefaults();
