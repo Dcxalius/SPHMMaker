@@ -1,8 +1,0 @@
-{
-  "ID": 3,
-  "Name": "River Shore",
-  "Texture": "tile_river_shore",
-  "IsWalkable": true,
-  "MovementCost": 2,
-  "Notes": "Slick stones and reeds edging a flowing river."
-}

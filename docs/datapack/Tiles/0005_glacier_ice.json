@@ -1,8 +1,0 @@
-{
-  "ID": 5,
-  "Name": "Glacier Ice",
-  "Texture": "tile_glacier_ice",
-  "IsWalkable": true,
-  "MovementCost": 3,
-  "Notes": "A slick sheet of ancient ice that numbs the feet."
-}

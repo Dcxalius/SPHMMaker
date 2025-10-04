@@ -1,8 +1,0 @@
-{
-  "ID": 2,
-  "Name": "Flagstone",
-  "Texture": "tile_flagstone",
-  "IsWalkable": true,
-  "MovementCost": 1,
-  "Notes": "Evenly hewn stonework lining city plazas."
-}

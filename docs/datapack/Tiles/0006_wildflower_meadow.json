@@ -1,8 +1,0 @@
-{
-  "ID": 6,
-  "Name": "Wildflower Meadow",
-  "Texture": "tile_wildflower_meadow",
-  "IsWalkable": true,
-  "MovementCost": 1,
-  "Notes": "Tall grasses and blooms that sway with the breeze."
-}

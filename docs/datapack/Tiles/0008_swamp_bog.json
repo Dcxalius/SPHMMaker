@@ -1,8 +1,0 @@
-{
-  "ID": 8,
-  "Name": "Swamp Bog",
-  "Texture": "tile_swamp_bog",
-  "IsWalkable": false,
-  "MovementCost": 0,
-  "Notes": "Sunken peat that swallows the unwary."
-}

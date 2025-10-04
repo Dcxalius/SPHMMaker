@@ -1,8 +1,0 @@
-{
-  "ID": 0,
-  "Name": "Grassland",
-  "Texture": "tile_grassland",
-  "IsWalkable": true,
-  "MovementCost": 1,
-  "Notes": "Soft meadow sod dotted with clover."
-}

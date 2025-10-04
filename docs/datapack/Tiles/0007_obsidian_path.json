@@ -1,8 +1,0 @@
-{
-  "ID": 7,
-  "Name": "Obsidian Path",
-  "Texture": "tile_obsidian_path",
-  "IsWalkable": true,
-  "MovementCost": 1,
-  "Notes": "Hardened volcanic glass polished smooth by travelers."
-}
