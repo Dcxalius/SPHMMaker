@@ -494,42 +494,39 @@ namespace SPHMMaker
 
         private void loadDatapackToolStripMenuItem_Click(object sender, EventArgs e)
         {
-#if DEBUG
-            string debugDirectory = GetDebugDatapackDirectory();
-
-            if (!Directory.Exists(debugDirectory))
+            try
             {
-                MessageBox.Show($"The debug datapack directory '{debugDirectory}' does not exist.", "Load Datapack", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+                var selection = PromptForDatapackLoad();
+                if (selection.Path is null)
+                {
+                    return;
+                }
 
-            LoadDatapack(debugDirectory, isArchive: false);
-#else
-            var selection = PromptForDatapackLoad();
-            if (selection.Path is null)
+                LoadDatapack(selection.Path, selection.IsArchive);
+            }
+            catch (DirectoryNotFoundException ex)
             {
-                return;
+                MessageBox.Show(ex.Message, "Load Datapack", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            LoadDatapack(selection.Path, selection.IsArchive);
-#endif
         }
 
         private void saveDatapackToolStripMenuItem_Click(object sender, EventArgs e)
         {
-#if DEBUG
-            string debugDirectory = GetDebugDatapackDirectory();
-            SaveDatapack(debugDirectory, asArchive: false);
-#else
-            var selection = PromptForDatapackSave();
-            if (selection.Path is null)
+            try
             {
-                MessageBox.Show("Save aborted.");
-                return;
-            }
+                var selection = PromptForDatapackSave();
+                if (selection.Path is null)
+                {
+                    MessageBox.Show("Save aborted.");
+                    return;
+                }
 
-            SaveDatapack(selection.Path, selection.IsArchive);
-#endif
+                SaveDatapack(selection.Path, selection.IsArchive);
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                MessageBox.Show(ex.Message, "Save Datapack", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private (string? Path, bool IsArchive) PromptForDatapackLoad()
