@@ -20,11 +20,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="ItemForm.resx" />
     <EmbeddedResource Include="MainForm.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>MainForm.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="ExtendedForm\ExtendedCheckedListBox.resx" />
+    <EmbeddedResource Include="SpriteEditorForm.resx" />
   </ItemGroup>
 
 </Project>

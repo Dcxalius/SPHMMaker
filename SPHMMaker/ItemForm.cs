@@ -312,9 +312,9 @@ namespace SPHMMaker
             }
         }
 
-        
 
-        
+
+
         private void items_MouseDoubleClick(object sender, MouseEventArgs e) => SetItemTo(items.IndexFromPoint(e.Location));
         private void EditItemButton_Click(object sender, EventArgs e) => SetItemTo(items.SelectedIndex);
         private void SetItemTo(int aIndex)
