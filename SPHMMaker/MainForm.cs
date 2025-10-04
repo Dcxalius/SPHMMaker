@@ -769,34 +769,50 @@ namespace SPHMMaker
 #if DEBUG
         private static string GetDebugDatapackDirectory()
         {
-            string? configuredPath = Environment.GetEnvironmentVariable(DebugDatapackDirectoryEnvironmentVariable);
+            // Bandage fix: until the discovery logic is revisited, always point the
+            // picker at the repository's datapack folder. This assumes the typical
+            // development layout where the executable lives under
+            // SPHMMaker/SPHMMaker/bin/Debug/net8.0-windows/.
+            string repoDatapack = Path.GetFullPath(Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "..",
+                "..",
+                "..",
+                "..",
+                "docs",
+                "datapack"));
 
-            if (!string.IsNullOrWhiteSpace(configuredPath))
-            {
-                string expandedPath = Environment.ExpandEnvironmentVariables(configuredPath).Trim();
-                if (!Directory.Exists(expandedPath))
-                {
-                    throw new DirectoryNotFoundException($"The path configured in the '{DebugDatapackDirectoryEnvironmentVariable}' environment variable does not exist: '{expandedPath}'.");
-                }
+            return repoDatapack;
 
-                return Path.GetFullPath(expandedPath);
-            }
-
-            DirectoryInfo? current = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
-
-            while (current != null)
-            {
-                string candidate = Path.Combine(current.FullName, "docs", "datapack");
-
-                if (Directory.Exists(candidate))
-                {
-                    return Path.GetFullPath(candidate);
-                }
-
-                current = current.Parent;
-            }
-
-            throw new DirectoryNotFoundException($"Unable to determine the debug datapack directory. Set the '{DebugDatapackDirectoryEnvironmentVariable}' environment variable to a valid path.");
+            //// Original discovery logic retained for future re-enablement.
+            //// string? configuredPath = Environment.GetEnvironmentVariable(DebugDatapackDirectoryEnvironmentVariable);
+            ////
+            //// if (!string.IsNullOrWhiteSpace(configuredPath))
+            //// {
+            ////     string expandedPath = Environment.ExpandEnvironmentVariables(configuredPath).Trim();
+            ////     if (!Directory.Exists(expandedPath))
+            ////     {
+            ////         throw new DirectoryNotFoundException($"The path configured in the '{DebugDatapackDirectoryEnvironmentVariable}' environment variable does not exist: '{expandedPath}'.");
+            ////     }
+            ////
+            ////     return Path.GetFullPath(expandedPath);
+            //// }
+            ////
+            //// DirectoryInfo? current = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            ////
+            //// while (current != null)
+            //// {
+            ////     string candidate = Path.Combine(current.FullName, "docs", "datapack");
+            ////
+            ////     if (Directory.Exists(candidate))
+            ////     {
+            ////         return Path.GetFullPath(candidate);
+            ////     }
+            ////
+            ////     current = current.Parent;
+            //// }
+            ////
+            //// throw new DirectoryNotFoundException($"Unable to determine the debug datapack directory. Set the '{DebugDatapackDirectoryEnvironmentVariable}' environment variable to a valid path.");
         }
 #endif
 
