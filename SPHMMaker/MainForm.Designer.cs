@@ -1478,7 +1478,6 @@ namespace SPHMMaker
             // toolsToolStripMenuItem
             //
             spriteEditorToolStripMenuItem ??= new ToolStripMenuItem();
-            markdownEditorToolStripMenuItem ??= new ToolStripMenuItem();
             toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { spriteEditorToolStripMenuItem, markdownEditorToolStripMenuItem });
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             toolsToolStripMenuItem.Size = new Size(48, 20);
