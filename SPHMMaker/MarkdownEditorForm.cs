@@ -128,7 +128,9 @@ namespace SPHMMaker
             {
                 Filter = "Markdown files (*.md;*.markdown)|*.md;*.markdown|Text files (*.txt)|*.txt|All files (*.*)|*.*",
                 Title = "Save Markdown File",
-                FileName = Path.GetFileName(currentFilePath) ?? string.Empty
+                FileName = string.IsNullOrWhiteSpace(currentFilePath)
+                    ? string.Empty
+                    : Path.GetFileName(currentFilePath)
             };
 
             if (dialog.ShowDialog(this) == DialogResult.OK)
