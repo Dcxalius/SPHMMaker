@@ -1559,5 +1559,11 @@ namespace SPHMMaker
             editor.Show(this);
         }
 
+        private void markdownEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var editor = new MarkdownEditorForm();
+            editor.Show(this);
+        }
+
     }
 }
