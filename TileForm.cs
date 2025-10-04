@@ -45,7 +45,22 @@ namespace SPHMMaker
         private void InitializeTiles()
         {
             TileManager.SetListBox(tileList);
-            if (!TileManager.Load(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tiles")))
+
+            string tilesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tiles");
+            string aggregatePath = Path.Combine(tilesDirectory, "TileData.json");
+
+            bool loaded = false;
+            if (File.Exists(aggregatePath))
+            {
+                loaded = TileManager.Load(aggregatePath);
+            }
+
+            if (!loaded)
+            {
+                loaded = TileManager.Load(tilesDirectory);
+            }
+
+            if (!loaded)
             {
                 TileManager.LoadDefaults();
             }
