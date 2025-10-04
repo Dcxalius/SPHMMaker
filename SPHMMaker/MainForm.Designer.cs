@@ -167,6 +167,7 @@ namespace SPHMMaker
             fileDownloadInstructionsToolStripMenuItem = new ToolStripMenuItem();
             toolsToolStripMenuItem = new ToolStripMenuItem();
             spriteEditorToolStripMenuItem = new ToolStripMenuItem();
+            markdownEditorToolStripMenuItem = new ToolStripMenuItem();
             toolTip1 = new ToolTip(components);
             ((System.ComponentModel.ISupportInitialize)lootDistributionChart).BeginInit();
             ((System.ComponentModel.ISupportInitialize)lootKillsCounter).BeginInit();
