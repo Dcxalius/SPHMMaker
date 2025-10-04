@@ -297,6 +297,7 @@ namespace SPHMMaker
             canvasHost.BackColor = Color.DimGray;
 
             canvasBox.BackColor = Color.Transparent;
+            canvasBox.TabStop = true;
             canvasBox.Paint += CanvasBox_Paint;
             canvasBox.MouseDown += CanvasBox_MouseDown;
             canvasBox.MouseMove += CanvasBox_MouseMove;
@@ -306,8 +307,11 @@ namespace SPHMMaker
                 positionLabel.Text = "Pos: -,-";
                 isDrawing = false;
             };
+            canvasBox.MouseEnter += (_, _) => canvasBox.Focus();
+            canvasBox.MouseWheel += CanvasMouseWheel;
 
             canvasHost.Controls.Add(canvasBox);
+            canvasHost.MouseWheel += CanvasMouseWheel;
         }
 
         private static IEnumerable<Color> GetDefaultPalette()
@@ -938,6 +942,42 @@ namespace SPHMMaker
         private void UpdateCanvasSize()
         {
             canvasBox.Size = new Size((int)(workingBitmap.Width * zoomLevel), (int)(workingBitmap.Height * zoomLevel));
+            canvasHost.AutoScrollMinSize = canvasBox.Size;
+        }
+
+        private void CanvasMouseWheel(object sender, MouseEventArgs e)
+        {
+            if (!ModifierKeys.HasFlag(Keys.Control))
+            {
+                return;
+            }
+
+            Point location = e.Location;
+            if (sender is Control control && control != canvasBox)
+            {
+                Point screenPoint = control.PointToScreen(location);
+                location = canvasBox.PointToClient(screenPoint);
+            }
+
+            Point scrollPosition = canvasHost.AutoScrollPosition;
+            float imageX = (-scrollPosition.X + location.X) / zoomLevel;
+            float imageY = (-scrollPosition.Y + location.Y) / zoomLevel;
+
+            float multiplier = e.Delta > 0 ? 1.25f : 0.8f;
+            float previousZoom = zoomLevel;
+            ChangeZoom(multiplier);
+
+            if (Math.Abs(previousZoom - zoomLevel) > float.Epsilon)
+            {
+                int targetX = (int)Math.Round(imageX * zoomLevel - location.X);
+                int targetY = (int)Math.Round(imageY * zoomLevel - location.Y);
+                canvasHost.AutoScrollPosition = new Point(Math.Max(0, targetX), Math.Max(0, targetY));
+            }
+
+            if (e is HandledMouseEventArgs handled)
+            {
+                handled.Handled = true;
+            }
         }
 
         private void RedrawCanvas()
