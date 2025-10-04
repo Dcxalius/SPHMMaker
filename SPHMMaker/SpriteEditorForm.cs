@@ -31,8 +31,8 @@ namespace SPHMMaker
         private readonly ToolStripStatusLabel toolLabel;
         private readonly Panel contentPanel;
         private readonly Panel sidebar;
-        private readonly PictureBox primaryPreview;
-        private readonly PictureBox secondaryPreview;
+        private readonly Panel primaryPreview;
+        private readonly Panel secondaryPreview;
         private readonly Button swapButton;
         private readonly FlowLayoutPanel palettePanel;
         private readonly NumericUpDown brushSizeSelector;
@@ -66,8 +66,8 @@ namespace SPHMMaker
             toolLabel = new ToolStripStatusLabel("Tool: Brush");
             contentPanel = new Panel();
             sidebar = new Panel();
-            primaryPreview = new PictureBox();
-            secondaryPreview = new PictureBox();
+            primaryPreview = CreateColorPreviewPanel("P", (_, _) => SelectCustomColor(false));
+            secondaryPreview = CreateColorPreviewPanel("S", (_, _) => SelectCustomColor(true));
             swapButton = new Button();
             palettePanel = new FlowLayoutPanel();
             brushSizeSelector = new NumericUpDown();
@@ -257,19 +257,9 @@ namespace SPHMMaker
             sidebar.Padding = new Padding(12);
             sidebar.BackColor = SystemColors.ControlLight;
 
-            primaryPreview.Size = new Size(64, 64);
-            primaryPreview.BorderStyle = BorderStyle.FixedSingle;
             primaryPreview.BackColor = primaryColor;
-            primaryPreview.Cursor = Cursors.Hand;
-            primaryPreview.Margin = new Padding(0, 0, 0, 8);
-            primaryPreview.Click += (_, _) => SelectCustomColor(false);
 
-            secondaryPreview.Size = new Size(64, 64);
-            secondaryPreview.BorderStyle = BorderStyle.FixedSingle;
             secondaryPreview.BackColor = secondaryColor;
-            secondaryPreview.Cursor = Cursors.Hand;
-            secondaryPreview.Margin = new Padding(0, 0, 0, 8);
-            secondaryPreview.Click += (_, _) => SelectCustomColor(true);
 
             swapButton.Text = "Swap";
             swapButton.Width = 64;
@@ -284,7 +274,7 @@ namespace SPHMMaker
             palettePanel.WrapContents = true;
             palettePanel.AutoScroll = true;
             palettePanel.Margin = new Padding(0);
-            palettePanel.Padding = new Padding(0, 8, 0, 0);
+            palettePanel.Padding = new Padding(0);
 
             foreach (Color color in GetDefaultPalette())
             {
@@ -295,8 +285,10 @@ namespace SPHMMaker
             {
                 AutoSize = true,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Margin = new Padding(0, 12, 0, 0),
+                Margin = new Padding(0),
+                Padding = new Padding(0, 0, 0, 8),
                 MaximumSize = new Size(180, 0),
+                Dock = DockStyle.Top,
                 Text = "Left click sets Primary\nRight click sets Secondary"
             };
 
@@ -314,9 +306,21 @@ namespace SPHMMaker
             colorSelectionPanel.Controls.Add(primaryPreview);
             colorSelectionPanel.Controls.Add(secondaryPreview);
             colorSelectionPanel.Controls.Add(swapButton);
-            colorSelectionPanel.Controls.Add(instructions);
+            colorSelectionPanel.Padding = new Padding(0, 0, 0, 8);
 
-            sidebar.Controls.Add(palettePanel);
+            var paletteContainer = new Panel
+            {
+                Dock = DockStyle.Bottom,
+                Height = 260,
+                Margin = new Padding(0),
+                Padding = new Padding(0, 12, 0, 0)
+            };
+
+            paletteContainer.Controls.Add(palettePanel);
+            paletteContainer.Controls.Add(instructions);
+            instructions.BringToFront();
+
+            sidebar.Controls.Add(paletteContainer);
             sidebar.Controls.Add(colorSelectionPanel);
         }
 
@@ -379,6 +383,34 @@ namespace SPHMMaker
                 Color.FromArgb(255, 126, 195, 255),
                 Color.FromArgb(255, 193, 223, 255)
             };
+        }
+
+        private Panel CreateColorPreviewPanel(string labelText, EventHandler clickHandler)
+        {
+            var panel = new Panel
+            {
+                Size = new Size(64, 64),
+                BorderStyle = BorderStyle.FixedSingle,
+                Cursor = Cursors.Hand,
+                Margin = new Padding(0, 0, 0, 8)
+            };
+
+            var label = new Label
+            {
+                Dock = DockStyle.Fill,
+                Text = labelText,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font(FontFamily.GenericSansSerif, 24f, FontStyle.Bold),
+                ForeColor = Color.Black,
+                BackColor = Color.Transparent,
+                Cursor = Cursors.Hand
+            };
+
+            panel.Controls.Add(label);
+            panel.Click += clickHandler;
+            label.Click += clickHandler;
+
+            return panel;
         }
 
         private Button CreatePaletteButton(Color color)
