@@ -1,0 +1,10 @@
+{
+  "id": 60,
+  "gfxName": "container_leather_field_pack",
+  "name": "Leather Field Pack",
+  "description": "A reinforced rucksack with compartments for maps and tools.",
+  "slotCount": 16,
+  "cost": 85,
+  "quality": "Uncommon",
+  "itemType": "Bag"
+}

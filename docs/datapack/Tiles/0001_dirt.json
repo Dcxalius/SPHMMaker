@@ -1,8 +1,0 @@
-{
-  "ID": 1,
-  "Name": "Dirt",
-  "Texture": "dirt",
-  "IsWalkable": true,
-  "MovementCost": 1,
-  "Notes": "Well-trodden soil path."
-}

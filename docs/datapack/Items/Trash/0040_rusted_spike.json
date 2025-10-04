@@ -1,0 +1,10 @@
+{
+  "id": 80,
+  "gfxName": "trash_rusted_spike",
+  "name": "Rusted Spike",
+  "description": "A flaking spike pried from ancient fortifications.",
+  "maxStack": 50,
+  "quality": "Poor",
+  "cost": 2,
+  "itemType": "Trash"
+}

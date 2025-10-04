@@ -1,0 +1,19 @@
+{
+  "id": 22,
+  "gfxName": "equipment_pathfinder_boots",
+  "name": "Pathfinder Boots",
+  "description": "Flexible leather boots lined with wool for silent steps.",
+  "slot": "Feet",
+  "armor": 14,
+  "baseStats": [
+    6,
+    0,
+    8,
+    0,
+    2
+  ],
+  "quality": "Rare",
+  "cost": 210,
+  "material": "Leather",
+  "itemType": "Equipment"
+}

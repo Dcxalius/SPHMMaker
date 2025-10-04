@@ -1,0 +1,22 @@
+{
+  "id": 43,
+  "gfxName": "weapon_emberstaff",
+  "name": "Emberstaff",
+  "description": "An ashen staff crowned with a glowing crystal that channels fire.",
+  "slot": "TwoHanded",
+  "armor": 0,
+  "baseStats": [
+    0,
+    0,
+    5,
+    9,
+    6
+  ],
+  "minAttackDamage": 20,
+  "maxAttackDamage": 36,
+  "attackSpeed": 2.00,
+  "quality": "Uncommon",
+  "weaponType": "Staff",
+  "cost": 285,
+  "itemType": "Weapon"
+}

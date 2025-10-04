@@ -1,0 +1,10 @@
+{
+  "id": 81,
+  "gfxName": "trash_arcane_powder",
+  "name": "Arcane Residue",
+  "description": "Glittering powder scraped from overcharged crystals.",
+  "maxStack": 99,
+  "quality": "Common",
+  "cost": 6,
+  "itemType": "Trash"
+}

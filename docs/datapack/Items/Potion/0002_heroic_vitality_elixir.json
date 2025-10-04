@@ -1,0 +1,22 @@
+{
+  "id": 12,
+  "gfxName": "potion_heroic_vitality",
+  "name": "Heroic Vitality Elixir",
+  "description": "A radiant brew infused with phoenix plume that restores and fortifies its drinker.",
+  "maxStack": 5,
+  "type": [
+    "Heal",
+    "Energy"
+  ],
+  "quality": "Rare",
+  "cost": 110,
+  "value": [
+    260.0,
+    40.0
+  ],
+  "maxValue": [
+    520.0,
+    75.0
+  ],
+  "itemType": "Consumable"
+}

@@ -1,0 +1,13 @@
+{
+  "id": 0,
+  "gfxName": "consumable_trail_rations",
+  "name": "Trail Rations",
+  "description": "A bundle of smoked meat and dried fruit that keeps spirits steady on long marches.",
+  "maxStack": 25,
+  "quality": "Common",
+  "cost": 12,
+  "value": [
+    35.0
+  ],
+  "itemType": "Consumable"
+}

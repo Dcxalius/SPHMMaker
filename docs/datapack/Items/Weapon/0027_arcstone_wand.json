@@ -1,0 +1,22 @@
+{
+  "id": 47,
+  "gfxName": "weapon_arcstone_wand",
+  "name": "Arcstone Wand",
+  "description": "A slender focus tipped with a shard of condensed lightning.",
+  "slot": "OneHanded",
+  "armor": 0,
+  "baseStats": [
+    0,
+    0,
+    2,
+    8,
+    5
+  ],
+  "minAttackDamage": 14,
+  "maxAttackDamage": 28,
+  "attackSpeed": 1.40,
+  "quality": "Rare",
+  "weaponType": "Wand",
+  "cost": 275,
+  "itemType": "Weapon"
+}

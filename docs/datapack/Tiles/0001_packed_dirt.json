@@ -1,0 +1,8 @@
+{
+  "ID": 1,
+  "Name": "Packed Dirt",
+  "Texture": "tile_packed_dirt",
+  "IsWalkable": true,
+  "MovementCost": 1,
+  "Notes": "Beaten earth used for well-traveled paths."
+}

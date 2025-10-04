@@ -1,0 +1,19 @@
+{
+  "id": 24,
+  "gfxName": "equipment_stalwart_greaves",
+  "name": "Stalwart Greaves",
+  "description": "Reinforced legplates that anchor defenders in place.",
+  "slot": "Legs",
+  "armor": 44,
+  "baseStats": [
+    0,
+    5,
+    14,
+    0,
+    0
+  ],
+  "quality": "Rare",
+  "cost": 260,
+  "material": "Plate",
+  "itemType": "Equipment"
+}

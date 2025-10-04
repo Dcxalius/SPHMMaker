@@ -1,0 +1,19 @@
+{
+  "id": 11,
+  "gfxName": "potion_standard_mana",
+  "name": "Standard Mana Phial",
+  "description": "Condensed arcane water that swiftly restores mental reserves.",
+  "maxStack": 8,
+  "type": [
+    "Mana"
+  ],
+  "quality": "Uncommon",
+  "cost": 52,
+  "value": [
+    160.0
+  ],
+  "maxValue": [
+    320.0
+  ],
+  "itemType": "Consumable"
+}

@@ -1,0 +1,10 @@
+{
+  "id": 83,
+  "gfxName": "trash_ancient_coin",
+  "name": "Ancient Coin",
+  "description": "A weathered coin stamped with a forgotten sovereign.",
+  "maxStack": 25,
+  "quality": "Uncommon",
+  "cost": 18,
+  "itemType": "Trash"
+}

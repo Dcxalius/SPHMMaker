@@ -1,0 +1,19 @@
+{
+  "id": 25,
+  "gfxName": "equipment_ranger_wraps",
+  "name": "Ranger Wraps",
+  "description": "Fingerless gloves that enhance the grip of archers.",
+  "slot": "Hands",
+  "armor": 8,
+  "baseStats": [
+    5,
+    0,
+    6,
+    0,
+    1
+  ],
+  "quality": "Uncommon",
+  "cost": 120,
+  "material": "Leather",
+  "itemType": "Equipment"
+}

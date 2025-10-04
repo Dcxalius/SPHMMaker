@@ -1,0 +1,10 @@
+{
+  "id": 61,
+  "gfxName": "container_expedition_crate",
+  "name": "Expedition Crate",
+  "description": "A stackable crate fitted with brass corners and weatherproof seals.",
+  "slotCount": 24,
+  "cost": 140,
+  "quality": "Rare",
+  "itemType": "Bag"
+}

@@ -1,0 +1,22 @@
+{
+  "id": 46,
+  "gfxName": "weapon_thunder_maul",
+  "name": "Thunder Maul",
+  "description": "An enormous hammer that cracks the earth with each strike.",
+  "slot": "TwoHanded",
+  "armor": 0,
+  "baseStats": [
+    0,
+    11,
+    6,
+    0,
+    0
+  ],
+  "minAttackDamage": 34,
+  "maxAttackDamage": 62,
+  "attackSpeed": 2.60,
+  "quality": "Epic",
+  "weaponType": "TwoHandedMace",
+  "cost": 420,
+  "itemType": "Weapon"
+}

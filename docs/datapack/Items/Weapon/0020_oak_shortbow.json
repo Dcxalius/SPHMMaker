@@ -1,0 +1,22 @@
+{
+  "id": 40,
+  "gfxName": "weapon_oak_shortbow",
+  "name": "Oak Shortbow",
+  "description": "A reliable bow carved from seasoned oak, suited for militia archers.",
+  "slot": "Ranged",
+  "armor": 0,
+  "baseStats": [
+    6,
+    0,
+    4,
+    0,
+    2
+  ],
+  "minAttackDamage": 12,
+  "maxAttackDamage": 22,
+  "attackSpeed": 1.90,
+  "quality": "Common",
+  "weaponType": "Bow",
+  "cost": 150,
+  "itemType": "Weapon"
+}

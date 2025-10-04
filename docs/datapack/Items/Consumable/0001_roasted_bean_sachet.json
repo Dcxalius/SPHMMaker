@@ -1,0 +1,13 @@
+{
+  "id": 1,
+  "gfxName": "consumable_roasted_beans",
+  "name": "Roasted Bean Sachet",
+  "description": "Crunchy beans coated in sweet glaze; restores a burst of stamina to weary scouts.",
+  "maxStack": 15,
+  "quality": "Uncommon",
+  "cost": 28,
+  "value": [
+    55.0
+  ],
+  "itemType": "Consumable"
+}

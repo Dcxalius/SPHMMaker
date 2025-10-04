@@ -1,0 +1,19 @@
+{
+  "id": 20,
+  "gfxName": "equipment_woolen_cowl",
+  "name": "Woolen Cowl",
+  "description": "A soft hood woven by hearthmothers for novice arcanists.",
+  "slot": "Head",
+  "armor": 6,
+  "baseStats": [
+    0,
+    0,
+    4,
+    3,
+    6
+  ],
+  "quality": "Common",
+  "cost": 42,
+  "material": "Cloth",
+  "itemType": "Equipment"
+}

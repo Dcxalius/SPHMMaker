@@ -1,0 +1,22 @@
+{
+  "id": 45,
+  "gfxName": "weapon_twinfang_daggers",
+  "name": "Twinfang Daggers",
+  "description": "Matched blades coated with paralytic venom.",
+  "slot": "MainHanded",
+  "armor": 0,
+  "baseStats": [
+    7,
+    2,
+    3,
+    0,
+    0
+  ],
+  "minAttackDamage": 10,
+  "maxAttackDamage": 18,
+  "attackSpeed": 1.30,
+  "quality": "Epic",
+  "weaponType": "Dagger",
+  "cost": 340,
+  "itemType": "Weapon"
+}

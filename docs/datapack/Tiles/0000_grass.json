@@ -1,8 +1,0 @@
-{
-  "ID": 0,
-  "Name": "Grass",
-  "Texture": "grass",
-  "IsWalkable": true,
-  "MovementCost": 1,
-  "Notes": "Standard grassy terrain."
-}
