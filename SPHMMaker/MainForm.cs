@@ -785,11 +785,18 @@ namespace SPHMMaker
                 return Path.GetFullPath(expandedPath);
             }
 
-            string solutionDatapack = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "docs", "datapack"));
+            DirectoryInfo? directory = new(AppDomain.CurrentDomain.BaseDirectory);
 
-            if (Directory.Exists(solutionDatapack))
+            while (directory is not null)
             {
-                return solutionDatapack;
+                string candidate = Path.Combine(directory.FullName, "docs", "datapack");
+
+                if (Directory.Exists(candidate))
+                {
+                    return Path.GetFullPath(candidate);
+                }
+
+                directory = directory.Parent;
             }
 
             throw new DirectoryNotFoundException($"Unable to determine the debug datapack directory. Set the '{DebugDatapackDirectoryEnvironmentVariable}' environment variable to a valid path.");
