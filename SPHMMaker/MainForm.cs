@@ -68,6 +68,10 @@ namespace SPHMMaker
         string? datapackRootPath;
         bool datapackLoadedFromArchive;
 
+#if DEBUG
+        private const string DebugDatapackDirectoryEnvironmentVariable = "SPHMMaker_DebugDatapackDirectory";
+#endif
+
 
         public MainForm()
         {
@@ -768,7 +772,27 @@ namespace SPHMMaker
 #if DEBUG
         private static string GetDebugDatapackDirectory()
         {
-            return @"C:\\Users\\Dcxalius\\source\\repos\\Dcxalius\\SPHMMaker\\docs\\datapack";
+            string? configuredPath = Environment.GetEnvironmentVariable(DebugDatapackDirectoryEnvironmentVariable);
+
+            if (!string.IsNullOrWhiteSpace(configuredPath))
+            {
+                string expandedPath = Environment.ExpandEnvironmentVariables(configuredPath).Trim();
+                if (!Directory.Exists(expandedPath))
+                {
+                    throw new DirectoryNotFoundException($"The path configured in the '{DebugDatapackDirectoryEnvironmentVariable}' environment variable does not exist: '{expandedPath}'.");
+                }
+
+                return Path.GetFullPath(expandedPath);
+            }
+
+            string solutionDatapack = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "docs", "datapack"));
+
+            if (Directory.Exists(solutionDatapack))
+            {
+                return solutionDatapack;
+            }
+
+            throw new DirectoryNotFoundException($"Unable to determine the debug datapack directory. Set the '{DebugDatapackDirectoryEnvironmentVariable}' environment variable to a valid path.");
         }
 #endif
 

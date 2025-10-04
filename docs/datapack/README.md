@@ -34,3 +34,13 @@ Use `tools/aggregate_tile_data.py` to rebuild the aggregate file whenever
 per-tile JSON definitions are updated or new tiles are added. The script
 collects the individual definitions, validates that they contain the
 required fields, and writes the combined array back to `TileData.json`.
+
+## Debug datapack directory
+
+When running the WinForms tool from source, the application looks for a
+datapack directory during debug builds so file pickers start in a useful
+location. By default it resolves to the repository's
+`docs/datapack` folder. Developers can override this without touching the
+code by setting the `SPHMMaker_DebugDatapackDirectory` environment
+variable to point at an alternate directory on their machine. The path is
+validated during startup to catch typos early.
