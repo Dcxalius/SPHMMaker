@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -11,6 +11,11 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageReference Include="System.Windows.Forms.DataVisualization" Version="1.0.0-prerelease.20110.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms.DataVisualization" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,10 +28,6 @@
 
   <ItemGroup>
     <EmbeddedResource Update="ItemForm.resx" />
-    <EmbeddedResource Update="MainForm.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>MainForm.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Update="ExtendedForm\ExtendedCheckedListBox.resx" />
     <EmbeddedResource Update="SpriteEditorForm.resx" />
   </ItemGroup>

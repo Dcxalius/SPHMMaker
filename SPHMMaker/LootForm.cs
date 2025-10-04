@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
 using SPHMMaker.Loot;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace SPHMMaker
 {
@@ -61,7 +61,7 @@ namespace SPHMMaker
 
             if (lootDistributionChart.ChartAreas.Count > 0)
             {
-                ChartArea area = lootDistributionChart.ChartAreas[0];
+                System.Windows.Forms.DataVisualization.Charting.ChartArea area = lootDistributionChart.ChartAreas[0];
                 area.AxisX.Title = "Number of Drops";
                 area.AxisY.Title = "Probability (%)";
                 area.AxisY.Minimum = 0;
