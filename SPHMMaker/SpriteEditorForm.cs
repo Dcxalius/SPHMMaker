@@ -12,7 +12,7 @@ namespace SPHMMaker
     /// </summary>
     public partial class SpriteEditorForm : Form
     {
-        private enum SpriteTool
+        internal enum SpriteTool
         {
             Brush,
             Eraser,
@@ -177,7 +177,9 @@ namespace SPHMMaker
                 new ToolStripMenuItem("Zoom Out", null, (_, _) => ChangeZoom(0.8f)) { ShortcutKeys = Keys.Control | Keys.Subtract },
                 new ToolStripMenuItem("Reset Zoom", null, (_, _) => ResetZoom()) { ShortcutKeys = Keys.Control | Keys.D0 },
                 new ToolStripSeparator(),
-                new ToolStripMenuItem("Toggle Grid", null, (_, _) => ToggleGrid()) { ShortcutKeys = Keys.Control | Keys.G }
+                new ToolStripMenuItem("Toggle Grid", null, (_, _) => ToggleGrid()) { ShortcutKeys = Keys.Control | Keys.G },
+                new ToolStripSeparator(),
+                new ToolStripMenuItem("Select Tool...", null, OpenToolSelectorDialog)
             });
 
             var imageMenu = new ToolStripMenuItem("Image");
@@ -886,6 +888,15 @@ namespace SPHMMaker
             zoomLevel = 16f;
             zoomLabel.Text = "Zoom: 1600%";
             UpdateCanvasSize();
+        }
+
+        private void OpenToolSelectorDialog(object sender, EventArgs e)
+        {
+            using var dialog = new SpriteToolSelectorDialog(activeTool);
+            if (dialog.ShowDialog(this) == DialogResult.OK)
+            {
+                SelectTool(dialog.SelectedTool);
+            }
         }
 
         private void SelectTool(SpriteTool tool)
