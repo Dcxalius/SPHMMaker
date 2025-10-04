@@ -29,6 +29,7 @@ namespace SPHMMaker
         private readonly ToolStripStatusLabel positionLabel;
         private readonly ToolStripStatusLabel zoomLabel;
         private readonly ToolStripStatusLabel toolLabel;
+        private readonly Panel contentPanel;
         private readonly Panel sidebar;
         private readonly PictureBox primaryPreview;
         private readonly PictureBox secondaryPreview;
@@ -63,6 +64,7 @@ namespace SPHMMaker
             positionLabel = new ToolStripStatusLabel("Pos: -,-");
             zoomLabel = new ToolStripStatusLabel("Zoom: 1600%");
             toolLabel = new ToolStripStatusLabel("Tool: Brush");
+            contentPanel = new Panel();
             sidebar = new Panel();
             primaryPreview = new PictureBox();
             secondaryPreview = new PictureBox();
@@ -107,9 +109,9 @@ namespace SPHMMaker
             InitializeStatusStrip();
             InitializeSidebar();
             InitializeCanvas();
+            InitializeContentLayout();
 
-            Controls.Add(canvasHost);
-            Controls.Add(sidebar);
+            Controls.Add(contentPanel);
             Controls.Add(statusStrip);
             Controls.Add(toolStrip);
             Controls.Add(menuStrip);
@@ -118,6 +120,15 @@ namespace SPHMMaker
 
             ResumeLayout(false);
             PerformLayout();
+        }
+
+        private void InitializeContentLayout()
+        {
+            contentPanel.Dock = DockStyle.Fill;
+            contentPanel.Padding = new Padding(0, 0, 0, 0);
+
+            contentPanel.Controls.Add(canvasHost);
+            contentPanel.Controls.Add(sidebar);
         }
 
         private void InitializeMenuStrip()
@@ -264,6 +275,8 @@ namespace SPHMMaker
             swapButton.Width = 64;
             swapButton.Height = 32;
             swapButton.Margin = new Padding(0, 8, 0, 8);
+            swapButton.AutoSize = true;
+            swapButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             swapButton.Click += (_, _) => SwapColors();
 
             palettePanel.Dock = DockStyle.Fill;
@@ -280,18 +293,31 @@ namespace SPHMMaker
 
             var instructions = new Label
             {
-                Dock = DockStyle.Top,
-                Height = 44,
+                AutoSize = true,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Margin = new Padding(0, 8, 0, 0),
+                Margin = new Padding(0, 12, 0, 0),
+                MaximumSize = new Size(180, 0),
                 Text = "Left click sets Primary\nRight click sets Secondary"
             };
 
-            sidebar.Controls.Add(instructions);
+            var colorSelectionPanel = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.TopDown,
+                Dock = DockStyle.Top,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                WrapContents = false,
+                Margin = new Padding(0),
+                Padding = new Padding(0)
+            };
+
+            colorSelectionPanel.Controls.Add(primaryPreview);
+            colorSelectionPanel.Controls.Add(secondaryPreview);
+            colorSelectionPanel.Controls.Add(swapButton);
+            colorSelectionPanel.Controls.Add(instructions);
+
             sidebar.Controls.Add(palettePanel);
-            sidebar.Controls.Add(swapButton);
-            sidebar.Controls.Add(secondaryPreview);
-            sidebar.Controls.Add(primaryPreview);
+            sidebar.Controls.Add(colorSelectionPanel);
         }
 
         private void InitializeCanvas()
