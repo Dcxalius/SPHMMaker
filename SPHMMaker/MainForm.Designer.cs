@@ -1476,7 +1476,7 @@ namespace SPHMMaker
             //
             // toolsToolStripMenuItem
             //
-            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { spriteEditorToolStripMenuItem });
+            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { spriteEditorToolStripMenuItem, markdownEditorToolStripMenuItem });
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             toolsToolStripMenuItem.Size = new Size(48, 20);
             toolsToolStripMenuItem.Text = "Tools";
@@ -1488,6 +1488,14 @@ namespace SPHMMaker
             spriteEditorToolStripMenuItem.Size = new Size(239, 22);
             spriteEditorToolStripMenuItem.Text = "Open Sprite Editor";
             spriteEditorToolStripMenuItem.Click += spriteEditorToolStripMenuItem_Click;
+            //
+            // markdownEditorToolStripMenuItem
+            //
+            markdownEditorToolStripMenuItem.Name = "markdownEditorToolStripMenuItem";
+            markdownEditorToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.M;
+            markdownEditorToolStripMenuItem.Size = new Size(239, 22);
+            markdownEditorToolStripMenuItem.Text = "Open Markdown Editor";
+            markdownEditorToolStripMenuItem.Click += markdownEditorToolStripMenuItem_Click;
             //
             // fileDownloadInstructionsToolStripMenuItem
             //
@@ -1623,6 +1631,7 @@ namespace SPHMMaker
         private ToolStripMenuItem exitToolStripMenuItem;
         private ToolStripMenuItem toolsToolStripMenuItem;
         private ToolStripMenuItem spriteEditorToolStripMenuItem;
+        private ToolStripMenuItem markdownEditorToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem fileDownloadInstructionsToolStripMenuItem;
         private Button EditItemButton;
