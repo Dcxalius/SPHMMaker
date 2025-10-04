@@ -490,6 +490,17 @@ namespace SPHMMaker
 
         private void loadDatapackToolStripMenuItem_Click(object sender, EventArgs e)
         {
+#if DEBUG
+            string debugDirectory = GetDebugDatapackDirectory();
+
+            if (!Directory.Exists(debugDirectory))
+            {
+                MessageBox.Show($"The debug datapack directory '{debugDirectory}' does not exist.", "Load Datapack", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            LoadDatapack(debugDirectory, isArchive: false);
+#else
             var selection = PromptForDatapackLoad();
             if (selection.Path is null)
             {
@@ -497,10 +508,15 @@ namespace SPHMMaker
             }
 
             LoadDatapack(selection.Path, selection.IsArchive);
+#endif
         }
 
         private void saveDatapackToolStripMenuItem_Click(object sender, EventArgs e)
         {
+#if DEBUG
+            string debugDirectory = GetDebugDatapackDirectory();
+            SaveDatapack(debugDirectory, asArchive: false);
+#else
             var selection = PromptForDatapackSave();
             if (selection.Path is null)
             {
@@ -509,6 +525,7 @@ namespace SPHMMaker
             }
 
             SaveDatapack(selection.Path, selection.IsArchive);
+#endif
         }
 
         private (string? Path, bool IsArchive) PromptForDatapackLoad()
@@ -731,7 +748,7 @@ namespace SPHMMaker
         private string GetInitialDatapackDirectory()
         {
 #if DEBUG
-            return @"C:\\Users\\Dcxalius\\source\\repos\\Dcxalius\\SPHMMaker\\docs\\datapack";
+            return GetDebugDatapackDirectory();
 #else
             if (string.IsNullOrEmpty(datapackSourcePath))
             {
@@ -747,6 +764,13 @@ namespace SPHMMaker
             return Directory.Exists(datapackSourcePath) ? datapackSourcePath : AppDomain.CurrentDomain.BaseDirectory;
 #endif
         }
+
+#if DEBUG
+        private static string GetDebugDatapackDirectory()
+        {
+            return @"C:\\Users\\Dcxalius\\source\\repos\\Dcxalius\\SPHMMaker\\docs\\datapack";
+        }
+#endif
 
         private static void TryDeleteDirectory(string? path)
         {
