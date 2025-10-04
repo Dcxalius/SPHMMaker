@@ -20,7 +20,8 @@
 
   <ItemGroup>
     <EmbeddedResource Update="ItemForm.resx" />
-    <EmbeddedResource Update="MainForm.resx">
+    <EmbeddedResource Remove="MainForm.resx" />
+    <EmbeddedResource Include="MainForm.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>MainForm.Designer.cs</LastGenOutput>
     </EmbeddedResource>
