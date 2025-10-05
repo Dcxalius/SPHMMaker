@@ -68,6 +68,7 @@ namespace SPHMMaker
         string? datapackExtractionRoot;
         string? datapackRootPath;
         bool datapackLoadedFromArchive;
+        private const string DefaultDatapackPath = "C:\\Users\\Dcxalius\\source\\repos\\Dcxalius\\SPHMMaker\\docs\\datapack";
 
 #if DEBUG
         private const string DebugDatapackDirectoryEnvironmentVariable = "SPHMMaker_DebugDatapackDirectory";
@@ -532,82 +533,12 @@ namespace SPHMMaker
 
         private (string? Path, bool IsArchive) PromptForDatapackLoad()
         {
-            return ("C:\\Users\\Dcxalius\\source\\repos\\Dcxalius\\SPHMMaker\\docs\\datapack", false);
-
-
-            DialogResult choice = MessageBox.Show(
-                "Is the datapack stored as a .zip archive?\nChoose Yes to load a .zip file or No to load from an extracted folder.",
-                "Load Datapack",
-                MessageBoxButtons.YesNoCancel,
-                MessageBoxIcon.Question);
-
-            if (choice == DialogResult.Cancel)
-            {
-                return (null, false);
-            }
-
-            if (choice == DialogResult.Yes)
-            {
-                using OpenFileDialog dialog = new()
-                {
-                    Filter = "Datapack archive (*.zip)|*.zip",
-                    Title = "Select Datapack Archive",
-                    InitialDirectory = GetInitialDatapackDirectory()
-                };
-
-                return dialog.ShowDialog() == DialogResult.OK
-                    ? (dialog.FileName, true)
-                    : (null, false);
-            }
-
-            using FolderBrowserDialog folderDialog = new()
-            {
-                Description = "Select Datapack Folder",
-                SelectedPath = GetInitialDatapackDirectory()
-            };
-
-            return folderDialog.ShowDialog() == DialogResult.OK
-                ? (folderDialog.SelectedPath, false)
-                : (null, false);
+            return (DefaultDatapackPath, false);
         }
 
         private (string? Path, bool IsArchive) PromptForDatapackSave()
         {
-            DialogResult choice = MessageBox.Show(
-                "Would you like to save the datapack as a .zip archive?\nChoose Yes for a .zip file or No to export to a folder.",
-                "Save Datapack",
-                MessageBoxButtons.YesNoCancel,
-                MessageBoxIcon.Question);
-
-            if (choice == DialogResult.Cancel)
-            {
-                return (null, false);
-            }
-
-            if (choice == DialogResult.Yes)
-            {
-                using SaveFileDialog dialog = new()
-                {
-                    Filter = "Datapack archive (*.zip)|*.zip",
-                    Title = "Save Datapack",
-                    FileName = GetDefaultDatapackFileName(includeExtension: true),
-                    InitialDirectory = GetInitialDatapackDirectory()
-                };
-
-                return dialog.ShowDialog() == DialogResult.OK
-                    ? (dialog.FileName, true)
-                    : (null, false);
-            }
-
-            using FolderBrowserDialog folderDialog = new()
-            {
-                Description = "Select Folder to Save Datapack",
-                SelectedPath = GetInitialDatapackDirectory()
-            };
-
-            return folderDialog.ShowDialog() == DialogResult.OK
-                ? (folderDialog.SelectedPath, false)
-                : (null, false);
+            return (DefaultDatapackPath, false);
         }
 
         private void LoadDatapack(string path, bool isArchive)
