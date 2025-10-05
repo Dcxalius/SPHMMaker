@@ -4,8 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using SPHMMaker.Items;
 using SPHMMaker.Classes;
+using SPHMMaker.Datapacks;
+using SPHMMaker.Items;
 using SPHMMaker.SpawnZones;
 using SPHMMaker.Tiles;
 using SPHMMaker.Loot;
@@ -671,50 +672,11 @@ namespace SPHMMaker
             {
                 if (asArchive)
                 {
-                    string tempRoot = Path.Combine(Path.GetTempPath(), "SPHMMaker", "export", Guid.NewGuid().ToString("N"));
-                    Directory.CreateDirectory(tempRoot);
-
-                    try
-                    {
-                        bool itemsSaved = ItemManager.Save(Path.Combine(tempRoot, "Items"));
-                        bool tilesSaved = TileManager.Save(Path.Combine(tempRoot, "Tiles"));
-
-                        if (!itemsSaved && !tilesSaved)
-                        {
-                            throw new InvalidOperationException("There is no data to save.");
-                        }
-
-                        DatapackArchive.CreateArchive(tempRoot, destinationPath);
-                    }
-                    finally
-                    {
-                        TryDeleteDirectory(tempRoot);
-                    }
+                    SaveManager.SaveToArchive(destinationPath);
                 }
                 else
                 {
-                    Directory.CreateDirectory(destinationPath);
-
-                    string itemsDirectory = Path.Combine(destinationPath, "Items");
-                    string tilesDirectory = Path.Combine(destinationPath, "Tiles");
-
-                    if (Directory.Exists(itemsDirectory))
-                    {
-                        Directory.Delete(itemsDirectory, true);
-                    }
-
-                    if (Directory.Exists(tilesDirectory))
-                    {
-                        Directory.Delete(tilesDirectory, true);
-                    }
-
-                    bool itemsSaved = ItemManager.Save(itemsDirectory);
-                    bool tilesSaved = TileManager.Save(tilesDirectory);
-
-                    if (!itemsSaved && !tilesSaved)
-                    {
-                        throw new InvalidOperationException("There is no data to save.");
-                    }
+                    SaveManager.SaveToDirectory(destinationPath);
                 }
 
                 MessageBox.Show("Datapack saved successfully.", "Save Datapack", MessageBoxButtons.OK, MessageBoxIcon.Information);
