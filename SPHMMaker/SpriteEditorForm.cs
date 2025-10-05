@@ -845,6 +845,7 @@ namespace SPHMMaker
             using (OpenFileDialog dialog = new OpenFileDialog())
             {
                 dialog.Filter = "Image Files|*.png;*.bmp;*.gif;*.jpg;*.jpeg|All Files|*.*";
+                dialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     using (Bitmap loaded = new Bitmap(dialog.FileName))
@@ -874,6 +875,7 @@ namespace SPHMMaker
             {
                 dialog.Filter = "PNG Image|*.png|Bitmap Image|*.bmp";
                 dialog.DefaultExt = "png";
+                dialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     currentFilePath = dialog.FileName;
@@ -888,6 +890,7 @@ namespace SPHMMaker
             {
                 dialog.Filter = "PNG Image|*.png";
                 dialog.DefaultExt = "png";
+                dialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     workingBitmap.Save(dialog.FileName, ImageFormat.Png);
