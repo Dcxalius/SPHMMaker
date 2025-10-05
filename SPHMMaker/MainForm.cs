@@ -531,6 +531,9 @@ namespace SPHMMaker
 
         private (string? Path, bool IsArchive) PromptForDatapackLoad()
         {
+            return ("C:\\Users\\Dcxalius\\source\\repos\\Dcxalius\\SPHMMaker\\docs\\datapack", false);
+
+
             DialogResult choice = MessageBox.Show(
                 "Is the datapack stored as a .zip archive?\nChoose Yes to load a .zip file or No to load from an extracted folder.",
                 "Load Datapack",
