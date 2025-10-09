@@ -45,7 +45,10 @@ namespace SPHMMaker
             string gfxName = itemNameInput.Text;
             string description = itemDescriptionInput.Text;
             int maxStack = (int)itemMaxCountSetter.Value;
-            ItemData.ItemQuality itemQuality = Enum.Parse<ItemData.ItemQuality>(itemQualitySelector.Items[itemQualitySelector.GetSingleCheckedIndex.Value].ToString());
+            int qualityIndex = itemQualitySelector.GetSingleCheckedIndex ?? throw new InvalidOperationException("No item quality selected.");
+            object? qualityItem = itemQualitySelector.Items[qualityIndex];
+            string qualityName = qualityItem?.ToString() ?? throw new InvalidOperationException("Invalid quality selection.");
+            ItemData.ItemQuality itemQuality = Enum.Parse<ItemData.ItemQuality>(qualityName);
             int[] stats =
             {
                 (int)itemStatsAgilitySetter.Value,
@@ -80,7 +83,11 @@ namespace SPHMMaker
 
             ItemData item;
 
-            switch (itemTypeSelector.Items[itemTypeSelector.GetSingleCheckedIndex.Value].ToString())
+            int typeIndex = itemTypeSelector.GetSingleCheckedIndex ?? throw new InvalidOperationException("No item type selected.");
+            object? typeItem = itemTypeSelector.Items[typeIndex];
+            string itemTypeName = typeItem?.ToString() ?? throw new InvalidOperationException("Invalid item type selection.");
+
+            switch (itemTypeName)
             {
                 case nameof(ItemData.ItemType.None):
                     item = new ItemData(id, name, gfxName, description, maxStack, itemQuality, cost);
@@ -376,9 +383,10 @@ namespace SPHMMaker
 
                         for (int i = 0; i < v.Count; i++)
                         {
-                            string s = ReplaceWhitespace(v[i].ToString(), "");
+                            string candidate = v[i]?.ToString() ?? string.Empty;
+                            string normalized = ReplaceWhitespace(candidate, string.Empty);
 
-                            if (s == weaponData.Hand.ToString())
+                            if (normalized == weaponData.Hand.ToString())
                             {
                                 itemWeaponEQTypeSetter.SelectedIndex = i;
                                 break;
@@ -388,9 +396,10 @@ namespace SPHMMaker
                         v = itemWeaponTypeSetter.Items;
                         for (int i = 0; i < v.Count; i++)
                         {
-                            string s = ReplaceWhitespace(v[i].ToString(), "");
+                            string candidate = v[i]?.ToString() ?? string.Empty;
+                            string normalized = ReplaceWhitespace(candidate, string.Empty);
 
-                            if (s == weaponData.WeaponType.ToString())
+                            if (normalized == weaponData.WeaponType.ToString())
                             {
                                 itemWeaponTypeSetter.SelectedIndex = i;
                                 break;

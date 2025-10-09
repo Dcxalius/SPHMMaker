@@ -61,7 +61,7 @@ namespace SPHMMaker.Items
                 return report;
             }
         }
-        protected ItemPairReport statReport;
+        protected ItemPairReport? statReport;
 
         [JsonIgnore]
         public int Agility => baseStats[0];
@@ -75,7 +75,7 @@ namespace SPHMMaker.Items
         public int Spirit => baseStats[4];
 
         public int[] BaseStats => baseStats;
-        int[] baseStats;
+        int[] baseStats = Array.Empty<int>();
 
         public int Armor => armor;
         int armor;
@@ -92,7 +92,7 @@ namespace SPHMMaker.Items
             this.slot = slot;
             //this.baseStats = new EquipmentStats(baseStats);
             //DEBUG
-            this.baseStats = baseStats;
+            this.baseStats = baseStats ?? Array.Empty<int>();
             this.material = material;
             this.armor = armor;
 

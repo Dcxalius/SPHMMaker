@@ -24,7 +24,7 @@ namespace SPHMMaker
     [DebuggerStepThrough]
     internal class GfxPath
     {
-        public static GfxPath NullPath { get => new GfxPath(GfxType.Debug, null); }
+        public static GfxPath NullPath => new GfxPath(GfxType.Debug, string.Empty);
 
         public GfxType Type
         {

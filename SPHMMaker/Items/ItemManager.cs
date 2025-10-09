@@ -301,6 +301,5 @@ namespace SPHMMaker.Items
         public WrongDirectoryException() { }
         public WrongDirectoryException(string message) : base(message) { }
         public WrongDirectoryException(string message, Exception inner) : base(message, inner) { }
-        protected WrongDirectoryException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
 }

@@ -21,7 +21,8 @@ namespace SPHMMaker
                 using var borderPen = new Pen(Color.FromArgb(96, 96, 96));
                 graphics.DrawRectangle(borderPen, 0, 0, ItemImageSize - 1, ItemImageSize - 1);
 
-                using Font font = new Font(SystemFonts.MessageBoxFont.FontFamily, 18f, FontStyle.Bold, GraphicsUnit.Pixel);
+                FontFamily fontFamily = SystemFonts.MessageBoxFont?.FontFamily ?? FontFamily.GenericSansSerif;
+                using Font font = new Font(fontFamily, 18f, FontStyle.Bold, GraphicsUnit.Pixel);
                 string text = "?";
                 SizeF measured = graphics.MeasureString(text, font);
                 float x = (ItemImageSize - measured.Width) / 2f;
@@ -52,7 +53,8 @@ namespace SPHMMaker
             if (rawItem is not ItemData item)
             {
                 using var fallbackBrush = new SolidBrush(e.ForeColor);
-                e.Graphics.DrawString(rawItem?.ToString() ?? string.Empty, e.Font, fallbackBrush, e.Bounds);
+                Font fallbackFont = e.Font ?? SystemFonts.DefaultFont;
+                e.Graphics.DrawString(rawItem?.ToString() ?? string.Empty, fallbackFont, fallbackBrush, e.Bounds);
                 e.DrawFocusRectangle();
                 return;
             }
@@ -74,10 +76,11 @@ namespace SPHMMaker
                 ? SystemColors.HighlightText
                 : GetQualityColor(item.Quality);
 
+            Font textFont = e.Font ?? SystemFonts.DefaultFont;
             TextRenderer.DrawText(
                 e.Graphics,
                 item.Name,
-                e.Font,
+                textFont,
                 textRect,
                 textColor,
                 TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
@@ -96,7 +99,18 @@ namespace SPHMMaker
 
         Image GetItemImage(ItemData item)
         {
-            string key = item.GfxPath?.ToString() ?? string.Empty;
+            GfxPath? gfxPath = item.GfxPath;
+            if (gfxPath is null)
+            {
+                return defaultItemImage;
+            }
+
+            if (string.IsNullOrWhiteSpace(gfxPath.Name))
+            {
+                return defaultItemImage;
+            }
+
+            string key = gfxPath.ToString();
             if (key.Length == 0)
             {
                 return defaultItemImage;
@@ -107,7 +121,7 @@ namespace SPHMMaker
                 return cached;
             }
 
-            Image image = TryLoadImage(item.GfxPath) ?? defaultItemImage;
+            Image image = TryLoadImage(gfxPath) ?? defaultItemImage;
             itemImageCache[key] = image;
             return image;
         }
@@ -127,7 +141,7 @@ namespace SPHMMaker
 
         IEnumerable<string> GetCandidatePaths(GfxPath gfxPath)
         {
-            string? name = gfxPath.Name;
+            string name = gfxPath.Name;
             if (string.IsNullOrWhiteSpace(name))
             {
                 yield break;

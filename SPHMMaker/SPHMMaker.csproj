@@ -15,7 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+	  <_Parameter1>SPHMMaker.Tests</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 
   <ItemGroup>
@@ -23,13 +25,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\TileForm.cs" Link="TileForm.cs" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="ItemForm.resx" />
+    <Compile Include="..\MainForm.TileTab.cs" Link="MainForm.TileTab.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Update="ExtendedForm\ExtendedCheckedListBox.resx" />
-    <EmbeddedResource Update="SpriteEditorForm.resx" />
   </ItemGroup>
 
 </Project>

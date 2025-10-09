@@ -436,7 +436,7 @@ namespace SPHMMaker
             return button;
         }
 
-        private void CanvasBox_Paint(object sender, PaintEventArgs e)
+        private void CanvasBox_Paint(object? sender, PaintEventArgs e)
         {
             e.Graphics.Clear(Color.Transparent);
             e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
@@ -504,7 +504,7 @@ namespace SPHMMaker
             }
         }
 
-        private void CanvasBox_MouseDown(object sender, MouseEventArgs e)
+        private void CanvasBox_MouseDown(object? sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left && e.Button != MouseButtons.Right)
             {
@@ -551,7 +551,7 @@ namespace SPHMMaker
             RedrawCanvas();
         }
 
-        private void CanvasBox_MouseMove(object sender, MouseEventArgs e)
+        private void CanvasBox_MouseMove(object? sender, MouseEventArgs e)
         {
             Point pixel = ScreenToPixel(e.Location);
             if (IsInside(pixel))
@@ -587,7 +587,7 @@ namespace SPHMMaker
             }
         }
 
-        private void CanvasBox_MouseUp(object sender, MouseEventArgs e)
+        private void CanvasBox_MouseUp(object? sender, MouseEventArgs e)
         {
             if (!isDrawing)
             {
@@ -827,7 +827,7 @@ namespace SPHMMaker
             secondaryPreview.BackColor = secondaryColor;
         }
 
-        private void NewSpriteRequested(object sender, EventArgs e)
+        private void NewSpriteRequested(object? sender, EventArgs e)
         {
             using (SpriteSizeDialog dialog = new SpriteSizeDialog(workingBitmap.Width, workingBitmap.Height))
             {
@@ -840,7 +840,7 @@ namespace SPHMMaker
             }
         }
 
-        private void OpenSpriteRequested(object sender, EventArgs e)
+        private void OpenSpriteRequested(object? sender, EventArgs e)
         {
             using (OpenFileDialog dialog = new OpenFileDialog())
             {
@@ -858,7 +858,7 @@ namespace SPHMMaker
             }
         }
 
-        private void SaveSpriteRequested(object sender, EventArgs e)
+        private void SaveSpriteRequested(object? sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(currentFilePath))
             {
@@ -869,7 +869,7 @@ namespace SPHMMaker
             workingBitmap.Save(currentFilePath);
         }
 
-        private void SaveSpriteAsRequested(object sender, EventArgs e)
+        private void SaveSpriteAsRequested(object? sender, EventArgs e)
         {
             using (SaveFileDialog dialog = new SaveFileDialog())
             {
@@ -884,7 +884,7 @@ namespace SPHMMaker
             }
         }
 
-        private void ExportSpriteRequested(object sender, EventArgs e)
+        private void ExportSpriteRequested(object? sender, EventArgs e)
         {
             using (SaveFileDialog dialog = new SaveFileDialog())
             {
@@ -951,7 +951,7 @@ namespace SPHMMaker
             UpdateCanvasSize();
         }
 
-        private void OpenToolSelectorDialog(object sender, EventArgs e)
+        private void OpenToolSelectorDialog(object? sender, EventArgs e)
         {
             using var dialog = new SpriteToolSelectorDialog(activeTool);
             if (dialog.ShowDialog(this) == DialogResult.OK)
@@ -1044,7 +1044,7 @@ namespace SPHMMaker
             canvasHost.AutoScrollMinSize = canvasBox.Size;
         }
 
-        private void CanvasMouseWheel(object sender, MouseEventArgs e)
+        private void CanvasMouseWheel(object? sender, MouseEventArgs e)
         {
             if (!ModifierKeys.HasFlag(Keys.Control))
             {

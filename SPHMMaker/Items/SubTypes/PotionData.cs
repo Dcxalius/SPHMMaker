@@ -20,11 +20,11 @@ namespace SPHMMaker.Items.SubTypes
 
         public override string TypeName => "Consumable";
 
-        public new PotionType[] Type { get => type; }
-        PotionType[] type;
+        public PotionType[] Type => type;
+        readonly PotionType[] type = Array.Empty<PotionType>();
 
         public float[] MaxValue => maxValue;
-        float[] maxValue;
+        readonly float[] maxValue = Array.Empty<float>();
 
         public float ValueOfType(PotionType aType) => value[Array.IndexOf(type, aType)];
         public bool IsOfType(PotionType aType) => type.Contains(aType);

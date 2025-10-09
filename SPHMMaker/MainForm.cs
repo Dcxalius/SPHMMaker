@@ -16,7 +16,6 @@ namespace SPHMMaker
 {
     public partial class MainForm : Form
     {
-        public static MainForm Instance;
         TabPage? classTabPage;
         ListBox? classListBox;
         Label? selectedClassLabel;
@@ -77,7 +76,6 @@ namespace SPHMMaker
 
         public MainForm()
         {
-            Instance = this;
             defaultItemImage = CreateDefaultItemImage();
             InitializeComponent();
             AllocConsole();

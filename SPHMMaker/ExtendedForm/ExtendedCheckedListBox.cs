@@ -13,7 +13,19 @@ namespace SPHMMaker.ExtendedForm
 {
     public partial class ExtendedCheckedListBox : CheckedListBox
     {
-        public string GetSingleCheckedIndexName => Items[GetSingleCheckedIndex.Value].ToString();
+        public string GetSingleCheckedIndexName
+        {
+            get
+            {
+                int index = GetSingleCheckedIndex ?? throw new InvalidOperationException("No item is checked.");
+                if (index < 0 || index >= Items.Count)
+                {
+                    throw new InvalidOperationException("Checked index is out of range.");
+                }
+
+                return Items[index]?.ToString() ?? string.Empty;
+            }
+        }
 
         public int? GetSingleCheckedIndex
         {
@@ -21,7 +33,7 @@ namespace SPHMMaker.ExtendedForm
             {
                 if (CheckedIndices.Count == 0) return null;
                     
-                if (CheckedIndices.Count >= 2) throw new Exception();
+                if (CheckedIndices.Count >= 2) throw new InvalidOperationException("Multiple items are checked.");
 
                 return CheckedIndices[0];
             }
@@ -44,7 +56,7 @@ namespace SPHMMaker.ExtendedForm
 
         }
 
-        void ExlusiveItemCheck(object sender, ItemCheckEventArgs e)
+        void ExlusiveItemCheck(object? sender, ItemCheckEventArgs e)
         {
             if (CheckedIndices.Count == 1 && e.NewValue == CheckState.Unchecked)
             {
