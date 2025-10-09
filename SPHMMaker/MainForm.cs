@@ -81,6 +81,7 @@ namespace SPHMMaker
             AllocConsole();
 
             InitializeItems();
+            InitializeTiles();
 
             InitializeClassTab();
             InitializeClassDataBindings();
@@ -635,7 +636,19 @@ namespace SPHMMaker
                 }
 
                 string tilesDirectory = Path.Combine(datapackRoot, "Tiles");
-                TileManager.Load(tilesDirectory);
+                if (!TileManager.Load(tilesDirectory))
+                {
+                    throw new InvalidDataException("Failed to load tile data from the datapack.");
+                }
+
+                if (tileList.Items.Count > 0)
+                {
+                    tileList.SelectedIndex = 0;
+                }
+                else
+                {
+                    ResetTileEditor();
+                }
 
                 datapackSourcePath = path;
                 datapackRootPath = datapackRoot;
