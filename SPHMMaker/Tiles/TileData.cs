@@ -8,24 +8,25 @@ namespace SPHMMaker.Tiles
         public string Name { get; set; }
         public string Texture { get; set; }
         public bool IsWalkable { get; set; }
-        public int MovementCost { get; set; }
-        public string Notes { get; set; }
+        public decimal MovementCost { get; set; }
+        public bool Transparent { get; set; }
 
         public TileData()
         {
             Name = string.Empty;
             Texture = string.Empty;
-            Notes = string.Empty;
+            Transparent = true;
+            MovementCost = 1m;
         }
 
-        public TileData(int id, string name, string texture, bool isWalkable, int movementCost, string notes)
+        public TileData(int id, string name, string texture, bool isWalkable, decimal movementCost, bool transparent)
         {
             ID = id;
             Name = name;
             Texture = texture;
             IsWalkable = isWalkable;
             MovementCost = movementCost;
-            Notes = notes;
+            Transparent = transparent;
         }
 
         public override string ToString()

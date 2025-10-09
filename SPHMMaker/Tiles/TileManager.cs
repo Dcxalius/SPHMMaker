@@ -1,8 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 
@@ -16,13 +16,12 @@ namespace SPHMMaker.Tiles
             TypeNameHandling = TypeNameHandling.None
         };
 
-        private static readonly StringComparer PathComparer = OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
-
         private static List<TileData> tiles = new();
-        private static List<string> tileFileNames = new();
         private static ListBox? tileListBox;
+        private static string? sourcePath;
 
         public static ReadOnlyCollection<TileData> Tiles => tiles.AsReadOnly();
+        public static string? SourcePath => sourcePath;
 
         public static void SetListBox(ListBox listBox)
         {
@@ -30,10 +29,57 @@ namespace SPHMMaker.Tiles
             RefreshDataSource();
         }
 
+        public static bool Load(string path)
+        {
+            string? aggregatePath = ResolveAggregatePath(path);
+            if (aggregatePath is null || !File.Exists(aggregatePath))
+            {
+                return false;
+            }
+
+            string json = File.ReadAllText(aggregatePath);
+            var loadedTiles = JsonConvert.DeserializeObject<List<TileData>>(json, SerializerSettings);
+            if (loadedTiles is null)
+            {
+                return false;
+            }
+
+            tiles = loadedTiles.OrderBy(tile => tile.ID).ToList();
+            sourcePath = aggregatePath;
+            RefreshDataSource();
+            return true;
+        }
+
+        public static bool Save(string destination)
+        {
+            if (tiles.Count == 0)
+            {
+                return false;
+            }
+
+            string aggregatePath = ResolveAggregatePath(destination) ?? BuildAggregatePath(destination);
+            string? directory = Path.GetDirectoryName(aggregatePath);
+            if (!string.IsNullOrEmpty(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            var ordered = tiles.OrderBy(tile => tile.ID).ToList();
+            string json = JsonConvert.SerializeObject(ordered, Formatting.Indented, SerializerSettings);
+            File.WriteAllText(aggregatePath, json);
+
+            sourcePath = aggregatePath;
+            return true;
+        }
+
+        public static bool SaveCurrent()
+        {
+            return sourcePath is not null && Save(sourcePath);
+        }
+
         public static void CreateTile(TileData tile)
         {
             tiles.Add(tile);
-            tileFileNames.Add(EnsureUniqueTileFileName(GenerateTileFileName(tile)));
             SortTiles();
             RefreshDataSource();
         }
@@ -46,134 +92,28 @@ namespace SPHMMaker.Tiles
             }
 
             tiles[index] = tile;
-            string fileName = tileFileNames.Count > index ? tileFileNames[index] : GenerateTileFileName(tile);
-            fileName = EnsureUniqueTileFileName(fileName, index);
-            tileFileNames[index] = fileName;
             SortTiles();
             RefreshDataSource();
         }
 
-        public static bool FreeIdCheck(int id) => tiles.All(t => t.ID != id);
+        public static bool FreeIdCheck(int id) => FreeIdCheck(id, null);
+
+        public static bool FreeIdCheck(int id, int? ignoreIndex)
+        {
+            return !tiles.Where((tile, index) => ignoreIndex is null || index != ignoreIndex.Value)
+                         .Any(tile => tile.ID == id);
+        }
+
+        public static int GetNextAvailableId()
+        {
+            return tiles.Count == 0 ? 0 : tiles.Max(tile => tile.ID) + 1;
+        }
 
         public static void LoadDefaults()
         {
-            if (tiles.Count > 0)
-            {
-                return;
-            }
-
-            tiles = new List<TileData>
-            {
-                new TileData(0, "Grass", "grass", true, 1, "Standard grassy terrain."),
-                new TileData(1, "Dirt", "dirt", true, 1, "Lightly trodden path."),
-                new TileData(2, "Stone", "stone", true, 1, "Worked stone floor."),
-                new TileData(3, "Water", "water", false, 0, "Cannot be traversed without special abilities."),
-                new TileData(4, "Lava", "lava", false, 0, "Deadly lava tile."),
-                new TileData(5, "Snow", "snow", true, 2, "Slows movement slightly."),
-            };
-
-            tileFileNames = new List<string>(tiles.Count);
-            var usedNames = new HashSet<string>(PathComparer);
-            foreach (var tile in tiles)
-            {
-                string fileName = EnsureUniqueTileFileName(GenerateTileFileName(tile), usedNames: usedNames);
-                tileFileNames.Add(fileName);
-            }
+            tiles = new List<TileData>();
+            sourcePath = null;
             RefreshDataSource();
-        }
-
-        public static bool Load(string path)
-        {
-            if (File.Exists(path) && PathComparer.Equals(Path.GetExtension(path), ".json"))
-            {
-                var rawData = File.ReadAllText(path);
-                var aggregateTiles = JsonConvert.DeserializeObject<List<TileData>>(rawData, SerializerSettings);
-                if (aggregateTiles == null || aggregateTiles.Count == 0)
-                {
-                    LoadDefaults();
-                    return false;
-                }
-
-                var orderedTiles = aggregateTiles.OrderBy(tile => tile.ID).ToList();
-                tiles = orderedTiles.ToList();
-
-                var usedNames = new HashSet<string>(PathComparer);
-                tileFileNames = new List<string>(tiles.Count);
-                foreach (var tile in tiles)
-                {
-                    string fileName = EnsureUniqueTileFileName(GenerateTileFileName(tile), usedNames: usedNames);
-                    tileFileNames.Add(fileName);
-                }
-
-                RefreshDataSource();
-                return true;
-            }
-
-            if (!Directory.Exists(path))
-            {
-                LoadDefaults();
-                return false;
-            }
-
-            var files = Directory.GetFiles(path, "*.json", SearchOption.TopDirectoryOnly);
-            if (files.Length == 0)
-            {
-                LoadDefaults();
-                return false;
-            }
-
-            var loadedTiles = new List<(TileData Tile, string FileName)>();
-            foreach (var file in files)
-            {
-                var rawData = File.ReadAllText(file);
-                var tile = JsonConvert.DeserializeObject<TileData>(rawData, SerializerSettings);
-                if (tile != null)
-                {
-                    string relative = Path.GetFileName(file);
-                    loadedTiles.Add((tile, NormalizeFileName(relative)));
-                }
-            }
-
-            if (loadedTiles.Count == 0)
-            {
-                LoadDefaults();
-                return false;
-            }
-
-            var ordered = loadedTiles.OrderBy(entry => entry.Tile.ID).ToList();
-            tiles = ordered.Select(entry => entry.Tile).ToList();
-            tileFileNames = ordered.Select(entry => entry.FileName).ToList();
-            RefreshDataSource();
-            return true;
-        }
-
-        public static bool Save(string destination)
-        {
-            if (tiles.Count == 0)
-            {
-                return false;
-            }
-
-            Directory.CreateDirectory(destination);
-            var usedNames = new HashSet<string>(PathComparer);
-            var updatedFileNames = new List<string>(tiles.Count);
-
-            for (int i = 0; i < tiles.Count; i++)
-            {
-                TileData tile = tiles[i];
-                string fileName = tileFileNames.Count > i ? tileFileNames[i] : GenerateTileFileName(tile);
-                fileName = EnsureUniqueTileFileName(fileName, i, usedNames);
-
-                string fullPath = Path.Combine(destination, fileName);
-                string json = JsonConvert.SerializeObject(tile, Formatting.Indented, SerializerSettings);
-                File.WriteAllText(fullPath, json);
-
-                usedNames.Add(fileName);
-                updatedFileNames.Add(fileName);
-            }
-
-            tileFileNames = updatedFileNames;
-            return true;
         }
 
         private static void RefreshDataSource()
@@ -184,74 +124,67 @@ namespace SPHMMaker.Tiles
             }
 
             tileListBox.DataSource = null;
-            tileListBox.DataSource = tiles;
+            tileListBox.DataSource = tiles.ToList();
         }
 
         private static void SortTiles()
         {
-            var ordered = tiles
-                .Select((tile, index) => new { Tile = tile, FileName = tileFileNames.Count > index ? tileFileNames[index] : GenerateTileFileName(tile) })
-                .OrderBy(entry => entry.Tile.ID)
-                .ToList();
-
-            tiles = ordered.Select(entry => entry.Tile).ToList();
-            tileFileNames = ordered.Select(entry => entry.FileName).ToList();
+            tiles = tiles.OrderBy(tile => tile.ID).ToList();
         }
 
-        private static string GenerateTileFileName(TileData tile)
+        private static string? ResolveAggregatePath(string path)
         {
-            return $"{tile.ID}_{SanitizeFileName(tile.Name)}.json";
-        }
-
-        private static string EnsureUniqueTileFileName(string fileName, int currentIndex = -1, HashSet<string>? usedNames = null)
-        {
-            fileName = NormalizeFileName(fileName);
-            string baseName = Path.GetFileNameWithoutExtension(fileName);
-            string extension = Path.GetExtension(fileName);
-
-            HashSet<string> tracker = usedNames ?? new HashSet<string>(PathComparer);
-            if (usedNames == null)
+            if (string.IsNullOrWhiteSpace(path))
             {
-                for (int i = 0; i < tileFileNames.Count; i++)
-                {
-                    if (i == currentIndex)
-                    {
-                        continue;
-                    }
+                return null;
+            }
 
-                    tracker.Add(NormalizeFileName(tileFileNames[i]));
+            if (File.Exists(path))
+            {
+                return path;
+            }
+
+            if (Directory.Exists(path))
+            {
+                string candidate = Path.Combine(path, "TileData.json");
+                if (File.Exists(candidate))
+                {
+                    return candidate;
+                }
+
+                candidate = Path.Combine(path, "Tiles", "TileData.json");
+                if (File.Exists(candidate))
+                {
+                    return candidate;
+                }
+
+                string? parent = Path.GetDirectoryName(path.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
+                if (!string.IsNullOrEmpty(parent))
+                {
+                    candidate = Path.Combine(parent, "TileData.json");
+                    if (File.Exists(candidate))
+                    {
+                        return candidate;
+                    }
                 }
             }
 
-            string candidate = fileName;
-            int counter = 1;
-            while (!tracker.Add(candidate))
-            {
-                string suffix = $"_{counter++}";
-                candidate = baseName + suffix + extension;
-            }
-
-            return candidate;
+            return null;
         }
 
-        private static string NormalizeFileName(string name) => name.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
-
-        private static string SanitizeFileName(string name)
+        private static string BuildAggregatePath(string basePath)
         {
-            if (string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(basePath))
             {
-                return "tile";
+                throw new ArgumentException("Destination cannot be null or whitespace.", nameof(basePath));
             }
 
-            char[] invalid = Path.GetInvalidFileNameChars();
-            var builder = new StringBuilder(name.Length);
-            foreach (char c in name)
+            if (Directory.Exists(basePath) || string.IsNullOrEmpty(Path.GetExtension(basePath)))
             {
-                builder.Append(invalid.Contains(c) ? '_' : c);
+                return Path.Combine(basePath, "TileData.json");
             }
 
-            string sanitized = builder.ToString().Trim();
-            return string.IsNullOrEmpty(sanitized) ? "tile" : sanitized;
+            return basePath;
         }
     }
 }

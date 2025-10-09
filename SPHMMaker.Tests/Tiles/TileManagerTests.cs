@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using SPHMMaker.Tiles;
@@ -13,7 +12,7 @@ namespace SPHMMaker.Tests.Tiles;
 public class TileManagerTests
 {
     [TestMethod]
-    public void Load_FromAggregateFile_PopulatesTilesAndGeneratesFileNames()
+    public void Load_FromAggregateFile_PopulatesTilesAndSavesAggregate()
     {
         string tempRoot = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
         Directory.CreateDirectory(tempRoot);
@@ -22,9 +21,9 @@ public class TileManagerTests
             string aggregatePath = Path.Combine(tempRoot, "TileData.json");
             var expectedTiles = new List<TileData>
             {
-                new TileData(5, "Crystal Cavern", "crystal_cavern", true, 1, "Glittering crystals line the walls."),
-                new TileData(2, "Molten Core", "molten_core", false, 0, "Scorching lava flows freely."),
-                new TileData(9, "Ancient Library", "ancient_library", true, 1, "Stacks of dusty tomes."),
+                new TileData(5, "Crystal Cavern", "crystal_cavern", true, 1.10m, false),
+                new TileData(2, "Molten Core", "molten_core", false, 0.20m, true),
+                new TileData(9, "Ancient Library", "ancient_library", true, 0.95m, true),
             };
 
             string aggregateJson = JsonConvert.SerializeObject(expectedTiles, Formatting.Indented);
@@ -44,7 +43,7 @@ public class TileManagerTests
                 Assert.AreEqual(orderedExpected[i].Texture, actualTiles[i].Texture, $"Tile {i} Texture did not match.");
                 Assert.AreEqual(orderedExpected[i].IsWalkable, actualTiles[i].IsWalkable, $"Tile {i} walkable flag did not match.");
                 Assert.AreEqual(orderedExpected[i].MovementCost, actualTiles[i].MovementCost, $"Tile {i} movement cost did not match.");
-                Assert.AreEqual(orderedExpected[i].Notes, actualTiles[i].Notes, $"Tile {i} notes did not match.");
+                Assert.AreEqual(orderedExpected[i].Transparent, actualTiles[i].Transparent, $"Tile {i} transparency did not match.");
             }
 
             string saveDestination = Path.Combine(tempRoot, "output");
@@ -52,17 +51,24 @@ public class TileManagerTests
             bool saveResult = TileManager.Save(saveDestination);
             Assert.IsTrue(saveResult, "TileManager.Save should succeed after loading aggregate data.");
 
-            var savedFiles = Directory.GetFiles(saveDestination, "*.json", SearchOption.TopDirectoryOnly)
-                .Select(Path.GetFileName)
-                .OrderBy(name => name)
-                .ToList();
+            string savedAggregatePath = Path.Combine(saveDestination, "TileData.json");
+            Assert.IsTrue(File.Exists(savedAggregatePath), "Saving tile data should emit a TileData.json aggregate file.");
 
-            var expectedFileNames = orderedExpected
-                .Select(tile => GenerateExpectedFileName(tile))
-                .OrderBy(name => name)
-                .ToList();
+            string savedJson = File.ReadAllText(savedAggregatePath);
+            var savedTiles = JsonConvert.DeserializeObject<List<TileData>>(savedJson);
+            Assert.IsNotNull(savedTiles, "Saved aggregate file should deserialize back into tile data.");
 
-            CollectionAssert.AreEqual(expectedFileNames, savedFiles, "TileManager should generate stable file names for individual tiles.");
+            var orderedSaved = savedTiles!.OrderBy(tile => tile.ID).ToList();
+            Assert.AreEqual(orderedExpected.Count, orderedSaved.Count, "Aggregate save should preserve tile count.");
+            for (int i = 0; i < orderedExpected.Count; i++)
+            {
+                Assert.AreEqual(orderedExpected[i].ID, orderedSaved[i].ID, $"Aggregate tile {i} ID mismatch.");
+                Assert.AreEqual(orderedExpected[i].Name, orderedSaved[i].Name, $"Aggregate tile {i} Name mismatch.");
+                Assert.AreEqual(orderedExpected[i].Texture, orderedSaved[i].Texture, $"Aggregate tile {i} Texture mismatch.");
+                Assert.AreEqual(orderedExpected[i].IsWalkable, orderedSaved[i].IsWalkable, $"Aggregate tile {i} walkable flag mismatch.");
+                Assert.AreEqual(orderedExpected[i].MovementCost, orderedSaved[i].MovementCost, $"Aggregate tile {i} movement cost mismatch.");
+                Assert.AreEqual(orderedExpected[i].Transparent, orderedSaved[i].Transparent, $"Aggregate tile {i} transparency mismatch.");
+            }
         }
         finally
         {
@@ -73,26 +79,35 @@ public class TileManagerTests
         }
     }
 
-    private static string GenerateExpectedFileName(TileData tile)
+    [TestMethod]
+    public void Load_FromTilesDirectoryFallsBackToParentAggregate()
     {
-        return $"{tile.ID}_{SanitizeFileName(tile.Name)}.json";
-    }
-
-    private static string SanitizeFileName(string name)
-    {
-        if (string.IsNullOrWhiteSpace(name))
+        string tempRoot = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+        Directory.CreateDirectory(tempRoot);
+        try
         {
-            return "tile";
-        }
+            string aggregatePath = Path.Combine(tempRoot, "TileData.json");
+            var expectedTiles = new List<TileData>
+            {
+                new TileData(1, "Test", "texture", true, 1.0m, true)
+            };
 
-        char[] invalidCharacters = Path.GetInvalidFileNameChars();
-        var builder = new StringBuilder(name.Length);
-        foreach (char character in name)
+            string aggregateJson = JsonConvert.SerializeObject(expectedTiles, Formatting.Indented);
+            File.WriteAllText(aggregatePath, aggregateJson);
+
+            string tilesFolder = Path.Combine(tempRoot, "Tiles");
+            Directory.CreateDirectory(tilesFolder);
+
+            bool loadResult = TileManager.Load(tilesFolder);
+            Assert.IsTrue(loadResult, "TileManager should locate TileData.json in the parent directory when pointed at the Tiles folder.");
+            Assert.AreEqual(1, TileManager.Tiles.Count, "Tiles should load from parent aggregate file.");
+        }
+        finally
         {
-            builder.Append(invalidCharacters.Contains(character) ? '_' : character);
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
         }
-
-        string sanitized = builder.ToString().Trim();
-        return string.IsNullOrEmpty(sanitized) ? "tile" : sanitized;
     }
 }

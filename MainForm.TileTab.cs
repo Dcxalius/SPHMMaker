@@ -9,6 +9,130 @@ namespace SPHMMaker
     public partial class MainForm
     {
         private int editingTile = -1;
+
+        private void InitializeTiles()
+        {
+            TileManager.SetListBox(tileList);
+            LoadTilesFromPreferredLocation();
+
+            tileList.SelectedIndexChanged += tileList_SelectedIndexChanged;
+
+            if (tileList.Items.Count > 0)
+            {
+                tileList.SelectedIndex = 0;
+            }
+            else
+            {
+                ResetTileEditor();
+            }
+        }
+
+        private void LoadTilesFromPreferredLocation()
+        {
+            string? aggregatePath = ResolvePreferredTileDataPath();
+            bool loaded = aggregatePath is not null && TileManager.Load(aggregatePath);
+
+            if (!loaded)
+            {
+                TileManager.LoadDefaults();
+            }
+        }
+
+        private static string? ResolveAggregateFromBase(string? basePath)
+        {
+            if (string.IsNullOrWhiteSpace(basePath))
+            {
+                return null;
+            }
+
+            string candidate = Path.Combine(basePath, "TileData.json");
+            if (File.Exists(candidate))
+            {
+                return candidate;
+            }
+
+            candidate = Path.Combine(basePath, "Tiles", "TileData.json");
+            if (File.Exists(candidate))
+            {
+                return candidate;
+            }
+
+            return null;
+        }
+
+        private string? ResolvePreferredTileDataPath()
+        {
+            string? aggregate = ResolveAggregateFromBase(datapackRootPath);
+            if (!string.IsNullOrEmpty(aggregate))
+            {
+                return aggregate;
+            }
+
+#if DEBUG
+            string? debugOverride = Environment.GetEnvironmentVariable(DebugDatapackDirectoryEnvironmentVariable);
+            aggregate = ResolveAggregateFromBase(debugOverride);
+            if (!string.IsNullOrEmpty(aggregate))
+            {
+                return aggregate;
+            }
+
+            aggregate = ResolveAggregateFromBase(DefaultDatapackPath);
+            if (!string.IsNullOrEmpty(aggregate))
+            {
+                return aggregate;
+            }
+#endif
+
+            aggregate = ResolveAggregateFromBase(AppDomain.CurrentDomain.BaseDirectory);
+            return aggregate;
+        }
+
+        private string GetTileDataSavePath()
+        {
+            if (!string.IsNullOrWhiteSpace(TileManager.SourcePath))
+            {
+                return TileManager.SourcePath!;
+            }
+
+            string? basePath = datapackRootPath;
+
+#if DEBUG
+            if (string.IsNullOrWhiteSpace(basePath))
+            {
+                basePath = Environment.GetEnvironmentVariable(DebugDatapackDirectoryEnvironmentVariable);
+            }
+
+            if (string.IsNullOrWhiteSpace(basePath))
+            {
+                basePath = DefaultDatapackPath;
+            }
+#endif
+
+            if (string.IsNullOrWhiteSpace(basePath))
+            {
+                string fallbackDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tiles");
+                Directory.CreateDirectory(fallbackDirectory);
+                return Path.Combine(fallbackDirectory, "TileData.json");
+            }
+
+            Directory.CreateDirectory(basePath);
+            return Path.Combine(basePath, "TileData.json");
+        }
+
+        private void PersistTilesToDisk()
+        {
+            string destination = GetTileDataSavePath();
+
+            if (!TileManager.Save(destination))
+            {
+                MessageBox.Show(
+                    "Tile data was updated, but it could not be saved to disk. Verify that the destination path is writable.",
+                    "Tile Save Failed",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
         private TileData? FoldDataIntoTile
         {
             get
@@ -17,8 +141,8 @@ namespace SPHMMaker
                 string name = tileNameInput.Text;
                 string texture = tileTextureInput.Text;
                 bool isWalkable = tileWalkableCheckbox.Checked;
-                int movementCost = (int)tileMovementCostInput.Value;
-                string notes = tileNotesInput.Text;
+                decimal movementCost = tileMovementCostInput.Value;
+                bool transparent = tileTransparentCheckbox.Checked;
 
                 if (string.IsNullOrWhiteSpace(name))
                 {
@@ -32,76 +156,35 @@ namespace SPHMMaker
                     return null;
                 }
 
-                if (!TileManager.FreeIdCheck(id) && (editingTile < 0 || TileManager.Tiles[editingTile].ID != id))
+                int? ignoreIndex = editingTile >= 0 ? editingTile : null;
+                if (!TileManager.FreeIdCheck(id, ignoreIndex))
                 {
                     MessageBox.Show("Tile ID must be unique.");
                     return null;
                 }
 
-                return new TileData(id, name, texture, isWalkable, movementCost, notes);
-            }
-        }
-
-        private void InitializeTiles()
-        {
-            TileManager.SetListBox(tileList);
-
-            string tilesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tiles");
-            string aggregatePath = Path.Combine(tilesDirectory, "TileData.json");
-
-            bool loaded = false;
-            if (File.Exists(aggregatePath))
-            {
-                loaded = TileManager.Load(aggregatePath);
-            }
-
-            if (!loaded)
-            {
-                loaded = TileManager.Load(tilesDirectory);
-            }
-
-            if (!loaded)
-            {
-                TileManager.LoadDefaults();
-            }
-
-            tileList.SelectedIndexChanged += tileList_SelectedIndexChanged;
-            ResetTileEditor();
-        }
-
-        private int GetNextTileId()
-        {
-            int highest = -1;
-            foreach (TileData tile in TileManager.Tiles)
-            {
-                if (tile.ID > highest)
+                if (movementCost <= 0)
                 {
-                    highest = tile.ID;
+                    MessageBox.Show("Movement cost must be greater than zero.");
+                    return null;
                 }
-            }
 
-            return highest + 1;
+                return new TileData(id, name.Trim(), texture.Trim(), isWalkable, movementCost, transparent);
+            }
         }
 
         private void ResetTileEditor()
         {
             editingTile = -1;
-            int nextId = GetNextTileId();
-            if (nextId < tileIdInput.Minimum)
-            {
-                nextId = (int)tileIdInput.Minimum;
-            }
-            if (nextId > tileIdInput.Maximum)
-            {
-                nextId = (int)tileIdInput.Maximum;
-            }
+            int nextId = TileManager.GetNextAvailableId();
+            nextId = Math.Clamp(nextId, (int)tileIdInput.Minimum, (int)tileIdInput.Maximum);
 
-            tileIdInput.Value = nextId;
+            tileIdInput.Value = Math.Clamp(nextId, (int)tileIdInput.Minimum, (int)tileIdInput.Maximum);
             tileNameInput.Text = string.Empty;
             tileTextureInput.Text = string.Empty;
             tileWalkableCheckbox.Checked = true;
-            tileMovementCostInput.Value = Math.Max(tileMovementCostInput.Minimum, 1m);
-            tileNotesInput.Text = string.Empty;
+            tileTransparentCheckbox.Checked = true;
+            tileMovementCostInput.Value = Math.Clamp(1.00m, tileMovementCostInput.Minimum, tileMovementCostInput.Maximum);
             tileList.ClearSelected();
         }
 
@@ -113,13 +196,14 @@ namespace SPHMMaker
             }
 
             editingTile = tileList.SelectedIndex;
-            tileIdInput.Value = Math.Min(Math.Max(tile.ID, (int)tileIdInput.Minimum), (int)tileIdInput.Maximum);
+            int clampedId = Math.Clamp(tile.ID, (int)tileIdInput.Minimum, (int)tileIdInput.Maximum);
+            tileIdInput.Value = clampedId;
             tileNameInput.Text = tile.Name;
             tileTextureInput.Text = tile.Texture;
             tileWalkableCheckbox.Checked = tile.IsWalkable;
-            int movementValue = Math.Min(Math.Max(tile.MovementCost, (int)tileMovementCostInput.Minimum), (int)tileMovementCostInput.Maximum);
+            tileTransparentCheckbox.Checked = tile.Transparent;
+            decimal movementValue = Math.Clamp(tile.MovementCost, tileMovementCostInput.Minimum, tileMovementCostInput.Maximum);
             tileMovementCostInput.Value = movementValue;
-            tileNotesInput.Text = tile.Notes;
         }
 
         private void tileCreateButton_Click(object sender, EventArgs e)
@@ -132,6 +216,7 @@ namespace SPHMMaker
 
             TileManager.CreateTile(tile);
             tileList.SelectedItem = TileManager.Tiles.FirstOrDefault(t => t.ID == tile.ID);
+            PersistTilesToDisk();
             ResetTileEditor();
         }
 
@@ -152,6 +237,7 @@ namespace SPHMMaker
 
             TileManager.OverrideTile(tileList.SelectedIndex, tile);
             tileList.SelectedItem = TileManager.Tiles.FirstOrDefault(t => t.ID == tile.ID);
+            PersistTilesToDisk();
         }
 
         private void tileResetButton_Click(object sender, EventArgs e) => ResetTileEditor();

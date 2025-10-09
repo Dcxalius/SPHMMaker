@@ -5,55 +5,55 @@
     "Texture": "tile_grassland",
     "IsWalkable": true,
     "MovementCost": 1,
-    "Notes": "Soft meadow sod dotted with clover."
+    "Transparent": true
   },
   {
     "ID": 1,
     "Name": "Packed Dirt",
     "Texture": "tile_packed_dirt",
     "IsWalkable": true,
-    "MovementCost": 1,
-    "Notes": "Beaten earth used for well-traveled paths."
+    "MovementCost": 0.95,
+    "Transparent": true
   },
   {
     "ID": 2,
     "Name": "Flagstone",
     "Texture": "tile_flagstone",
     "IsWalkable": true,
-    "MovementCost": 1,
-    "Notes": "Evenly hewn stonework lining city plazas."
+    "MovementCost": 0.85,
+    "Transparent": false
   },
   {
     "ID": 3,
     "Name": "River Shore",
     "Texture": "tile_river_shore",
     "IsWalkable": true,
-    "MovementCost": 2,
-    "Notes": "Slick stones and reeds edging a flowing river."
+    "MovementCost": 0.75,
+    "Transparent": true
   },
   {
     "ID": 4,
     "Name": "Magma Crust",
     "Texture": "tile_magma_crust",
     "IsWalkable": false,
-    "MovementCost": 0,
-    "Notes": "A blistering crust that cracks with molten glow."
+    "MovementCost": 0.2,
+    "Transparent": true
   },
   {
     "ID": 5,
     "Name": "Glacier Ice",
     "Texture": "tile_glacier_ice",
     "IsWalkable": true,
-    "MovementCost": 3,
-    "Notes": "A slick sheet of ancient ice that numbs the feet."
+    "MovementCost": 0.6,
+    "Transparent": true
   },
   {
     "ID": 6,
     "Name": "Wildflower Meadow",
     "Texture": "tile_wildflower_meadow",
     "IsWalkable": true,
-    "MovementCost": 1,
-    "Notes": "Tall grasses and blooms that sway with the breeze."
+    "MovementCost": 0.8,
+    "Transparent": true
   },
   {
     "ID": 7,
@@ -61,14 +61,14 @@
     "Texture": "tile_obsidian_path",
     "IsWalkable": true,
     "MovementCost": 1,
-    "Notes": "Hardened volcanic glass polished smooth by travelers."
+    "Transparent": true
   },
   {
     "ID": 8,
     "Name": "Swamp Bog",
     "Texture": "tile_swamp_bog",
     "IsWalkable": false,
-    "MovementCost": 0,
-    "Notes": "Sunken peat that swallows the unwary."
+    "MovementCost": 0.6,
+    "Transparent": true
   }
 ]

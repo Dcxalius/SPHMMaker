@@ -66,11 +66,10 @@ namespace SPHMMaker
             tileResetButton = new Button();
             tileSaveButton = new Button();
             tileCreateButton = new Button();
-            tileNotesInput = new RichTextBox();
-            tileNotesLabel = new Label();
             tileMovementCostInput = new NumericUpDown();
             tileMovementCostLabel = new Label();
             tileWalkableCheckbox = new CheckBox();
+            tileTransparentCheckbox = new CheckBox();
             tileTextureInput = new TextBox();
             tileTextureLabel = new Label();
             tileNameInput = new TextBox();
@@ -451,11 +450,10 @@ namespace SPHMMaker
             tileDetailsGroup.Controls.Add(tileResetButton);
             tileDetailsGroup.Controls.Add(tileSaveButton);
             tileDetailsGroup.Controls.Add(tileCreateButton);
-            tileDetailsGroup.Controls.Add(tileNotesInput);
-            tileDetailsGroup.Controls.Add(tileNotesLabel);
             tileDetailsGroup.Controls.Add(tileMovementCostInput);
             tileDetailsGroup.Controls.Add(tileMovementCostLabel);
             tileDetailsGroup.Controls.Add(tileWalkableCheckbox);
+            tileDetailsGroup.Controls.Add(tileTransparentCheckbox);
             tileDetailsGroup.Controls.Add(tileTextureInput);
             tileDetailsGroup.Controls.Add(tileTextureLabel);
             tileDetailsGroup.Controls.Add(tileNameInput);
@@ -471,62 +469,48 @@ namespace SPHMMaker
             //
             // tileResetButton
             //
-            tileResetButton.Location = new Point(352, 370);
+            tileResetButton.Location = new Point(352, 206);
             tileResetButton.Name = "tileResetButton";
             tileResetButton.Size = new Size(110, 27);
-            tileResetButton.TabIndex = 13;
+            tileResetButton.TabIndex = 11;
             tileResetButton.Text = "Reset";
             tileResetButton.UseVisualStyleBackColor = true;
             tileResetButton.Click += tileResetButton_Click;
-            //
+            // 
             // tileSaveButton
-            //
-            tileSaveButton.Location = new Point(236, 370);
+            // 
+            tileSaveButton.Location = new Point(236, 206);
             tileSaveButton.Name = "tileSaveButton";
             tileSaveButton.Size = new Size(110, 27);
-            tileSaveButton.TabIndex = 12;
+            tileSaveButton.TabIndex = 10;
             tileSaveButton.Text = "Save Changes";
             tileSaveButton.UseVisualStyleBackColor = true;
             tileSaveButton.Click += tileSaveButton_Click;
-            //
+            // 
             // tileCreateButton
-            //
-            tileCreateButton.Location = new Point(120, 370);
+            // 
+            tileCreateButton.Location = new Point(120, 206);
             tileCreateButton.Name = "tileCreateButton";
             tileCreateButton.Size = new Size(110, 27);
-            tileCreateButton.TabIndex = 11;
+            tileCreateButton.TabIndex = 9;
             tileCreateButton.Text = "Create Tile";
             tileCreateButton.UseVisualStyleBackColor = true;
             tileCreateButton.Click += tileCreateButton_Click;
-            //
-            // tileNotesInput
-            //
-            tileNotesInput.Location = new Point(120, 181);
-            tileNotesInput.Name = "tileNotesInput";
-            tileNotesInput.Size = new Size(414, 168);
-            tileNotesInput.TabIndex = 10;
-            tileNotesInput.Text = "";
-            //
-            // tileNotesLabel
-            //
-            tileNotesLabel.AutoSize = true;
-            tileNotesLabel.Location = new Point(12, 181);
-            tileNotesLabel.Name = "tileNotesLabel";
-            tileNotesLabel.Size = new Size(41, 15);
-            tileNotesLabel.TabIndex = 9;
-            tileNotesLabel.Text = "Notes:";
-            //
+            // 
             // tileMovementCostInput
-            //
+            // 
+            tileMovementCostInput.DecimalPlaces = 2;
+            tileMovementCostInput.Increment = new decimal(new int[] { 5, 0, 0, 131072 });
             tileMovementCostInput.Location = new Point(120, 146);
-            tileMovementCostInput.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
+            tileMovementCostInput.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
+            tileMovementCostInput.Minimum = new decimal(new int[] { 5, 0, 0, 131072 });
             tileMovementCostInput.Name = "tileMovementCostInput";
             tileMovementCostInput.Size = new Size(120, 23);
             tileMovementCostInput.TabIndex = 8;
-            tileMovementCostInput.Value = new decimal(new int[] { 1, 0, 0, 0 });
-            //
+            tileMovementCostInput.Value = new decimal(new int[] { 100, 0, 0, 131072 });
+            // 
             // tileMovementCostLabel
-            //
+            // 
             tileMovementCostLabel.AutoSize = true;
             tileMovementCostLabel.Location = new Point(12, 150);
             tileMovementCostLabel.Name = "tileMovementCostLabel";
@@ -543,6 +527,18 @@ namespace SPHMMaker
             tileWalkableCheckbox.TabIndex = 6;
             tileWalkableCheckbox.Text = "Walkable";
             tileWalkableCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // tileTransparentCheckbox
+            // 
+            tileTransparentCheckbox.AutoSize = true;
+            tileTransparentCheckbox.Checked = true;
+            tileTransparentCheckbox.CheckState = CheckState.Checked;
+            tileTransparentCheckbox.Location = new Point(216, 118);
+            tileTransparentCheckbox.Name = "tileTransparentCheckbox";
+            tileTransparentCheckbox.Size = new Size(92, 19);
+            tileTransparentCheckbox.TabIndex = 7;
+            tileTransparentCheckbox.Text = "Transparent";
+            tileTransparentCheckbox.UseVisualStyleBackColor = true;
             //
             // tileTextureInput
             //
@@ -674,6 +670,11 @@ namespace SPHMMaker
             // goldCostCounter
             // 
             goldCostCounter.Location = new Point(458, 9);
+            goldCostCounter.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
             goldCostCounter.Name = "goldCostCounter";
             goldCostCounter.Size = new Size(65, 23);
             goldCostCounter.TabIndex = 8;
@@ -1600,11 +1601,10 @@ namespace SPHMMaker
         private Button tileResetButton;
         private Button tileSaveButton;
         private Button tileCreateButton;
-        private RichTextBox tileNotesInput;
-        private Label tileNotesLabel;
         private NumericUpDown tileMovementCostInput;
         private Label tileMovementCostLabel;
         private CheckBox tileWalkableCheckbox;
+        private CheckBox tileTransparentCheckbox;
         private TextBox tileTextureInput;
         private Label tileTextureLabel;
         private TextBox tileNameInput;
