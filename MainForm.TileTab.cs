@@ -165,7 +165,7 @@ namespace SPHMMaker
 
                 if (movementCost <= 0)
                 {
-                    MessageBox.Show("Movement cost must be greater than zero.");
+                    MessageBox.Show("Movement cost must be greater or equal to zero.");
                     return null;
                 }
 

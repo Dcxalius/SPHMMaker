@@ -1,0 +1,13 @@
+{
+  "profiles": 
+  {
+    "WSL": 
+    {
+      "commandName": "WSL",
+      "environmentVariables": 
+      {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
